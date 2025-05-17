@@ -1,0 +1,32 @@
+{
+  "characterList": [
+    {
+      "characterName": "마루",
+      "hp": 100,
+      "attack": 20,
+      "speed": 10,
+      "description": "빠른 속도의 닌자 캐릭터"
+    },
+    {
+      "characterName": "토리",
+      "hp": 200,
+      "attack": 10,
+      "speed": 5,
+      "description": "방어력이 높은 탱커 캐릭터"
+    },
+    {
+      "characterName": "하나",
+      "hp": 80,
+      "attack": 25,
+      "speed": 8,
+      "description": "마법을 사용하는 원거리 캐릭터"
+    },
+    {
+      "characterName": "렉스",
+      "hp": 120,
+      "attack": 15,
+      "speed": 7,
+      "description": "균형 잡힌 전사 캐릭터"
+    }
+  ]
+}
