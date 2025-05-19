@@ -63,28 +63,33 @@ public class CharacterSelectManager : MonoBehaviour
     }
 
     // 캐릭터 위치를 업데이트하는 함수
-    void UpdateCharacterPositions()
+void UpdateCharacterPositions()
+{
+    // 모든 캐릭터를 우선 비활성화해요
+    foreach (GameObject character in characterList)
     {
-        foreach (GameObject character in characterList)
-        {
-            character.SetActive(false); // 전부 비활성화
-        }
-
-        int leftIndex = (currentIndex - 1 + characterList.Count) % characterList.Count;
-        int rightIndex = (currentIndex + 1) % characterList.Count;
-
-        // 왼쪽 캐릭터
-        characterList[leftIndex].SetActive(true);
-        characterList[leftIndex].transform.position = position0.position;
-
-        // 가운데 캐릭터
-        characterList[currentIndex].SetActive(true);
-        characterList[currentIndex].transform.position = position1.position;
-
-        // 오른쪽 캐릭터
-        characterList[rightIndex].SetActive(true);
-        characterList[rightIndex].transform.position = position2.position;
+        character.SetActive(false);
     }
+
+    // 인덱스 계산 (순환 구조)
+    int leftIndex = (currentIndex - 1 + characterList.Count) % characterList.Count;
+    int rightIndex = (currentIndex + 1) % characterList.Count;
+
+    // 왼쪽 캐릭터 표시 및 위치 설정
+    characterList[leftIndex].SetActive(true);
+    characterList[leftIndex].transform.position = position0.position;
+    characterList[leftIndex].transform.rotation = Quaternion.Euler(0, 180, 0);
+
+    // 가운데 캐릭터 (선택된 캐릭터)
+    characterList[currentIndex].SetActive(true);
+    characterList[currentIndex].transform.position = position1.position;
+    characterList[currentIndex].transform.rotation = Quaternion.Euler(0, 180, 0);
+
+    // 오른쪽 캐릭터 표시 및 위치 설정
+    characterList[rightIndex].SetActive(true);
+    characterList[rightIndex].transform.position = position2.position;
+    characterList[rightIndex].transform.rotation = Quaternion.Euler(0, 180, 0);
+}
 
     // 선택된 캐릭터의 정보를 UI에 표시하는 함수
 void UpdateCharacterInfoUI()
