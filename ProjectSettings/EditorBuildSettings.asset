@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/1.Scene/SHScene.unity
     guid: 42eb472481d26a24f9d79b0e1e744e58
   - enabled: 1
-    path: Assets/1.Scene/InGameScene.unity
+    path: Assets/1.Scene/SHInGameScene.unity
     guid: 81cb246487513b54086d1b6e62b0c8ef
   m_configObjects: {}

@@ -116,7 +116,7 @@ void UpdateCharacterInfoUI()
     public void OnClickStart()
     {
         CharacterSelectionData.selectedCharacterIndex = currentIndex;
-        SceneManager.LoadScene("InGameScene");
+        SceneManager.LoadScene("SHInGameScene");
     }
 }
 
