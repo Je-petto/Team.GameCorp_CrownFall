@@ -97,9 +97,9 @@ public class CharacterSelectManager : MonoBehaviour
         rightChar.transform.DOMove(spawnPositions[1].position, duration);
 
         // 선택적으로 회전도 줄 수 있어요
-        leftChar.transform.DORotate(new Vector3(0, 180, 0), duration);
-        centerChar.transform.DORotate(new Vector3(0, 180, 0), duration);
-        rightChar.transform.DORotate(new Vector3(0, 180, 0), duration);
+        leftChar.transform.rotation = Quaternion.Euler(0, 180, 0);
+        centerChar.transform.rotation = Quaternion.Euler(0, 180, 0);
+        rightChar.transform.rotation = Quaternion.Euler(0, 180, 0);
     }
 
     // 선택된 캐릭터의 정보를 UI에 표시하는 함수
