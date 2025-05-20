@@ -2,20 +2,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 using TMPro;
 
 public class CharacterSelectManager : MonoBehaviour
 {
-    [Header("캐릭터 오브젝트 관련")]
-    public List<GameObject> characterList; // 캐릭터 프리팹 리스트
 
     [Header("프리팹 관련")]
     public List<GameObject> characterPrefabList;
 
-    [Header("캐릭터 위치 관련")]
-    public Transform position0; // 왼쪽
-    public Transform position1; // 가운데 (선택된 캐릭터)
-    public Transform position2; // 오른쪽
+    [Header("생성 위치 리스트")]
+    [Tooltip("순서대로 Left, Center, Right(필요시 Offscreen 추가)")]
+    public List<Transform> spawnPositions;    
+
+    [Header("캐릭터 리스트(내부용)")]
+    private List<GameObject> characterList; // 캐릭터 프리팹 리스트
 
     [Header("UI 관련")]
     public TextMeshProUGUI nameText;
@@ -36,8 +37,17 @@ public class CharacterSelectManager : MonoBehaviour
         // 캐릭터 데이터 리스트 수만큼 생성
         for (int i = 0; i < characterPrefabList.Count; i++)
         {
-            GameObject character = Instantiate(characterPrefabList[i]); // 또는 characterPrefabList[i]
-            character.SetActive(false); // 처음엔 안 보이게
+            // prefabCount > spawnPositions.Count 여도 에러 안 나게 모듈로 처리
+            int spawnIdx = i % spawnPositions.Count;
+            Transform spawnPoint = spawnPositions[spawnIdx];
+
+            // 생성 즉시 원하는 위치·회전으로 스폰
+            GameObject character = Instantiate(
+                characterPrefabList[i],
+                spawnPoint.position,
+                spawnPoint.rotation
+            );
+            character.SetActive(false);
             characterList.Add(character);
         }
 
@@ -63,33 +73,34 @@ public class CharacterSelectManager : MonoBehaviour
     }
 
     // 캐릭터 위치를 업데이트하는 함수
-void UpdateCharacterPositions()
-{
-    // 모든 캐릭터를 우선 비활성화해요
-    foreach (GameObject character in characterList)
+    void UpdateCharacterPositions()
     {
-        character.SetActive(false);
+        foreach (GameObject character in characterList)
+        {
+            character.SetActive(false);
+        }
+
+        int leftIndex = (currentIndex - 1 + characterList.Count) % characterList.Count;
+        int rightIndex = (currentIndex + 1) % characterList.Count;
+
+        GameObject leftChar = characterList[leftIndex];
+        GameObject centerChar = characterList[currentIndex];
+        GameObject rightChar = characterList[rightIndex];
+        leftChar.SetActive(true);
+        centerChar.SetActive(true);
+        rightChar.SetActive(true);
+
+        float duration = 0.3f;
+
+        leftChar.transform.DOMove(spawnPositions[3].position, duration);
+        centerChar.transform.DOMove(spawnPositions[0].position, duration);
+        rightChar.transform.DOMove(spawnPositions[1].position, duration);
+
+        // 선택적으로 회전도 줄 수 있어요
+        leftChar.transform.rotation = Quaternion.Euler(0, 180, 0);
+        centerChar.transform.rotation = Quaternion.Euler(0, 180, 0);
+        rightChar.transform.rotation = Quaternion.Euler(0, 180, 0);
     }
-
-    // 인덱스 계산 (순환 구조)
-    int leftIndex = (currentIndex - 1 + characterList.Count) % characterList.Count;
-    int rightIndex = (currentIndex + 1) % characterList.Count;
-
-    // 왼쪽 캐릭터 표시 및 위치 설정
-    characterList[leftIndex].SetActive(true);
-    characterList[leftIndex].transform.position = position0.position;
-    characterList[leftIndex].transform.rotation = Quaternion.Euler(0, 180, 0);
-
-    // 가운데 캐릭터 (선택된 캐릭터)
-    characterList[currentIndex].SetActive(true);
-    characterList[currentIndex].transform.position = position1.position;
-    characterList[currentIndex].transform.rotation = Quaternion.Euler(0, 180, 0);
-
-    // 오른쪽 캐릭터 표시 및 위치 설정
-    characterList[rightIndex].SetActive(true);
-    characterList[rightIndex].transform.position = position2.position;
-    characterList[rightIndex].transform.rotation = Quaternion.Euler(0, 180, 0);
-}
 
     // 선택된 캐릭터의 정보를 UI에 표시하는 함수
 void UpdateCharacterInfoUI()
@@ -116,7 +127,7 @@ void UpdateCharacterInfoUI()
     public void OnClickStart()
     {
         CharacterSelectionData.selectedCharacterIndex = currentIndex;
-        SceneManager.LoadScene("InGameScene");
+        SceneManager.LoadScene("SHInGameScene");
     }
 }
 
