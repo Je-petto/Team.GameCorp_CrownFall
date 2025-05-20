@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using Mirror;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum TeamType
@@ -8,6 +10,7 @@ public enum TeamType
     Red,
     Blue
 }
+
 public class TeamComponent
 {
     public TeamType type;
@@ -22,30 +25,20 @@ public class TeamComponent
         return type != component.type;
     }
 }
-
-public class PlayerController : NetworkBehaviour
+public class PlayerController : MonoBehaviour
 {
-    // public class PlayerStat
-    // {
-    //     public float moveSpeed;
-    //     public float rotateSpeed;
-    //     public int attackDamage;        
-    // }
-
     #region PlayerStat
-    public int hp;                                  // 체력
-    public float moveSpeed;                         // 이동 속도
-    public float rotateSpeed;                       // 회전 속도
-    public int attackDamage;                        // 공격력
-    public float attackableRange;                   // 공격 가능 범위
+    public int currentHp;
+    public CharacterInfo data;
     public List<EffectType> effectTypes = new();
     #endregion
 
-    [HideInInspector] public Rigidbody rb;
-    [HideInInspector] public Animator animator;
+    //[HideInspector]
+    public Rigidbody rb;
+    public Animator animator;
 
     public PlayerStateMachine stateMachine;
-    private PlayerInputHandler inputHandler;
+    public PlayerInputHandler inputHandler;
     public EffectHandler effectHandler;
 
     #region Test
@@ -55,21 +48,30 @@ public class PlayerController : NetworkBehaviour
 
     void Start()
     {
-        if (!isLocalPlayer) return;
-
-        InitComponents();
-
         //test Code
         teamData = new(TeamType.Red);
     }
 
-    void InitComponents()
+    public void SetCharacter(CharacterInfo data)
     {
+        this.data = data;
+        currentHp = data.hp;
+        Instantiate(data.model, transform.Find("_mesh"));
+
+        // 로컬 테스트용.
+        StartCoroutine(InitComponents_Co());
+    }
+
+    IEnumerator InitComponents_Co()
+    {
+        yield return new WaitForSeconds(0.5f);
+
         TryGetComponent(out rb);
         TryGetComponent(out stateMachine);
         TryGetComponent(out inputHandler);
 
         animator = GetComponentInChildren<Animator>();
+        animator.runtimeAnimatorController = data.inGameAnimator;
 
         // 카메라 => Cinemachine 세팅
         FindObjectOfType<CinemachineVirtualCamera>().Follow = transform;
@@ -77,7 +79,8 @@ public class PlayerController : NetworkBehaviour
         // 동적 생성
         effectHandler = new EffectHandler(this);
 
-        // 수정 예정
+        yield return new WaitUntil(() => inputHandler != null);
+        
         inputHandler.moveCommand = new MoveCommand(this);
         inputHandler.attackCommand = new AttackCommand(this, new PlayerAttack(this));
         inputHandler.detectCommand = new DetectionCommand(this, new PlayerDetection(this));
@@ -85,8 +88,10 @@ public class PlayerController : NetworkBehaviour
 
     void OnDrawGizmos()
     {
+        if (data == null) return;
+
         //공격 범위 드로우
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + Vector3.up, attackableRange);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up, data.attackableRange);
     }
 }

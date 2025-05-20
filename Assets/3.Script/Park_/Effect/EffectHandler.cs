@@ -11,7 +11,7 @@ public class EffectHandler
     public void TakeDamage(int amount)
     {
         int testMax = 100;
-        player.hp -= amount;
-        player.hp = Mathf.Clamp(0, testMax, player.hp);            
+        player.currentHp -= amount;
+        player.currentHp = Mathf.Clamp(0, testMax, player.data.hp);            
     }
 }

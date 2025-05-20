@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: 1.Tank
   m_EditorClassIdentifier: 
   characterName: B
+  description: Tank
   hp: 3500
   attack: 60
   speed: 7
-  description: Tank
+  attackableRange: 0
+  characterType: 1
+  model: {fileID: 7940719953895527930, guid: c0e7c7986f5aad54da83026c14a43b82, type: 3}
+  selectorAnimator: {fileID: 9100000, guid: 84118ed6066b631408e608eb5b31cee5, type: 2}
+  inGameAnimator: {fileID: 9100000, guid: 2a23db505c3314d46be36b2d3b893d68, type: 2}
+  rotateSpeed: 720

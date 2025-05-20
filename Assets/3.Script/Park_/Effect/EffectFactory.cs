@@ -18,7 +18,7 @@ public static class EffectFactory
             {
                 case EffectType.DAMAGE:
                     {
-                        resEffects.Add(new DamageEffect(player.attackDamage));
+                        resEffects.Add(new DamageEffect(player.data.attack));
                         break;
                     }
             }

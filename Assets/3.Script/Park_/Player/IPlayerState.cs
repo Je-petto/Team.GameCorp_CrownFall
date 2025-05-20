@@ -59,8 +59,11 @@ public class MoveState : IPlayerState
 
         direction = new Vector3(h, 0, v).normalized;
 
-        Vector3 vel = direction * player.moveSpeed * Time.deltaTime;
+        Vector3 vel = direction * player.data.speed * Time.deltaTime;
         player.rb.MovePosition(player.transform.position + vel);
+
+        player.animator.SetFloat("MoveX", h);
+        player.animator.SetFloat("MoveY", v);
     }
 
     void Rotate()
@@ -68,7 +71,7 @@ public class MoveState : IPlayerState
         if (direction == Vector3.zero) return;
         
         float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        float smoothAngle = Mathf.SmoothDampAngle(player.transform.eulerAngles.y, angle, ref player.rotateSpeed, 0.1f);
+        float smoothAngle = Mathf.SmoothDampAngle(player.transform.eulerAngles.y, angle, ref player.data.rotateSpeed, 0.1f);
         player.transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
     }
 }
