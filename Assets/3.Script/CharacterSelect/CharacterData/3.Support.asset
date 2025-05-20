@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: 3.Support
   m_EditorClassIdentifier: 
   characterName: D
+  description: Priest
   hp: 1400
   attack: 60
   speed: 8
-  description: Priest
+  attackableRange: 0
+  characterType: 3
+  model: {fileID: 6221377006290466578, guid: 7e67aacebe580b745b55ef4fa9faf1b7, type: 3}
+  selectorAnimator: {fileID: 9100000, guid: 84118ed6066b631408e608eb5b31cee5, type: 2}
+  inGameAnimator: {fileID: 9100000, guid: 2a23db505c3314d46be36b2d3b893d68, type: 2}
+  rotateSpeed: 720

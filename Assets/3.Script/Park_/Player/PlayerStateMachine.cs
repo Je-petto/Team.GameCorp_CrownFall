@@ -1,6 +1,6 @@
-using Mirror;
+using UnityEngine;
 
-public class PlayerStateMachine : NetworkBehaviour
+public class PlayerStateMachine : MonoBehaviour
 {
     private IPlayerState currentState;
 
@@ -11,7 +11,9 @@ public class PlayerStateMachine : NetworkBehaviour
 
     public void ChangeState(IPlayerState state)
     {
-        if(!isLocalPlayer) return;
+        // if (!isLocalPlayer) return;
+
+        if (state.Equals(currentState)) return;
 
         currentState?.Exit();
         currentState = state;
@@ -20,8 +22,9 @@ public class PlayerStateMachine : NetworkBehaviour
 
     public void FixedUpdate()
     {
-        if(!isLocalPlayer) return;
-        
+        // if (!isLocalPlayer) return;
+        // 테스트
+        Debug.Log($"{gameObject.GetComponent<Rigidbody>().velocity}");
         currentState?.Update();
     }
 }

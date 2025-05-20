@@ -1,14 +1,14 @@
-using Mirror;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerInputHandler : NetworkBehaviour
+public class PlayerInputHandler : MonoBehaviour
 {
     public ICommand moveCommand;
     public ICommand attackCommand;
     public ICommand detectCommand;
     void Update()
     {
-        if (!isLocalPlayer) return;
+        // if (!isLocalPlayer) return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -19,7 +19,8 @@ public class PlayerInputHandler : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (!isLocalPlayer) return;
+        // if (!isLocalPlayer) return;
+        if (moveCommand == null) return;
         moveCommand.Execute();
     }
 }

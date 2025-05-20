@@ -30,7 +30,7 @@ public class PlayerAttack : PlayerAbility
 
     public override void Perform()
     {
-        Debug.Log($"player Attack! : Damage [{player.attackDamage}]");
+        Debug.Log($"player Attack! : Damage [{player.data.attack}]");
 
         if (player.target == null)
         {
@@ -38,7 +38,7 @@ public class PlayerAttack : PlayerAbility
             return;
         }
         // player와 대상간의 거리 측정
-        if (Vector3.Distance(player.transform.position, player.target.transform.position) > player.attackableRange)
+        if (Vector3.Distance(player.transform.position, player.target.transform.position) > player.data.attackableRange)
         {
             Debug.Log("공격 타겟이 너무 멀다.");
             return;  
