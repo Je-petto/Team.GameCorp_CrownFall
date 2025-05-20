@@ -23,8 +23,7 @@ public class PlayerStateMachine : MonoBehaviour
     public void FixedUpdate()
     {
         // if (!isLocalPlayer) return;
-        // 테스트
-        Debug.Log($"{gameObject.GetComponent<Rigidbody>().velocity}");
+
         currentState?.Update();
     }
 }

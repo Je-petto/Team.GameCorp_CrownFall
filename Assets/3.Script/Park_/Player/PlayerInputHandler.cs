@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerInputHandler : MonoBehaviour
@@ -6,13 +5,24 @@ public class PlayerInputHandler : MonoBehaviour
     public ICommand moveCommand;
     public ICommand attackCommand;
     public ICommand detectCommand;
+
     void Update()
     {
         // if (!isLocalPlayer) return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            detectCommand.Execute();
+            (detectCommand as DetectionCommand).OnOff(true);
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            (detectCommand as DetectionCommand).Execute();
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            (detectCommand as DetectionCommand).OnOff(false);
             attackCommand.Execute();
         }
     }

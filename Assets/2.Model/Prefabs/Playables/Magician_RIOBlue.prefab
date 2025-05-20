@@ -973,7 +973,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2405690974685558518}
-  - component: {fileID: 5635309767878506126}
   m_Layer: 0
   m_Name: Magician_RIO_Unity
   m_TagString: Untagged
@@ -999,27 +998,6 @@ Transform:
   - {fileID: 8034703101682546522}
   m_Father: {fileID: 287647305086012813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &5635309767878506126
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3368170787128104775}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 35c44a97c30e4e946a0f4d3310613b95, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3409275318977356877
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,8 +29,8 @@ public class CharacterEffectController : MonoBehaviour
     {
         // animator가 존재할 경우, 타이밍 문제 방지를 위해 비활성화할 수 있음
         animator = GetComponent<Animator>();
-        if (animator != null)
-            animator.enabled = false; // ※ Dictionary 초기화 완료 후 Start에서 다시 켤 예정
+        // if (animator != null)
+        //     animator.enabled = false; // ※ Dictionary 초기화 완료 후 Start에서 다시 켤 예정
 
         // fxList를 기반으로 Dictionary 생성 (빠른 검색용)
         fxDict = new Dictionary<string, FxEntry>(System.StringComparer.OrdinalIgnoreCase);
