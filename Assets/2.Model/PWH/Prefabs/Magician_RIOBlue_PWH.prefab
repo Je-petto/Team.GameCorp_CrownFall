@@ -410,9 +410,9 @@ GameObject:
   - component: {fileID: 287647305086012813}
   - component: {fileID: 4233554000269116125}
   - component: {fileID: -3384645196354667717}
-  - component: {fileID: 4825086338176466098}
+  - component: {fileID: 6205008747718295426}
   m_Layer: 0
-  m_Name: Magician_RIOBlue
+  m_Name: Magician_RIOBlue_PWH
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -447,7 +447,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 84118ed6066b631408e608eb5b31cee5, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -468,26 +468,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterInfo: {fileID: 11400000, guid: b59c7846cb16c724d97cbe886d46c999, type: 2}
---- !u!114 &4825086338176466098
+--- !u!114 &6205008747718295426
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1536138927795467480}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d612dff8d34334da789790081e2101, type: 3}
+  m_Script: {fileID: 11500000, guid: ca31a9c69db6af84b83b7fee455902b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelRoot: {fileID: 0}
-  fxList:
-  - fxName: SpawnCircle
-    effectPrefab: {fileID: 4124775738041080689, guid: a714c412ac964a645960e6516a75a932, type: 3}
-    slotNames: []
-    localPositionOffset: {x: 0, y: 0, z: 0}
-    localRotationEuler: {x: 90, y: 0, z: 0}
-    lifetime: 3
 --- !u!1 &1738733055049709640
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,8 @@ public class CharacterInfo : ScriptableObject
     public int attack;              // 공격력
     public int speed;               // 이동 속도
     public float attackableRange;   // 공격 가능 범위
+    public float attackInterval;    // 공격 주기.
+
 
     [SerializeField] private CharacterType characterType;
     public CharacterType Type => characterType;
@@ -27,7 +29,7 @@ public class CharacterInfo : ScriptableObject
     public GameObject model;
     public RuntimeAnimatorController selectorAnimator;
     public RuntimeAnimatorController inGameAnimator;
-
+    public GameObject projection;                 //논타겟 투사체. [원거리만 사용], [근거리는 미사용..?]
 
     [ReadOnly] public float rotateSpeed = 720f;                       // 회전 속도
 }

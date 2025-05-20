@@ -29,16 +29,17 @@ public class MoveState : IPlayerState
 {
     private PlayerController player;
 
-    Vector3 direction;
+    private Vector3 direction;
 
     public MoveState(PlayerController player)
-    {                  //PlayerController에 각종 스탯을 가지고 있다.
+    {
+        //PlayerController에 각종 스탯을 가지고 있다.
         this.player = player;
     }
 
     public void Enter()
     {
-        Debug.Log("Move Enter...");
+        // Debug.Log("Move Enter...");
     }
 
     public void Update()
@@ -49,7 +50,7 @@ public class MoveState : IPlayerState
 
     public void Exit()
     {
-        Debug.Log("Move Exit...");
+        // Debug.Log("Move Exit...");
     }
 
     private void Move()
@@ -59,17 +60,15 @@ public class MoveState : IPlayerState
 
         direction = new Vector3(h, 0, v).normalized;
 
-        Vector3 vel = direction * player.data.speed * Time.deltaTime;
-        player.rb.MovePosition(player.transform.position + vel);
-
-        player.animator.SetFloat("MoveX", h);
-        player.animator.SetFloat("MoveY", v);
+        Vector3 vel = direction * player.data.speed;
+        player.rb.MovePosition(player.transform.position + vel * Time.deltaTime);
+        player.animator.SetFloat("Movement", direction.magnitude);
     }
 
     void Rotate()
     {
         if (direction == Vector3.zero) return;
-        
+
         float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
         float smoothAngle = Mathf.SmoothDampAngle(player.transform.eulerAngles.y, angle, ref player.data.rotateSpeed, 0.1f);
         player.transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);

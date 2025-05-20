@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using DG.Tweening;
 using UnityEngine;
 
 /*
@@ -53,6 +53,7 @@ public class PlayerAttack : PlayerAbility
     }
 }
 
+//논 타겟팅 인식.
 public class PlayerDetection : PlayerAbility
 {
     public PlayerDetection(PlayerController player) : base(player) { }
@@ -60,22 +61,78 @@ public class PlayerDetection : PlayerAbility
     public override void Perform()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Ground")))                  //그라운드만 인식.
+        {
+            player.lineRenderer.SetPosition(0, player.attackPoint.position);
 
-        // 클릭해서 레이를 쏘고 레이에 맞은 Enemy 태그의 플레이어를 player.target으로 둔다.
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Attackable")))
-        {
-            if (hit.transform.TryGetComponent(out PlayerController enemy) && enemy.teamData.IsEnemy(player.teamData))
-            {
-                player.target = enemy;
-            }
-            else
-            {
-                player.target = null;
-            }
-        }
-        else
-        {
-            player.target = null;
+            Vector3 targetPoint = new Vector3(hit.point.x, player.attackPoint.position.y, hit.point.z);
+
+            Vector3 lineDir = (targetPoint - player.attackPoint.position).normalized;
+
+            player.lineRenderer.SetPosition(1, player.attackPoint.position + (lineDir * player.data.attackableRange));
+            player.targetPoint = player.attackPoint.position + (lineDir * player.data.attackableRange);
         }
     }
 }
+
+#region Attack - Testcase
+// non-target [IK]
+public class PlayerAttackNonTargeting : PlayerAbility
+{
+    private LineRenderer lineRenderer;
+    public PlayerAttackNonTargeting(PlayerController player) : base(player){ }
+
+    public override void Perform()
+    {
+        Shoot();
+    }
+
+    public void Shoot()
+    {
+        // 추후 오브젝트 풀링으로 변경 예정.
+
+        GameObject projection = GameObject.Instantiate(player.data.projection, player.attackPoint.transform.position, Quaternion.identity);
+        player.transform.DOLookAt(player.targetPoint, 0.1f)
+        .OnComplete(()=> { projection.transform.DOMove(player.targetPoint, 0.2f).OnComplete(() => { GameObject.Destroy(projection); }); });
+    }
+}
+
+// non-target [IK]
+public class PlayerAttackIK : PlayerAbility
+{
+    private int attackIndex = 0;
+
+    public PlayerAttackIK(PlayerController player) : base(player) { }
+
+    public override void Perform()
+    {
+        player.animator.SetFloat("AttackIndex", attackIndex);
+
+        attackIndex++;
+        attackIndex = attackIndex % 2;          //0과 1만 존재.
+
+        player.animator.SetTrigger("Attack");
+
+        Shoot();
+    }
+
+    public void Shoot()
+    {
+        // 추후 오브젝트 풀링으로 변경 예정.
+        GameObject projection = GameObject.Instantiate(player.data.projection, player.attackPoint.transform.position, Quaternion.identity);
+        projection.transform.DOMove(player.targetPoint, 0.2f)
+        .OnComplete(() =>
+        {
+            player.targetPoint = Vector3.zero;
+            GameObject.Destroy(projection);
+        });
+    }
+
+    private void SequenceUpperBody()
+    {
+        Sequence seq = DOTween.Sequence();
+
+        Transform ub = player.animator.GetBoneTransform(player.bone);
+    }
+}
+#endregion  

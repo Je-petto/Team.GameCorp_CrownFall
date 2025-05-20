@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using DG.Tweening;
 using Mirror;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -33,18 +34,25 @@ public class PlayerController : MonoBehaviour
     public List<EffectType> effectTypes = new();
     #endregion
 
-    //[HideInspector]
+    #region [HideInspector]
     public Rigidbody rb;
     public Animator animator;
+    public Transform attackPoint;
+    public LineRenderer lineRenderer;
 
     public PlayerStateMachine stateMachine;
     public PlayerInputHandler inputHandler;
     public EffectHandler effectHandler;
+    #endregion
 
     #region Test
     public TeamComponent teamData = null;
-    public PlayerController target = null;
+    public PlayerController target = null;                          //제거 예정
+    public Vector3 targetPoint;
+    // private 
     #endregion
+
+    public HumanBodyBones bone;
 
     void Start()
     {
@@ -64,11 +72,16 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator InitComponents_Co()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForEndOfFrame();
+
+        attackPoint = transform.Find("_attackPoint");
 
         TryGetComponent(out rb);
         TryGetComponent(out stateMachine);
         TryGetComponent(out inputHandler);
+        TryGetComponent(out lineRenderer);
+
+        lineRenderer.enabled = false;
 
         animator = GetComponentInChildren<Animator>();
         animator.runtimeAnimatorController = data.inGameAnimator;
@@ -80,9 +93,12 @@ public class PlayerController : MonoBehaviour
         effectHandler = new EffectHandler(this);
 
         yield return new WaitUntil(() => inputHandler != null);
-        
+
         inputHandler.moveCommand = new MoveCommand(this);
-        inputHandler.attackCommand = new AttackCommand(this, new PlayerAttack(this));
+
+        // inputHandler.attackCommand = new AttackCommand(this. new PlayerAttack(this));
+        // inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackNonTargeting(this));            // Backstep
+        inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackIK(this));                         // IK
         inputHandler.detectCommand = new DetectionCommand(this, new PlayerDetection(this));
     }
 
@@ -94,4 +110,11 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + Vector3.up, data.attackableRange);
     }
+
+    #region Inspector Test
+    void LateUpdate()
+    {
+        
+    }
+    #endregion
 }

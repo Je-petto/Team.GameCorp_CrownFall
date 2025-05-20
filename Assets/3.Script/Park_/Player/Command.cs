@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public interface ICommand
 {
     public void Execute();
@@ -36,8 +34,12 @@ public class IdleCommand : ICommand
 public class AttackCommand : ICommand
 {
     PlayerController player;
-    PlayerAttack attack;
-    public AttackCommand(PlayerController player, PlayerAttack attack)
+
+    // PlayerAttackNonTargeting attack;
+
+    PlayerAttackIK attack;
+
+    public AttackCommand(PlayerController player, PlayerAttackIK attack)
     {
         this.player = player;
         this.attack = attack;
@@ -54,14 +56,25 @@ public class DetectionCommand : ICommand
     PlayerController player;
     PlayerDetection detection;
 
+    bool detectionState;
+
     public DetectionCommand(PlayerController player, PlayerDetection detection)
     {
         this.player = player;
         this.detection = detection;
+        detectionState = false;
+    }
+
+    public void OnOff(bool on)
+    {
+        detectionState = on;
+        player.lineRenderer.enabled = on;
     }
 
     public void Execute()
     {
+        if (!detectionState) return;
+
         detection.Perform();
     }
 }
