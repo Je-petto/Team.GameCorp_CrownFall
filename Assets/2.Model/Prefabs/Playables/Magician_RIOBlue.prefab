@@ -410,6 +410,7 @@ GameObject:
   - component: {fileID: 287647305086012813}
   - component: {fileID: 4233554000269116125}
   - component: {fileID: -3384645196354667717}
+  - component: {fileID: 4825086338176466098}
   m_Layer: 0
   m_Name: Magician_RIOBlue
   m_TagString: Untagged
@@ -467,6 +468,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterInfo: {fileID: 11400000, guid: b59c7846cb16c724d97cbe886d46c999, type: 2}
+--- !u!114 &4825086338176466098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536138927795467480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d612dff8d34334da789790081e2101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modelRoot: {fileID: 0}
+  fxList:
+  - fxName: SpawnCircle
+    effectPrefab: {fileID: 4124775738041080689, guid: a714c412ac964a645960e6516a75a932, type: 3}
+    slotNames: []
+    localPositionOffset: {x: 0, y: 0, z: 0}
+    localRotationEuler: {x: 90, y: 0, z: 0}
+    lifetime: 3
 --- !u!1 &1738733055049709640
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,6 +774,68 @@ Transform:
   m_Children:
   - {fileID: 8231004541501903675}
   m_Father: {fileID: 5497964232871329174}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2811851908619010822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1905461479118750174}
+  m_Layer: 0
+  m_Name: _root.rhand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1905461479118750174
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2811851908619010822}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.002726941, y: 0.082058184, z: 0.7549181, w: 0.6506594}
+  m_LocalPosition: {x: -0.024, y: 0.184, z: -0.053}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5756403850556028123}
+  m_LocalEulerAnglesHint: {x: -7.322, y: 5.941, z: 0}
+--- !u!1 &2818165463101827725
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2914272254853116572}
+  m_Layer: 0
+  m_Name: _fxcore
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2914272254853116572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2818165463101827725}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8034703101682546522}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2833554622376238392
 GameObject:
@@ -1128,6 +1211,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2028040603279001174}
+  - {fileID: 2914272254853116572}
   m_Father: {fileID: 2405690974685558518}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4449448695355511360
@@ -2011,6 +2095,7 @@ Transform:
   - {fileID: 3654084624408174760}
   - {fileID: 4257553597002690322}
   - {fileID: 5392386692876579765}
+  - {fileID: 1905461479118750174}
   m_Father: {fileID: 112638926247356003}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7802297133728550893
