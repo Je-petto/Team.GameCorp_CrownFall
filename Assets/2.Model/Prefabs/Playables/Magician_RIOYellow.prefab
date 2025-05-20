@@ -226,6 +226,7 @@ Transform:
   - {fileID: 9125310950720912119}
   - {fileID: 4352047382555916510}
   - {fileID: 5589639285909267969}
+  - {fileID: 1901237104956220005}
   m_Father: {fileID: 3375977938730611172}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &974181216254426021
@@ -1142,6 +1143,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0058904737, y: 0.03095837, z: -0.1941959}
     m_Extent: {x: 0.30741596, y: 0.5073302, z: 0.261834}
   m_DirtyAABB: 0
+--- !u!1 &4272010451937364377
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1901237104956220005}
+  m_Layer: 0
+  m_Name: _root.rhand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1901237104956220005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4272010451937364377}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0027269854, y: 0.08205812, z: 0.7549183, w: 0.65065926}
+  m_LocalPosition: {x: -0.02399987, y: 0.18400018, z: -0.05299977}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3066325788688298660}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4300199635378911441
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,6 +1523,37 @@ Transform:
   - {fileID: 3680994063031169333}
   m_Father: {fileID: 2692317471321058961}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5716664787385850323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4298081971779253224}
+  m_Layer: 0
+  m_Name: _fxcore
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4298081971779253224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5716664787385850323}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8748913465858363640}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5781768348593494873
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,6 +1658,7 @@ GameObject:
   - component: {fileID: 1016540795539633173}
   - component: {fileID: 98092741234879194}
   - component: {fileID: 4620712528485539723}
+  - component: {fileID: -612807976474718588}
   m_Layer: 0
   m_Name: Magician_RIOYellow
   m_TagString: Untagged
@@ -1652,6 +1716,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterInfo: {fileID: 11400000, guid: 88d6031866687b446955cb285ac4e3b7, type: 2}
+--- !u!114 &-612807976474718588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6221377006290466578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d612dff8d34334da789790081e2101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modelRoot: {fileID: 0}
+  fxList:
+  - fxName: SpawnCircle
+    effectPrefab: {fileID: 4124775738041080689, guid: a714c412ac964a645960e6516a75a932, type: 3}
+    slotNames: []
+    localPositionOffset: {x: 0, y: 0, z: 0}
+    localRotationEuler: {x: 90, y: 0, z: 0}
+    lifetime: 3
 --- !u!1 &6282188274465819265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1963,6 +2047,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7861275066274809870}
+  - {fileID: 4298081971779253224}
   m_Father: {fileID: 743823905155149605}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7494781647190966826
