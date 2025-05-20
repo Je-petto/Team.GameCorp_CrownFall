@@ -4,6 +4,7 @@ public enum EffectType
 {
     EMPTY,
     DAMAGE,
+    SLOW,
 }
 
 public static class EffectFactory
@@ -17,6 +18,11 @@ public static class EffectFactory
             switch (type)
             {
                 case EffectType.DAMAGE:
+                    {
+                        resEffects.Add(new DamageEffect(player.data.attack));
+                        break;
+                    }
+                case EffectType.SLOW:
                     {
                         resEffects.Add(new DamageEffect(player.data.attack));
                         break;

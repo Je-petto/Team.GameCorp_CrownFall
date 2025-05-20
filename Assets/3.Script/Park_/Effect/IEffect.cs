@@ -16,3 +16,14 @@ public class DamageEffect : IEffect
         player.effectHandler.TakeDamage(amount);
     }
 }
+
+public class SlowEffect : IEffect
+{
+    public SlowEffect()
+    {
+
+    }
+    public void Apply(PlayerController player)
+    {
+    }
+}
