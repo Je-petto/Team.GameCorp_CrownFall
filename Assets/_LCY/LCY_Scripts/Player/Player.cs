@@ -118,8 +118,8 @@ public class Player : MonoBehaviour
         float tempMove = moveSpeed;
         float tempAttack = attackSpeed;
 
-        moveSpeed *= 0.15f;
-        attackSpeed *= 0.15f;
+        moveSpeed *= 0.75f;
+        attackSpeed *= 0.75f;
         yield return new WaitForSeconds(6);
         state = STATE.NONE;
         moveSpeed = tempMove;
