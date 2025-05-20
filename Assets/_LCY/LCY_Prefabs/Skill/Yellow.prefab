@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4908194447396945183}
   - component: {fileID: 3666936217763541234}
   m_Layer: 0
-  m_Name: Red
+  m_Name: Yellow
   m_TagString: RedSkill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: eda7aa9ede0502845be7b8f8284999d4, type: 2}
+  - {fileID: 2100000, guid: ba6f181d607689a4cbb42f6aa520183f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
