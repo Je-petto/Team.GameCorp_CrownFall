@@ -223,7 +223,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 5}
+  m_LocalScale: {x: 10, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -314,13 +314,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 597484646}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.2369877, y: 0.6695088, z: -0.23970167, w: -0.6619199}
-  m_LocalPosition: {x: 72.69573, y: 60.2136, z: 0.98338413}
+  m_LocalRotation: {x: 0.53997797, y: -0.36632985, z: 0.28109473, w: 0.70371306}
+  m_LocalPosition: {x: 20, y: 90, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 75, y: -55, z: 0}
 --- !u!114 &597484650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -562,8 +562,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCoolDown: 0
   skillType: 0
-  skillData: {fileID: 11400000, guid: 3727e16fcf0fcb44386b18df904e2e8a, type: 2}
-  skillRef: {fileID: 0}
+  data: {fileID: 11400000, guid: 3727e16fcf0fcb44386b18df904e2e8a, type: 2}
+  prefab: {fileID: 0}
   line: {fileID: 1587655633}
   targetHp: 0
   targetMoveSpeed: 0
@@ -588,7 +588,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 14dbc0887134cd04896dc74eaeb55aae, type: 2}
+  - {fileID: 2100000, guid: d271ebc46b0f74b6fbf2eaab8586fb52, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -741,7 +741,7 @@ Transform:
   m_GameObject: {fileID: 1587655631}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

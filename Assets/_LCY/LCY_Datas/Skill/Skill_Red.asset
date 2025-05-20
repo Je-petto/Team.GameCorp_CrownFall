@@ -16,5 +16,6 @@ MonoBehaviour:
   damage: 10
   duration: 3
   coolDown: 10
-  effectDuration: 4
-  model: {fileID: 4827411187873430144, guid: 61dde57fc81bdf04999290b5c7b075a4, type: 3}
+  dot: 0
+  prefab: {fileID: 4827411187873430144, guid: 61dde57fc81bdf04999290b5c7b075a4, type: 3}
+  distance: 5
