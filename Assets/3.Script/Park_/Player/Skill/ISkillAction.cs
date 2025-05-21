@@ -1,18 +1,19 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 
 public interface ISkillAction
 {
-    public void Perform();
+    public void Perform(Vector3 point);
 }
 
 //장판 소환
-public class Skill_Red : MonoBehaviour, ISkillAction
+public class Skill_Red : ISkillAction
 {
     PlayerController caster;
     private SkillData data;
-    public GameObject skillEffectObject;
+    private GameObject skillEffectObject;
 
     private bool isCoolDown;
 
@@ -21,19 +22,28 @@ public class Skill_Red : MonoBehaviour, ISkillAction
         this.caster = caster;
         this.data = data;
 
-        skillEffectObject = Instantiate(data.prefab);
+        skillEffectObject = GameObject.Instantiate(data.prefab);
         skillEffectObject.SetActive(false);
     }
 
-    public void Perform()
+    public void Perform(Vector3 point)
     {
-        StartCoroutine(SkillSequence_Co());
+        StartSkillSequence(point);
     }
 
-    IEnumerator SkillSequence_Co()
+    void StartSkillSequence(Vector3 point)
     {
-        Debug.Log("Red Cast...!");
-        yield return new WaitForSeconds(data.castingTime);          //스킬 캐스팅 시간.
+        Debug.Log("Red Skill_Case...");
+        if (skillEffectObject == null) return;
+
+        skillEffectObject.transform.position = point;
+
+        Sequence skillSeq = DOTween.Sequence();
+        skillSeq.AppendInterval(data.castingTime)
+                .AppendCallback(() => skillEffectObject.SetActive(true))
+                .AppendInterval(1f)
+                .AppendCallback(() => skillEffectObject.SetActive(false))
+                .OnComplete(() => Debug.Log(",,,"));
     }
 }
 
@@ -55,45 +65,60 @@ public class Skill_Blue : MonoBehaviour, ISkillAction
         skillEffectObject.SetActive(false);
     }
 
-    public void Perform()
+    public void Perform(Vector3 point)
     {
-        StartCoroutine(SkillSequence_Co());
+        StartSkillSequence(point);
     }
 
-    IEnumerator SkillSequence_Co()
+    void StartSkillSequence(Vector3 point)
     {
-        yield return new WaitForSeconds(data.castingTime);          //스킬 캐스팅 시간.
-
-        skillEffectObject.SetActive(true);
-        yield return new WaitForSeconds(data.duration);
-        skillEffectObject.SetActive(true);
+        Debug.Log("Blue Skill_Case...");
+        Sequence skillSeq = DOTween.Sequence();
+        skillSeq.AppendInterval(data.castingTime)
+                .AppendCallback(() => skillEffectObject.SetActive(true))
+                .AppendCallback(() => skillEffectObject.transform.position = point)
+                .AppendInterval(data.duration)
+                .AppendCallback(() => skillEffectObject.SetActive(false));
     }
 }
 
-public class Skill_Green : MonoBehaviour, ISkillAction
+// Heal
+public class Skill_Green : ISkillAction
 {
     PlayerController caster;
     private SkillData data;
+    public GameObject skillEffectObject;
+
     private bool isCoolDown;
 
     public Skill_Green(PlayerController caster, SkillData data)
     {
+        skillEffectObject = GameObject.Instantiate(data.prefab);
+        skillEffectObject.SetActive(false);
+
         this.caster = caster;
         this.data = data;
     }
 
-    public void Perform()
+    public void Perform(Vector3 point)
     {
         if (isCoolDown) return;
+        StartSkillSequence(point);
     }
 
-    IEnumerator SkillSequence_Co()
+    void StartSkillSequence(Vector3 point)
     {
-        yield return new WaitForSeconds(data.castingTime);
+        Debug.Log("Green Skill cast");
+        Sequence skillSeq = DOTween.Sequence();
+        skillSeq.AppendInterval(data.castingTime)
+                .AppendCallback(() => skillEffectObject.SetActive(true))
+                .AppendCallback(() => skillEffectObject.transform.position = point)
+                .AppendInterval(data.duration)
+                .AppendCallback(() => skillEffectObject.SetActive(false));
     }
 }
 
-public class Skill_Yellow : MonoBehaviour, ISkillAction
+public class Skill_Yellow : ISkillAction
 {
     PlayerController caster;
     private SkillData data;
@@ -106,40 +131,8 @@ public class Skill_Yellow : MonoBehaviour, ISkillAction
         this.data = data;
     }
 
-    public void Perform()
+    public void Perform(Vector3 point)
     {
-        if (isCoolDown) return;
-
-        Vector3 hitPos;
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit))
-            {
-                isCoolDown = true;
-                hitPos = hit.point - transform.position;
-                hitPos.y = transform.position.y;
-            }
-            else
-            {
-                hitPos = transform.position + transform.position * data.distance;
-                hitPos.y = transform.position.y;
-            }
-
-            StartCoroutine(SkillSequence_Co(hitPos));
-        }
-
-    }
-
-    IEnumerator SkillSequence_Co(Vector3 point)
-    {
-        yield return new WaitForSeconds(data.castingTime);          //스킬 캐스팅 시간.
-
-        caster.lineRenderer.SetPosition(0, transform.position);
-        caster.lineRenderer.SetPosition(1, point);
-
-        caster.lineRenderer.enabled = true;
-        yield return new WaitForSeconds(data.duration);
-        caster.lineRenderer.enabled = false;
+        
     }
 }
