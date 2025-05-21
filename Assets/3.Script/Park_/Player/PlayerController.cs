@@ -91,7 +91,6 @@ public class PlayerController : MonoBehaviour
 
         // 동적 생성
         effectHandler = new EffectHandler(this);
-
         yield return new WaitUntil(() => inputHandler != null);
 
         inputHandler.moveCommand = new MoveCommand(this);
@@ -100,6 +99,7 @@ public class PlayerController : MonoBehaviour
         // inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackNonTargeting(this));            // Backstep
         inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackIK(this));                         // IK
         inputHandler.detectCommand = new DetectionCommand(this, new PlayerDetection(this));
+        inputHandler.skillCastCommand = new SkillCastCommand(this);
     }
 
     void OnDrawGizmos()

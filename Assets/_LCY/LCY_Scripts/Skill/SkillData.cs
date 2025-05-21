@@ -13,14 +13,16 @@ public enum SkillType
 [CreateAssetMenu(menuName = "Data/SkillData")]
 public class SkillData : ScriptableObject
 {
-    public SkillType type; // ½ºÅ³ Á¾·ù
-    public float damage; // ½ºÅ³ µ¥¹ÌÁö
-    public float duration; // ½ºÅ³ Áö¼Ó½Ã°£
-    public float coolDown; // ½ºÅ³ ÄðÅ¸ÀÓ
-    public int dot; // ½ºÅ³ È¿°ú Áö¼Ó½Ã°£
-    public GameObject prefab; // ½ºÅ³ ¸ðµ¨
-    public float distance; // ·¹ÀÌ ¹ß»ç °Å¸®
+    public SkillType type; // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½
+    public float damage; // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float duration; // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½Ó½Ã°ï¿½
+    public float coolDown; // ï¿½ï¿½Å³ ï¿½ï¿½Å¸ï¿½ï¿½
+    public float castingTime;               // SkillCasting
+    public int dot; // ï¿½ï¿½Å³ È¿ï¿½ï¿½ ï¿½ï¿½ï¿½Ó½Ã°ï¿½
+    public GameObject castingMark;
+    public GameObject prefab; // ï¿½ï¿½Å³ ï¿½ï¿½
+    public float distance; // ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ ï¿½Å¸ï¿½
 
-    //»ó´ë¿¡°Ô ÁÖ´Â È¿°ú ÇÃ·¡±×
-    public List<EffectType> effects; 
+    //ï¿½ï¿½ë¿¡ï¿½ï¿½ ï¿½Ö´ï¿½ È¿ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½
+    public List<EffectType> effectTypes; 
 }

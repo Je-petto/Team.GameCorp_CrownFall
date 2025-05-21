@@ -25,7 +25,8 @@ public class PlayerAttack : PlayerAbility
     List<IEffect> damageEffect = new();
     public PlayerAttack(PlayerController player) : base(player)
     {
-        EffectFactory.CreateEffects(player, player.effectTypes);
+        SkillData attackData = player.data.skillSet.Find(data => data.type.Equals(SkillType.NONE));
+        damageEffect = EffectFactory.CreateSkillEffects(attackData);
     }
 
     public override void Perform()
@@ -136,3 +137,20 @@ public class PlayerAttackIK : PlayerAbility
     }
 }
 #endregion  
+
+public class PlayerSkill : PlayerAbility
+{
+    private SkillData skillData;
+    public List<IEffect> effects;           //스킬이 주는 효과.
+
+    public PlayerSkill(PlayerController player) : base(player)
+    {
+        skillData = player.data.skillSet.Find(data => !data.Equals(SkillType.NONE));
+        effects = EffectFactory.CreateSkillEffects(skillData);
+    }
+
+    public override void Perform()
+    {
+
+    }
+}
