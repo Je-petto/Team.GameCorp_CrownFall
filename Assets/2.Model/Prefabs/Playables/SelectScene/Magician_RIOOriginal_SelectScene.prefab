@@ -1754,10 +1754,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5251107426523682287}
   - component: {fileID: 1785462031084429282}
-  - component: {fileID: 3868052618401875965}
-  - component: {fileID: 8276568927536961253}
+  - component: {fileID: 4377558155101479068}
   m_Layer: 0
-  m_Name: Magician_RIOGreen
+  m_Name: Magician_RIOOriginal_SelectScene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1771,8 +1770,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7940719953895527930}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: -1, z: 0, w: 0.00000004371139}
+  m_LocalPosition: {x: 37, y: 0, z: 21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1800,7 +1799,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3868052618401875965
+--- !u!114 &4377558155101479068
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1809,31 +1808,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 7940719953895527930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d9fbe450b53c26499fed72b5a95ba04, type: 3}
+  m_Script: {fileID: 11500000, guid: 38ef3bb254e47a6488d743d47cdf676f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterInfo: {fileID: 11400000, guid: 2095cb67f385ede4fb6d05ce6d2681c4, type: 2}
---- !u!114 &8276568927536961253
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7940719953895527930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d612dff8d34334da789790081e2101, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modelRoot: {fileID: 0}
-  fxList:
-  - fxName: SpawnCircle
-    effectPrefab: {fileID: 4124775738041080689, guid: a714c412ac964a645960e6516a75a932, type: 3}
-    slotNames:
-    - 
-    localPositionOffset: {x: 0, y: 0, z: 0}
-    localRotationEuler: {x: 90, y: 0, z: 0}
-    lifetime: 3
+  fxSpawnInfos:
+  - fxName: SUMMON
+    prefab: {fileID: 1228110654730953357, guid: a714c412ac964a645960e6516a75a932, type: 3}
+    spawnPoint: {fileID: 760876394682344471}
+    positionOffset: {x: 0, y: 0, z: 0}
+    rotationEuler: {x: 0, y: 0, z: 0}
+  - fxName: LOADMAGIC
+    prefab: {fileID: 208710943839318530, guid: 8e5abe24065a49e4eaa3ea00512f285a, type: 3}
+    spawnPoint: {fileID: 760876394682344471}
+    positionOffset: {x: 0, y: 0, z: 0}
+    rotationEuler: {x: 0, y: 0, z: 0}
 --- !u!1 &8067433525061952000
 GameObject:
   m_ObjectHideFlags: 0
