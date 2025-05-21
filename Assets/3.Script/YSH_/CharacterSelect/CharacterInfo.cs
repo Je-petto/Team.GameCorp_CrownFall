@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 public enum CharacterType
@@ -19,7 +20,7 @@ public class CharacterInfo : ScriptableObject
     public int speed;               // 이동 속도
     public float attackableRange;   // 공격 가능 범위
     public float attackInterval;    // 공격 주기.
-
+    public List<SkillData> skillSet;
 
     [SerializeField] private CharacterType characterType;
     public CharacterType Type => characterType;

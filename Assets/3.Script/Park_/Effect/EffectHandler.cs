@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EffectHandler
+public class EffectHandler : MonoBehaviour
 {
     PlayerController player;
     public EffectHandler(PlayerController player)
@@ -10,13 +10,18 @@ public class EffectHandler
 
     public void TakeDamage(int amount)
     {
-        int testMax = 100;
         player.currentHp -= amount;
-        player.currentHp = Mathf.Clamp(0, testMax, player.data.hp);
+        player.currentHp = Mathf.Clamp(0, player.data.hp, player.currentHp);
     }
 
-    public void ApplySlow(float duration, float amout)
+    public void ApplySlow(float duration, float amount)
     {
-        // 스피드 줄이기.
+
+    }
+
+
+    public void ApplyDot(float duration, float amount)
+    {
+
     }
 }

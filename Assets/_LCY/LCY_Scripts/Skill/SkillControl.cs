@@ -12,7 +12,7 @@ public class SkillControl : MonoBehaviour
 
     [Header("SkillData")]
     [SerializeField] private SkillData data;
-    [SerializeField] private GameObject prefab;
+    [SerializeField] private GameObject skillEffectPrefab;
 
     [Header("Ray")]
     public LineRenderer line;
@@ -35,14 +35,12 @@ public class SkillControl : MonoBehaviour
         SkillRay();
     }
 
-    List<IEffect> effects = new List<IEffect>();
-
     private void Initialize()
     {
         line.enabled = false;
         skillType = data.type;
-        prefab = Instantiate(data.prefab);
-        prefab.SetActive(false);
+        skillEffectPrefab = Instantiate(data.prefab);
+        skillEffectPrefab.SetActive(false);
 
 
         //effects = EffectFactory.CreateEffects(data.effects);
@@ -59,14 +57,55 @@ public class SkillControl : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 isCoolDown = true;
-                prefab.transform.position = hit.point;
-                prefab.SetActive(true);
+                skillEffectPrefab.transform.position = hit.point;
+                skillEffectPrefab.SetActive(true);
                 StartCoroutine(SkillDuration_Co());
                 StartCoroutine(SkillCoolDown_Co());
             }
         }
     }
 
+
+
+    // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½Ó½Ã°ï¿½
+    IEnumerator SkillDuration_Co()
+    {
+        yield return new WaitForSeconds(data.duration);
+        skillEffectPrefab.SetActive(false);
+    }
+
+    // ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½
+    IEnumerator SkillCoolDown_Co()
+    {
+        yield return new WaitForSeconds(data.coolDown);
+        isCoolDown = false;
+    }
+
+    // Red
+    IEnumerator DotDamage_Co()
+    {
+        for (int i = 0; i < data.dot;)
+        {
+            targetHp -= data.damage;
+            yield return new WaitForSeconds(data.dot / data.dot);
+            i++;
+        }
+    }
+
+    // Blue
+    IEnumerator SlowSpeed_Co()
+    {
+        float tempMS = targetMoveSpeed;
+        float tempAS = targetAttackSpeed;
+
+        targetMoveSpeed *= 0.75f;
+        targetAttackSpeed *= 0.75f;
+        yield return new WaitForSeconds(data.dot);
+        targetMoveSpeed = tempMS;
+        targetAttackSpeed = tempAS;
+    }
+
+    // Yellow
     private void SkillRay()
     {
         if (!skillType.Equals(SkillType.YELLOW)) return;
@@ -87,45 +126,7 @@ public class SkillControl : MonoBehaviour
             }
 
             StartCoroutine(ShotEffect(hitPos));
-
         }
-    }
-
-    // ½ºÅ³ Áö¼Ó½Ã°£
-    IEnumerator SkillDuration_Co()
-    {
-        yield return new WaitForSeconds(data.duration);
-        prefab.SetActive(false);
-    }
-
-    // ½ºÅ³ ½ÃÀü ÈÄ ´ÙÀ½ ½ºÅ³ ½ÃÀü±îÁö ÄðÅ¸ÀÓ
-    IEnumerator SkillCoolDown_Co()
-    {
-        yield return new WaitForSeconds(data.coolDown);
-        isCoolDown = false;
-    }
-
-    // Áö¼Ó µ¥¹ÌÁö
-    IEnumerator DotDamage_Co()
-    {
-        for (int i = 0; i < data.dot;)
-        {
-            targetHp -= data.damage;
-            yield return new WaitForSeconds(data.dot / data.dot);
-            i++;
-        }
-    }
-
-    IEnumerator SlowSpeed_Co()
-    {
-        float tempMS = targetMoveSpeed;
-        float tempAS = targetAttackSpeed;
-
-        targetMoveSpeed *= 0.75f;
-        targetAttackSpeed *= 0.75f;
-        yield return new WaitForSeconds(data.dot);
-        targetMoveSpeed = tempMS;
-        targetAttackSpeed = tempAS;
     }
 
     private IEnumerator ShotEffect(Vector3 point)
