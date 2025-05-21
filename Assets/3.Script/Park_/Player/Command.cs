@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public interface ICommand
@@ -66,6 +67,8 @@ public class SkillCastCommand : ICommand
         mark.SetActive(false);
 
         this.skillAction = skillAction;
+
+        isCasting = false;
     }
 
     public void Execute()
@@ -88,9 +91,12 @@ public class SkillCastCommand : ICommand
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        Vector3 skillPoint = Vector3.zero;
+
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
         {
             mark.transform.position = hit.point;
+            skillPoint = hit.point;
         }
 
         //스킬 실행!
@@ -101,10 +107,13 @@ public class SkillCastCommand : ICommand
                 Debug.Log("None Action");
                 return;
             }
-            
-            skillAction.Perform();
+
+            skillAction.Perform(skillPoint);
             mark.SetActive(false);
-            isCasting = false;
+
+            Sequence delay = DOTween.Sequence();
+
+            delay.AppendInterval(0.4f).OnComplete(() => isCasting = false);
         }
     }
 }
