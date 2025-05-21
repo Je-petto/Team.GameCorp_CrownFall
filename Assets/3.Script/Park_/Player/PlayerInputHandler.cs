@@ -6,9 +6,7 @@ public class PlayerInputHandler : MonoBehaviour
     public ICommand attackCommand;
     public ICommand detectCommand;                  // Debugging T
     public ICommand skillCastCommand;
-    public ICommand skillCommand;
-
-    private bool isCasting = false;
+    private SkillCastCommand castCommand => skillCastCommand as SkillCastCommand;
 
     void Update()
     {
@@ -16,7 +14,7 @@ public class PlayerInputHandler : MonoBehaviour
 
         skillCastCommand.Execute();
 
-        if (!isCasting)         //캐스팅 상태
+        if (!castCommand.isCasting)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -33,20 +31,6 @@ public class PlayerInputHandler : MonoBehaviour
                 (detectCommand as DetectionCommand).OnOff(false);
                 attackCommand.Execute();
             }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                if (skillCastCommand is SkillCastCommand command)
-                {
-                    if (command.mark.activeSelf) command.SetMark(false);
-                    else command.SetMark(true);
-                }
-            }
-
-        }
-        else
-        {
-            if (Input.GetMouseButton(0)) skillCommand.Execute();
         }
     }
 

@@ -287,7 +287,10 @@ MonoBehaviour:
   lineRenderer: {fileID: 0}
   stateMachine: {fileID: 0}
   inputHandler: {fileID: 0}
+  effectHandler: {fileID: 0}
   target: {fileID: 0}
+  targetPoint: {x: 0, y: 0, z: 0}
+  bone: 0
 --- !u!114 &7825714550399199096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,7 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 0
-  _assetId: 980421966
+  _assetId: 813735593
   serverOnly: 0
   visibility: 0
   hasSpawned: 0

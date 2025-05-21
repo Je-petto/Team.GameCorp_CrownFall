@@ -57,22 +57,33 @@ public class SkillCastCommand : ICommand
 {
     PlayerController caster;
     public GameObject mark { get; private set; }
-    
-    public SkillCastCommand(PlayerController caster)
+    ISkillAction skillAction;
+    public bool isCasting { get; private set; }
+    public SkillCastCommand(PlayerController caster, ISkillAction skillAction)
     {
         SkillData skillData = caster.data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
         mark = GameObject.Instantiate(skillData.castingMark, caster.transform);
         mark.SetActive(false);
+
+        this.skillAction = skillAction;
     }
 
     public void Execute()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (mark.activeSelf) SetMark(false);
-            else SetMark(true);
+            if (mark.activeSelf)
+            {
+                mark.SetActive(false);
+                isCasting = false;
+            }
+            else
+            {
+                mark.SetActive(true);
+                isCasting = true;
+            }
         }
-        
+
         if (!mark.activeSelf) return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -81,32 +92,22 @@ public class SkillCastCommand : ICommand
         {
             mark.transform.position = hit.point;
         }
-    }
-    
-    public void SetMark(bool on)
-    {
-        mark.SetActive(on);
-    }
-}
 
-public class SkillCommand : ICommand
-{
-    PlayerController player;
-
-    ISkillAction skillAction;
-
-    public SkillCommand(PlayerController player, ISkillAction skillAction)
-    {
-        this.player = player;
-        this.skillAction = skillAction;
-    }
-
-    public void Execute()
-    {
-        skillAction.Perform();
+        //스킬 실행!
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (skillAction == null)
+            {
+                Debug.Log("None Action");
+                return;
+            }
+            
+            skillAction.Perform();
+            mark.SetActive(false);
+            isCasting = false;
+        }
     }
 }
-
 
 public class DetectionCommand : ICommand
 {
