@@ -9,20 +9,11 @@ public interface IPlayerState
 
 public class IdleState : IPlayerState
 {
-    public void Enter()
-    {
-        Debug.Log("Idle Enter...");
-    }
+    public void Enter() { }
 
-    public void Update()
-    {
-        
-    }
+    public void Update(){ }
 
-    public void Exit()
-    {
-        Debug.Log("Idle Exit...");
-    }
+    public void Exit() { }
 }
 
 public class MoveState : IPlayerState
@@ -37,10 +28,7 @@ public class MoveState : IPlayerState
         this.player = player;
     }
 
-    public void Enter()
-    {
-        // Debug.Log("Move Enter...");
-    }
+    public void Enter() { }
 
     public void Update()
     {
@@ -48,10 +36,7 @@ public class MoveState : IPlayerState
         Rotate();
     }
 
-    public void Exit()
-    {
-        // Debug.Log("Move Exit...");
-    }
+    public void Exit() { }
 
     private void Move()
     {

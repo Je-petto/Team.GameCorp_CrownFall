@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
-using DG.Tweening;
-using Mirror;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum TeamType
@@ -26,12 +22,12 @@ public class TeamComponent
         return type != component.type;
     }
 }
+
 public class PlayerController : MonoBehaviour
 {
     #region PlayerStat
     public int currentHp;
     public CharacterInfo data;
-    public List<EffectType> effectTypes = new();
     #endregion
 
     #region [HideInspector]
@@ -41,7 +37,7 @@ public class PlayerController : MonoBehaviour
     public LineRenderer lineRenderer;
 
     public PlayerStateMachine stateMachine;
-    public PlayerInputHandler inputHandler;
+    private PlayerInputHandler inputHandler;
     public EffectHandler effectHandler;
     #endregion
 
@@ -99,7 +95,9 @@ public class PlayerController : MonoBehaviour
         // inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackNonTargeting(this));            // Backstep
         inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackIK(this));                         // IK
         inputHandler.detectCommand = new DetectionCommand(this, new PlayerDetection(this));
-        inputHandler.skillCastCommand = new SkillCastCommand(this);
+
+        SkillData sd = data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
+        inputHandler.skillCastCommand = new SkillCastCommand(this, SkillFactory.CreateSkillAction(this, sd));
     }
 
     void OnDrawGizmos()
@@ -114,7 +112,7 @@ public class PlayerController : MonoBehaviour
     #region Inspector Test
     void LateUpdate()
     {
-        
+
     }
     #endregion
 }

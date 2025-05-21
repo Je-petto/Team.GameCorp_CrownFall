@@ -767,7 +767,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a13324b28b0559e4085a88ebc7d6f218, type: 2}
   - {fileID: 11400000, guid: 228c89b9d0c27834fa9ab97640be5c07, type: 2}
   - {fileID: 11400000, guid: 88d6031866687b446955cb285ac4e3b7, type: 2}
-  playerBase: {fileID: 8436226803424169134, guid: 50a696b8b769a3544aa549a5d589cb6c, type: 3}
+  playerBase: {fileID: 8436226803424169134, guid: 1aaef253cbf21b74f9d46b9cf17331ad, type: 3}
   selectType: 0
 --- !u!4 &1587175169
 Transform:

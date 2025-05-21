@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+
 public interface ISkillAction
 {
     public void Perform();
@@ -31,6 +32,7 @@ public class Skill_Red : MonoBehaviour, ISkillAction
 
     IEnumerator SkillSequence_Co()
     {
+        Debug.Log("Red Cast...!");
         yield return new WaitForSeconds(data.castingTime);          //스킬 캐스팅 시간.
     }
 }
