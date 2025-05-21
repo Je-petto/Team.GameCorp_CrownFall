@@ -1812,7 +1812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9fbe450b53c26499fed72b5a95ba04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterInfo: {fileID: 11400000, guid: a13324b28b0559e4085a88ebc7d6f218, type: 2}
+  characterInfo: {fileID: 11400000, guid: 2095cb67f385ede4fb6d05ce6d2681c4, type: 2}
 --- !u!114 &8276568927536961253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1829,7 +1829,8 @@ MonoBehaviour:
   fxList:
   - fxName: SpawnCircle
     effectPrefab: {fileID: 4124775738041080689, guid: a714c412ac964a645960e6516a75a932, type: 3}
-    slotNames: []
+    slotNames:
+    - 
     localPositionOffset: {x: 0, y: 0, z: 0}
     localRotationEuler: {x: 90, y: 0, z: 0}
     lifetime: 3

@@ -144724,15 +144724,8 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.8333333
-    functionName: PlayFx
-    data: MakeMCircleLobby
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 2.1333334
-    functionName: PlayFx
-    data: ShootMagicLobby
+    functionName: PlayFX
+    data: LOADMAGIC
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

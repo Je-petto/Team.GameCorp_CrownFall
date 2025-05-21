@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3719100594141663684}
   - component: {fileID: 8608237249780456582}
   - component: {fileID: 4866436883836594955}
+  - component: {fileID: -2070989884617093241}
   m_Layer: 0
   m_Name: PlayerLoadElementOrb
   m_TagString: Untagged
@@ -4919,6 +4920,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &-2070989884617093241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768736465768680894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolmanager: {fileID: 0}
 --- !u!1001 &2336840006013351068
 PrefabInstance:
   m_ObjectHideFlags: 0

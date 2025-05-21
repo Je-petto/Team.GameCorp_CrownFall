@@ -29613,6 +29613,7 @@ GameObject:
   - component: {fileID: 6310166718828135385}
   - component: {fileID: 6310166718828135386}
   - component: {fileID: 6310166718828135387}
+  - component: {fileID: 208710943839318530}
   m_Layer: 0
   m_Name: PlayerLoadMagicCircle
   m_TagString: Untagged
@@ -34548,6 +34549,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &208710943839318530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6310166718828135380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolmanager: {fileID: 0}
 --- !u!1 &6310166719227320839
 GameObject:
   m_ObjectHideFlags: 0

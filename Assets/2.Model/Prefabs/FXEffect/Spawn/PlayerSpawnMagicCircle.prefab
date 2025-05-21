@@ -10003,6 +10003,7 @@ GameObject:
   - component: {fileID: 4124775738041080700}
   - component: {fileID: 4124775738041080703}
   - component: {fileID: 4124775738041080702}
+  - component: {fileID: 1228110654730953357}
   m_Layer: 0
   m_Name: PlayerSpawnMagicCircle
   m_TagString: Untagged
@@ -14936,6 +14937,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &1228110654730953357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4124775738041080689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolmanager: {fileID: 0}
 --- !u!1 &4124775738795269041
 GameObject:
   m_ObjectHideFlags: 0

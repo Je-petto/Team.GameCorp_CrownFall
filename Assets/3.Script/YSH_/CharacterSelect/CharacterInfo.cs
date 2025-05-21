@@ -3,9 +3,9 @@ using Unity.Collections;
 using UnityEngine;
 public enum CharacterType
 {
-    Melee,
-    Tank,
-    ADC,
+    Ice,
+    Fire,
+    Lightning,
     Support
 }
 
