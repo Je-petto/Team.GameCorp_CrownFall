@@ -11,9 +11,8 @@ public class SkillControl : MonoBehaviour
     [SerializeField] private SkillType skillType = SkillType.NONE;
 
     [Header("SkillData")]
-    [SerializeField] private SkillData skillData;
-    [SerializeField] private GameObject skillRef;
-    private GameObject skill;
+    [SerializeField] private SkillData data;
+    [SerializeField] private GameObject prefab;
 
     [Header("Ray")]
     public LineRenderer line;
@@ -36,12 +35,17 @@ public class SkillControl : MonoBehaviour
         SkillRay();
     }
 
+    List<IEffect> effects = new List<IEffect>();
+
     private void Initialize()
     {
-        skillRef = skillData.model;
-        skillType = skillData.type;
-        skill = Instantiate(skillRef);
-        skill.SetActive(false);
+        line.enabled = false;
+        skillType = data.type;
+        prefab = Instantiate(data.prefab);
+        prefab.SetActive(false);
+
+
+        //effects = EffectFactory.CreateEffects(data.effects);
     }
 
     private void SkillClick()
@@ -50,14 +54,13 @@ public class SkillControl : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1) && !isCoolDown)
         {
-            Debug.Log("Click");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 isCoolDown = true;
-                skill.transform.position = hit.point;
-                skill.SetActive(true);
+                prefab.transform.position = hit.point;
+                prefab.SetActive(true);
                 StartCoroutine(SkillDuration_Co());
                 StartCoroutine(SkillCoolDown_Co());
             }
@@ -69,47 +72,46 @@ public class SkillControl : MonoBehaviour
         if (!skillType.Equals(SkillType.YELLOW)) return;
 
         Vector3 hitPos;
-        if (Input.GetMouseButtonDown(1) && !isCoolDown)
+        if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log("Ray");
-
             if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit))
             {
                 isCoolDown = true;
-                //skill.transform.position = hit.point;
-                //skill.SetActive(true);
-                //StartCoroutine(SkillDuration_Co());
-                //StartCoroutine(SkillCoolDown_Co());
-                hitPos = hit.point;
+                hitPos = hit.point - transform.position;
+                hitPos.y = transform.position.y;
             }
             else
-                hitPos = transform.position + transform.forward * 50f;
+            {
+                hitPos = transform.position + transform.position * data.distance;
+                hitPos.y = transform.position.y;
+            }
 
             StartCoroutine(ShotEffect(hitPos));
+
         }
     }
 
     // 스킬 지속시간
     IEnumerator SkillDuration_Co()
     {
-        yield return new WaitForSeconds(skillData.duration);
-        skill.SetActive(false);
+        yield return new WaitForSeconds(data.duration);
+        prefab.SetActive(false);
     }
 
     // 스킬 시전 후 다음 스킬 시전까지 쿨타임
     IEnumerator SkillCoolDown_Co()
     {
-        yield return new WaitForSeconds(skillData.coolDown);
+        yield return new WaitForSeconds(data.coolDown);
         isCoolDown = false;
     }
 
     // 지속 데미지
-    IEnumerator ContinuousDamage_Co()
+    IEnumerator DotDamage_Co()
     {
-        for (int i = 0; i < skillData.effectDuration;)
+        for (int i = 0; i < data.dot;)
         {
-            targetHp -= skillData.damage;
-            yield return new WaitForSeconds(skillData.effectDuration / skillData.effectDuration);
+            targetHp -= data.damage;
+            yield return new WaitForSeconds(data.dot / data.dot);
             i++;
         }
     }
@@ -121,7 +123,7 @@ public class SkillControl : MonoBehaviour
 
         targetMoveSpeed *= 0.75f;
         targetAttackSpeed *= 0.75f;
-        yield return new WaitForSeconds(skillData.effectDuration);
+        yield return new WaitForSeconds(data.dot);
         targetMoveSpeed = tempMS;
         targetAttackSpeed = tempAS;
     }
@@ -133,7 +135,7 @@ public class SkillControl : MonoBehaviour
         line.SetPosition(1, point);
 
         line.enabled = true;
-        yield return new WaitForSeconds(0.03f);
+        yield return new WaitForSeconds(data.duration);
         line.enabled = false;
     }
 }
