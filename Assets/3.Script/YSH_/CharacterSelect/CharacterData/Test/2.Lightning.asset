@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e1259c80363e304a8a045bbd39103fb, type: 3}
+  m_Name: 2.Lightning
+  m_EditorClassIdentifier: 
+  characterName: C
+  description: Sorcerer
+  hp: 1650
+  attack: 80
+  speed: 8
+  attackableRange: 7
+  attackInterval: 0.5
+  characterType: 2
+  model: {fileID: 6221377006290466578, guid: 5374b836970aa9a4588e38ef6c5359f4, type: 3}
+  selectorAnimator: {fileID: 9100000, guid: 84118ed6066b631408e608eb5b31cee5, type: 2}
+  inGameAnimator: {fileID: 9100000, guid: dabedca5d56ff304b88a716da4874e11, type: 2}
+  projection: {fileID: 4787629297208117674, guid: 7dc38648839529242831dfbfe052991f, type: 3}
+  rotateSpeed: 720

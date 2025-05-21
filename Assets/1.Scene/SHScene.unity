@@ -1586,7 +1586,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modelRoot: {fileID: 0}
-  fxList: []
+  fxList:
+  - fxName: SpawnCircle
+    effectPrefab: {fileID: 4124775738041080689, guid: a714c412ac964a645960e6516a75a932, type: 3}
+    slotNames:
+    - _fxcore
+    localPositionOffset: {x: 0, y: 0, z: 0}
+    localRotationEuler: {x: 90, y: 0, z: 0}
+    lifetime: 2
+  - fxName: MakeMCircleLobby
+    effectPrefab: {fileID: 6310166718828135380, guid: 8e5abe24065a49e4eaa3ea00512f285a, type: 3}
+    slotNames:
+    - _fxcore
+    localPositionOffset: {x: 0, y: 0, z: 0}
+    localRotationEuler: {x: 90, y: 0, z: 0}
+    lifetime: 1.3
+  - fxName: ShootMagicLobby
+    effectPrefab: {fileID: 768736465768680894, guid: 1a197614f9e8f7c4c9a5af28893d5cf9, type: 3}
+    slotNames:
+    - _root.rhand
+    localPositionOffset: {x: 0, y: 0, z: 0}
+    localRotationEuler: {x: 90, y: 0, z: 0}
+    lifetime: 0.4
 --- !u!114 &1599955958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1599,7 +1620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9fbe450b53c26499fed72b5a95ba04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterInfo: {fileID: 0}
+  characterInfo: {fileID: 11400000, guid: b59c7846cb16c724d97cbe886d46c999, type: 2}
 --- !u!95 &1599955959
 Animator:
   serializedVersion: 5
@@ -2384,11 +2405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4f193beea8a1f44a8af69fa43fa7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterPrefabList:
-  - {fileID: 888307280795467802, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-  - {fileID: 888307280795467802, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-  - {fileID: 888307280795467802, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-  - {fileID: 888307280795467802, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
   spawnPositions:
   - {fileID: 1542388802}
   - {fileID: 1987716709}
@@ -2399,7 +2415,7 @@ MonoBehaviour:
   hpText: {fileID: 190428950}
   attackText: {fileID: 243910499}
   speedText: {fileID: 582355292}
-  characterDatabase: {fileID: 11400000, guid: bf4cdc6512ef0904f9ebdeb6f9681215, type: 2}
+  characterDatabase: {fileID: 11400000, guid: 575f6e005152c0341aec21c1ee430009, type: 2}
 --- !u!224 &101473240903751269
 RectTransform:
   m_ObjectHideFlags: 0
