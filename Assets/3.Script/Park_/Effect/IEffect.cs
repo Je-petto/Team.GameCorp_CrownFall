@@ -19,11 +19,34 @@ public class DamageEffect : IEffect
 
 public class SlowEffect : IEffect
 {
-    public SlowEffect()
+    float amount;
+    float duration;
+
+    public SlowEffect(float amount, float duration)
+    {
+        this.amount = amount;
+        this.duration = duration;
+    }
+
+    public void Apply(PlayerController player)
     {
 
     }
+}
+
+public class DotEffect : IEffect
+{
+    float amount;
+    float duration;
+
+    public DotEffect(float amount, float duration)
+    {
+        this.amount = amount;
+        this.duration = duration;
+    }
+
     public void Apply(PlayerController player)
     {
+
     }
 }
