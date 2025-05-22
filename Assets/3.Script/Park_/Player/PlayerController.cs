@@ -2,27 +2,6 @@ using System.Collections;
 using Cinemachine;
 using UnityEngine;
 
-public enum TeamType
-{
-    Red,
-    Blue
-}
-
-public class TeamComponent
-{
-    public TeamType type;
-
-    public TeamComponent(TeamType type)
-    {
-        this.type = type;
-    }
-
-    public bool IsEnemy(TeamComponent component)
-    {
-        return type != component.type;
-    }
-}
-
 public class PlayerController : MonoBehaviour
 {
     #region PlayerStat
@@ -53,7 +32,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         //test Code
-        teamData = new(TeamType.Red);
+        teamData = new(TeamType.RED);
     }
 
     public void SetCharacter(CharacterInfo data)

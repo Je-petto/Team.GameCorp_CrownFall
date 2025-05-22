@@ -15,10 +15,10 @@ public class SingnControl : MonoBehaviour
     {
         if (id_i.text.Equals(string.Empty) || Password_i.text.Equals(string.Empty) || Phonenum_i.text.Equals(string.Empty))
         {
-            log.text = "È¸¿øÁ¤º¸¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.";
+            log.text = "È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
             return;
         }
-        if (SQL_Manager.i.SingnUp(id_i.text, Password_i.text, Phonenum_i.text))
+        if (SQL_Manager.I.SingnUp(id_i.text, Password_i.text, Phonenum_i.text))
         {
             g.SetActive(false);
         }
@@ -29,13 +29,13 @@ public class SingnControl : MonoBehaviour
     {
         if (id_i.text.Equals(string.Empty))
         {
-            log.text = "»ç¿ëÇÒ ID¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.";
+            log.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ IDï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
             return;
         }
 
-        if (SQL_Manager.i.Select(id_i.text))
-            log.text = "ÇØ´ç ID´Â »ç¿ë °¡´ÉÇÑ ID ÀÔ´Ï´Ù.";
+        if (SQL_Manager.I.Select(id_i.text))
+            log.text = "ï¿½Ø´ï¿½ IDï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ID ï¿½Ô´Ï´ï¿½.";
         else
-            log.text = "ÇØ´ç ID´Â »ç¿ë ºÒ°¡´ÉÇÑ ID ÀÔ´Ï´Ù.";
+            log.text = "ï¿½Ø´ï¿½ IDï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½ï¿½ï¿½ï¿½ï¿½ ID ï¿½Ô´Ï´ï¿½.";
     }
 }

@@ -7,7 +7,7 @@ public class SelectSceneControl : MonoBehaviour
 {
     public void SceneLoad(string name)
     {
-        if (SQL_Manager.i.info.User_Name == null) return;
+        if (SQL_Manager.I.info.User_Name == null) return;
         SceneManager.LoadScene(name);
     }
 }

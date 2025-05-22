@@ -10,6 +10,6 @@ public class UserInfo : MonoBehaviour
 
     private void Update()
     {
-        userName_T.text = SQL_Manager.i.info.User_Name;
+        userName_T.text = SQL_Manager.I.info.User_Name;
     }
 }

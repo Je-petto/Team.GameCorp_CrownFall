@@ -11,26 +11,26 @@ public class LoginControl : MonoBehaviour
     {
         if (id_i.text.Equals(string.Empty) || Password_i.text.Equals(string.Empty))
         {
-            log.text = "·Î±×ÀÎ Á¤º¸¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.";
+            log.text = "ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
             return;
         }
-        if (SQL_Manager.i.Login(id_i.text, Password_i.text))
+        if (SQL_Manager.I.Login(id_i.text, Password_i.text))
         {
-            User_info info = SQL_Manager.i.info;
+            User_info info = SQL_Manager.I.info;
 
             g.SetActive(false);
         }
         else
-            log.text = "·Î±×ÀÎ Á¤º¸¸¦ È®ÀÎÇØÁÖ¼¼¿ä.";
+            log.text = "ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
     }
 
     public void LoginAfter(GameObject g)
     {
         if (id_i.text.Equals(string.Empty) || Password_i.text.Equals(string.Empty))
             return;
-        if (SQL_Manager.i.Login(id_i.text, Password_i.text))
+        if (SQL_Manager.I.Login(id_i.text, Password_i.text))
         {
-            User_info info = SQL_Manager.i.info;
+            User_info info = SQL_Manager.I.info;
 
             g.SetActive(true);
         }
