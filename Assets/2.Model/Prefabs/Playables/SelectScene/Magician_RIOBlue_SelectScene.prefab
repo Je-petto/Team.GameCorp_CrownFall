@@ -13,6 +13,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: d1b873dfc9e1ed444b1052d011fb9598, type: 2}
     - target: {fileID: 4377558155101479068, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
+      propertyPath: fxSpawnInfos.Array.data[0].prefab
+      value: 
+      objectReference: {fileID: 1228110654730953357, guid: a714c412ac964a645960e6516a75a932, type: 3}
+    - target: {fileID: 4377558155101479068, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
       propertyPath: fxSpawnInfos.Array.data[0].rotationEuler.x
       value: 0
       objectReference: {fileID: 0}
@@ -62,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7940719953895527930, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
       propertyPath: m_Name
-      value: Magician_RIOBlue
+      value: Magician_RIOBlue_SelectScene
       objectReference: {fileID: 0}
     - target: {fileID: 8596922782724547461, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
       propertyPath: m_Materials.Array.data[0]

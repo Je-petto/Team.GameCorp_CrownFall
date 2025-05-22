@@ -19,4 +19,7 @@ public class FXSpawnInfo
 
     [Tooltip("FX의 회전값 (Euler 각도)")]
     public Vector3 rotationEuler;
+
+    [Tooltip("FX의 지속 시간")]
+    public float duration = 2.0f;
 }

@@ -12,6 +12,42 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: fc5f58bba35cb3b4fa0586b18dfa3e5f, type: 2}
+    - target: {fileID: 1785462031084429282, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 595bbf163febbd24f9b2fd69ca150ce1, type: 2}
+    - target: {fileID: 4377558155101479068, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
+      propertyPath: fxSpawnInfos.Array.data[0].prefab
+      value: 
+      objectReference: {fileID: 1228110654730953357, guid: 0ca4493ecd7e0734b9b57cf868b4f851, type: 3}
+    - target: {fileID: 4952036753629402128, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9961069
+      objectReference: {fileID: 0}
+    - target: {fileID: 4952036753629402128, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.0776921
+      objectReference: {fileID: 0}
+    - target: {fileID: 4952036753629402128, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.036713034
+      objectReference: {fileID: 0}
+    - target: {fileID: 4952036753629402128, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.019677557
+      objectReference: {fileID: 0}
+    - target: {fileID: 4952036753629402128, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -8.988
+      objectReference: {fileID: 0}
+    - target: {fileID: 4952036753629402128, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 4.069
+      objectReference: {fileID: 0}
+    - target: {fileID: 4952036753629402128, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 1.943
+      objectReference: {fileID: 0}
     - target: {fileID: 5251107426523682287, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
       propertyPath: m_LocalPosition.x
       value: -37
@@ -54,7 +90,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7940719953895527930, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
       propertyPath: m_Name
-      value: Magician_RIOYellow
+      value: Magician_RIOYellow_SelectScene
       objectReference: {fileID: 0}
     - target: {fileID: 8596922782724547461, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
       propertyPath: m_Materials.Array.data[0]

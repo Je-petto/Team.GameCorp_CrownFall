@@ -5,13 +5,11 @@ using UnityEngine;
 public class AnimationEventListener : MonoBehaviour
 {
     public FXSpawnInfo[] fxSpawnInfos;
-    //private CharacterControl owner;
     private Transform modelRoot;
 
     void Awake()
     {
-        //TryGetComponent(out owner);
-        modelRoot = transform.Find("root");
+        modelRoot = transform.Find("root"); // 필요 없으면 제거 가능
     }
 
     public void PlayFX(string fxName)
@@ -26,6 +24,16 @@ public class AnimationEventListener : MonoBehaviour
         Vector3 pos = fx.spawnPoint.position + fx.positionOffset;
         Quaternion rot = Quaternion.Euler(fx.rotationEuler);
 
-        PoolManager.I.Spawn(fx.prefab, pos, rot, null);
+        // Spawn은 PoolBehaviour를 리턴함
+        PoolBehaviour poolObj = PoolManager.I.Spawn(fx.prefab, pos, rot, null);
+        if (poolObj == null)
+            return;
+
+        // PoolableParticle을 찾아 duration 설정
+        PoolableParticle particle = poolObj.GetComponent<PoolableParticle>();
+        if (particle != null)
+        {
+            particle.SetDuration(fx.duration);
+        }
     }
 }

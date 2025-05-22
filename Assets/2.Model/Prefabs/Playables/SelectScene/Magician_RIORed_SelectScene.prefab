@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 0f69aa83e87cb1a438f9cf133466f1d9, type: 2}
+    - target: {fileID: 4377558155101479068, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
+      propertyPath: fxSpawnInfos.Array.data[0].prefab
+      value: 
+      objectReference: {fileID: 1228110654730953357, guid: ead694d2c52bb60438391b7c1b4c98b5, type: 3}
     - target: {fileID: 5251107426523682287, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -54,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7940719953895527930, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
       propertyPath: m_Name
-      value: Magician_RIORed
+      value: Magician_RIORed_SelectScene
       objectReference: {fileID: 0}
     - target: {fileID: 8596922782724547461, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
       propertyPath: m_Materials.Array.data[0]
