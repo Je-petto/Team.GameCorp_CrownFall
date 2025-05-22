@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PoolableParticle : PoolBehaviour
 {
     private ParticleSystem ps;
-    private Coroutine despawnRoutine;
+    private Coroutine returnCo;
 
     void Awake()
     {
@@ -16,30 +15,48 @@ public class PoolableParticle : PoolBehaviour
     void OnEnable()
     {
         if (ps != null)
+        {
             ps.Play();
-    }
 
-    public void SetDuration(float duration)
-    {
-        if (despawnRoutine != null)
-            StopCoroutine(despawnRoutine);
+            if (returnCo != null)
+                StopCoroutine(returnCo);
 
-        if (duration > 0)
-            despawnRoutine = StartCoroutine(DespawnAfterDelay(duration));
-    }
+            var main = ps.main;
+            float duration = main.duration;
 
-    IEnumerator DespawnAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        Despawn(); // 풀로 반환
+            // stopAction은 main에서 접근해야 함
+            if (!main.loop && main.stopAction == ParticleSystemStopAction.None)
+                returnCo = StartCoroutine(ReturnToPool_Co(duration));
+        }
     }
 
     void OnDisable()
     {
-        if (despawnRoutine != null)
+        if (returnCo != null)
         {
-            StopCoroutine(despawnRoutine);
-            despawnRoutine = null;
+            StopCoroutine(returnCo);
+            returnCo = null;
         }
+    }
+
+    private IEnumerator ReturnToPool_Co(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        if (gameObject != null && gameObject.activeInHierarchy)
+        {
+            Despawn();
+        }
+    }
+
+    public void SetDuration(float duration)
+    {
+        StartCoroutine(_CoAutoDespawn(duration));
+    }
+
+    private IEnumerator _CoAutoDespawn(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (PoolManager.I != null)
+            PoolManager.I.Despawn(this);
     }
 }

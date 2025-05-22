@@ -10,7 +10,7 @@ public class EffectHandler : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        player.currentHp -= amount;
+        player.currentHp -= amount * (100 - player.data.defense) / 100;
         player.currentHp = Mathf.Clamp(0, player.data.hp, player.currentHp);
     }
 

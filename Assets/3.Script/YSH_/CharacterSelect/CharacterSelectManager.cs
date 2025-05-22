@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CharacterSelectManager : MonoBehaviour
 {
+    [SerializeField] private CharacterInfoUI characterInfoUI;
+
     public static CharacterSelectManager Instance { get; private set; }
 
     [SerializeField] private CharacterInfoDatabase characterDatabase;
@@ -35,9 +37,10 @@ public class CharacterSelectManager : MonoBehaviour
         currentCharacterModel = Instantiate(info.model, spawnPoint.position, spawnPoint.rotation);
 
         // UI에 캐릭터 정보 전달
-        CharacterInfoUI ui = FindObjectOfType<CharacterInfoUI>();
-        if (ui != null)
-            ui.SetCharacterInfo(info);
+        if (characterInfoUI != null)
+            characterInfoUI.SetCharacterInfo(info);
+        else
+            Debug.LogError("characterInfoUI 연결 안 됨! Inspector에서 할당해 주세요.");
     }
 }
 

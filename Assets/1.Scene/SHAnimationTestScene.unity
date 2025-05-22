@@ -208,8 +208,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 185197247}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0016097429, y: 0.99750775, z: -0.06624102, w: 0.024245175}
-  m_LocalPosition: {x: 0.18037345, y: 1.6742011, z: 3.7266538}
+  m_LocalRotation: {x: -0.033740044, y: -0.4505283, z: 0.017042318, w: -0.89196163}
+  m_LocalPosition: {x: -37.83959, y: 1.5611149, z: 20.264414}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -483,67 +483,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &4423742148755835370
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 888307280795467802, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_Name
-      value: Magician_RIOGreenRest
-      objectReference: {fileID: 0}
-    - target: {fileID: 4278682061525355532, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 9160559f7e8efb64a902d5eee09e6a56, type: 2}
-    - target: {fileID: 7826755211687780485, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7826755211687780485, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7826755211687780485, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7826755211687780485, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7826755211687780485, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7826755211687780485, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7826755211687780485, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7826755211687780485, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7826755211687780485, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7826755211687780485, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -551,4 +490,3 @@ SceneRoots:
   - {fileID: 185197250}
   - {fileID: 1087876068}
   - {fileID: 1095441113}
-  - {fileID: 4423742148755835370}
