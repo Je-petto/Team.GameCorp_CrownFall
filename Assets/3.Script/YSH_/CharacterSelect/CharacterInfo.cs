@@ -13,6 +13,7 @@ public enum CharacterType
 [CreateAssetMenu(fileName = "CharacterInfo", menuName = "GameData/CharacterInfo")]
 public class CharacterInfo : ScriptableObject
 {
+    public string cid;              // 캐릭터 고유 번호.
     public string characterName;    // 캐릭터 이름
     public string description;      // 캐릭터 설명
     public int hp;                  // 체력
@@ -32,6 +33,8 @@ public class CharacterInfo : ScriptableObject
     public RuntimeAnimatorController selectorAnimator;
     public RuntimeAnimatorController inGameAnimator;
     public GameObject projection;                 //논타겟 투사체. [원거리만 사용], [근거리는 미사용..?]
+    public Sprite face;
+
 
     [ReadOnly] public float rotateSpeed = 720f;                       // 회전 속도
 }
