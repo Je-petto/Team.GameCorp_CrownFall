@@ -7,6 +7,8 @@ TagManager:
   - Missile
   - RedSkill
   - BlueSkill
+  - Blue
+  - Red
   layers:
   - Default
   - TransparentFX

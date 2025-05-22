@@ -3,8 +3,8 @@ using Unity.Collections;
 using UnityEngine;
 public enum CharacterType
 {
-    Ice,
-    Fire,
+    Frost,
+    Flame,
     Lightning,
     Support
 }
@@ -17,6 +17,7 @@ public class CharacterInfo : ScriptableObject
     public string description;      // 캐릭터 설명
     public int hp;                  // 체력
     public int attack;              // 공격력
+    public int defense;
     public int speed;               // 이동 속도
     public float attackableRange;   // 공격 가능 범위
     public float attackInterval;    // 공격 주기.

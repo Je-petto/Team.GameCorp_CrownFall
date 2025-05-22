@@ -21,8 +21,8 @@ MonoBehaviour:
   attackInterval: 0.5
   skillSet: []
   characterType: 2
-  model: {fileID: 6724447187745950751, guid: b78b4df58f935dd4a93c81991b522233, type: 3}
-  selectorAnimator: {fileID: 9100000, guid: 84118ed6066b631408e608eb5b31cee5, type: 2}
+  model: {fileID: 2018257537646595620, guid: b78b4df58f935dd4a93c81991b522233, type: 3}
+  selectorAnimator: {fileID: 9100000, guid: 595bbf163febbd24f9b2fd69ca150ce1, type: 2}
   inGameAnimator: {fileID: 9100000, guid: dabedca5d56ff304b88a716da4874e11, type: 2}
   projection: {fileID: 4787629297208117674, guid: 7dc38648839529242831dfbfe052991f, type: 3}
   rotateSpeed: 720
