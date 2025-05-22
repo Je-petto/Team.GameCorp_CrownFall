@@ -133,6 +133,15 @@ public class Skill_Yellow : ISkillAction
 
     public void Perform(Vector3 point)
     {
-        
+        StartSkillSequence(point);
+    }
+
+    void StartSkillSequence(Vector3 direction) {
+        /*
+            1. 마우스 방면으로 빔을 쏜다 => 일단 lineRenderer 사용하기
+            2. 기준은 player의 위치이다.
+            3. player는 이동속도가 80퍼센트 감소한다.
+            4. 만약 빔 중간에 적을 만나면 그곳까지만 빔을 쏜다.
+        */
     }
 }

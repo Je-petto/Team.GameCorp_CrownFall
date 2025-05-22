@@ -34,6 +34,36 @@ public class IdleCommand : ICommand
     }
 }
 
+public class DetectionCommand : ICommand
+{
+    PlayerController player;
+    PlayerDetection detection;
+
+    bool detectionState;
+
+    public DetectionCommand(PlayerController player, PlayerDetection detection)
+    {
+        this.player = player;
+        this.detection = detection;
+        detectionState = false;
+    }
+
+    public void OnOff(bool on)
+    {
+        detectionState = on;
+        player.lineRenderer.enabled = on;
+    }
+
+    public void Execute()
+    {
+        if (!detectionState) return;
+
+        detection.Perform();
+    }
+}
+
+
+
 public class AttackCommand : ICommand
 {
     PlayerController player;
@@ -115,33 +145,5 @@ public class SkillCastCommand : ICommand
 
             delay.AppendInterval(0.4f).OnComplete(() => isCasting = false);
         }
-    }
-}
-
-public class DetectionCommand : ICommand
-{
-    PlayerController player;
-    PlayerDetection detection;
-
-    bool detectionState;
-
-    public DetectionCommand(PlayerController player, PlayerDetection detection)
-    {
-        this.player = player;
-        this.detection = detection;
-        detectionState = false;
-    }
-
-    public void OnOff(bool on)
-    {
-        detectionState = on;
-        player.lineRenderer.enabled = on;
-    }
-
-    public void Execute()
-    {
-        if (!detectionState) return;
-
-        detection.Perform();
     }
 }
