@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Mirror;
@@ -110,16 +109,45 @@ public class GameSpawner
         int port = GetAvailablePort(); // 사용 가능한 포트 확보
 
         var process = new System.Diagnostics.Process();
-        process.StartInfo.FileName = "D:/Project/PlayerMoveTestProject/Builds/InGameServer/PlayerMoveTestProject.exe"; // 빌드된 서버 실행파일
+        process.StartInfo.FileName = "D:/Server_Path"; // 빌드된 서버 실행파일
 
         if (!File.Exists(process.StartInfo.FileName))
         {
             Debug.LogError($"게임 서버 실행 파일을 찾을 수 없습니다: {process.StartInfo.FileName}");
             return (null, port);
         }
-        process.StartInfo.Arguments = $"-batchmode -nographics -port={port} -matchId={matchId}"; // 포트와 매치 ID 전달
-        process.StartInfo.UseShellExecute = false;
+
+        process.StartInfo.Arguments = $"-batchmode -nographics -port={port} -matchId={matchId}";    // 포트와 매치 ID 전달
+        process.StartInfo.UseShellExecute = true;
         process.StartInfo.CreateNoWindow = false;       // 콘솔 띄우기.
+        process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;               // 일반 창
+
+        // 게임 서버 실행
+        process.Start();
+
+        return (process, port);
+    }
+
+    //Test Game instance.
+    public static (System.Diagnostics.Process process, int port) StartGameInstance(string matchId)
+    {
+        int port = GetAvailablePort(); // 사용 가능한 포트 확보
+
+        var process = new System.Diagnostics.Process();
+        process.StartInfo.FileName = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe"; // 빌드된 서버 실행파일
+
+        if (!File.Exists(process.StartInfo.FileName))
+        {
+            Debug.LogError($"Game Server Is Not Exist : {process.StartInfo.FileName}");
+            return (null, port);
+        }
+
+        Debug.Log("\n+++++++++++++++++ New Server ++++++++++++++++++++\n");
+
+        process.StartInfo.Arguments = $"-batchmode -nographics -port={port} -matchId={matchId}";    // 포트와 매치 ID 전달
+        process.StartInfo.UseShellExecute = true;
+        process.StartInfo.CreateNoWindow = false;       // 콘솔 띄우기.
+        process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;               // 일반 창
 
         // 게임 서버 실행
         process.Start();
