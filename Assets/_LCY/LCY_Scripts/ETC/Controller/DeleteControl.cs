@@ -11,21 +11,21 @@ public class DeleteControl : MonoBehaviour
     {
         if (id_i.text.Equals(string.Empty))
         {
-            log.text = "»èÁ¦ÇÒ ID¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.";
+            log.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ IDï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
             return;
         }
-        if (SQL_Manager.i.DeleteID(id_i.text))
+        if (SQL_Manager.I.DeleteID(id_i.text))
             g.SetActive(false);
 
         else
-            log.text = "º»ÀÎ ID¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.";
+            log.text = "ï¿½ï¿½ï¿½ï¿½ IDï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
     }
 
     public void DeleteAfter(GameObject g)
     {
         if (id_i.text.Equals(string.Empty))
             return;
-        if (SQL_Manager.i.DeleteID(id_i.text))
+        if (SQL_Manager.I.DeleteID(id_i.text))
             g.SetActive(true);
     }
 }

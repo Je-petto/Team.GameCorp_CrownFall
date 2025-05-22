@@ -2,10 +2,11 @@
 using System;
 using System.IO;
 using UnityEngine;
-// ¿ÜºÎ Dll
+// ï¿½Üºï¿½ Dll
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using LitJson;
+using Mirror;
 # endregion
 
 public class User_info
@@ -22,28 +23,18 @@ public class User_info
     }
 }
 
-public class SQL_Manager : MonoBehaviour
+public class SQL_Manager : BehaviourSingleton<SQL_Manager>
 {
     public User_info info;
-    public MySqlConnection con; // ¿¬°áÀ» Á÷Á¢ÀûÀ¸·Î ÇÏ¸ç, ¿¬°á »óÅÂ¸¦ È®ÀÎ ÇÒ ¶§ »ç¿ë
-    public MySqlDataReader reader; // µ¥ÀÌÅÍ¸¦ Á÷Á¢ÀûÀ¸·Î ÀÐ¾î¿È ... reader´Â ÇÑ¹ø »ç¿ëÇÏ¸é ¹Ýµå½Ã ´Ý¾ÆÁà¾ß ´ÙÀ½ Äõ¸®¹®ÀÌ µ¿ÀÛÇÔ
+    public MySqlConnection con; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½
+    public MySqlDataReader reader; // ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½ ... readerï¿½ï¿½ ï¿½Ñ¹ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½Ýµï¿½ï¿½ ï¿½Ý¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public string DB_Path = string.Empty;
 
     public bool isSelect = false;
 
-    public static SQL_Manager i = null;
-    private void Awake()
+    protected override void Awake()
     {
-        if (i == null)
-        {
-            i = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
+        base.Awake();
 
         DB_Path = Application.dataPath + "/Database";
         string serverinfo = DBserverSet(DB_Path);
@@ -55,8 +46,8 @@ public class SQL_Manager : MonoBehaviour
                 Debug.Log("SQL Server Json Error !");
                 return;
             }
-            con = new MySqlConnection(serverinfo); // ¼­¹ö Á¤º¸»ý¼º
-            con.Open(); // ¼­¹ö Á¢±Ù
+            con = new MySqlConnection(serverinfo); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            con.Open(); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             Debug.Log("SQL Server Open Compelete !");
         }
         catch (Exception e)
@@ -66,9 +57,9 @@ public class SQL_Manager : MonoBehaviour
     }
     private string DBserverSet(string path)
     {
-        if (!File.Exists(path)) // ±× °æ·Î¿¡ ÆÄÀÏÀÌ ÀÖ³ª¿ä?
+        if (!File.Exists(path)) // ï¿½ï¿½ ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö³ï¿½ï¿½ï¿½?
         {
-            Directory.CreateDirectory(path); // Æú´õ »ý¼º
+            Directory.CreateDirectory(path); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
 
         string jsonstring = File.ReadAllText(path + "/config.json");
@@ -92,15 +83,15 @@ public class SQL_Manager : MonoBehaviour
     }
     public bool Login(string id, string password)
     {
-        // Á÷Á¢ÀûÀ¸·Î DB¿¡¼­ µ¥ÀÌÅÍ °¡Áö°í ¿À´Â ¸Þ¼Òµå
-        // Á¶È¸µÇ´Â µ¥ÀÌÅÍ ¾ø´Ù¸é false
-        // Á¶È¸°¡ µÇ´Â µ¥ÀÌÅÍ°¡ ÀÖ´Ù¸é true ´øÁö´Âµ¥
-        // À§¿¡¼­ casing ÇÑ info¿¡ ´ã¾Æ¼­ casing
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼Òµï¿½
+        // ï¿½ï¿½È¸ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ false
+        // ï¿½ï¿½È¸ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ö´Ù¸ï¿½ true ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ casing ï¿½ï¿½ infoï¿½ï¿½ ï¿½ï¿½Æ¼ï¿½ casing
 
         /*
-        1. connectionÀ» È®ÀÎ -> ¸Þ¼ÒµåÈ­
-        2. reader »óÅÂ°¡ ÀÐ°í ÀÖ´Â »óÈ²ÀÎÁö È®ÀÎ - ÇÑ Äõ¸®¹®´ç ÇÑ°³¾¿
-        3. µ¥ÀÌÅÍ¸¦ ´Ù ÀÐ¾úÀ¸¸é readerÀÇ »óÅÂ¸¦ È®ÀÎ ÈÄ close ²À ÇØ¾ßÇÑ´Ù
+        1. connectionï¿½ï¿½ È®ï¿½ï¿½ -> ï¿½Þ¼Òµï¿½È­
+        2. reader ï¿½ï¿½ï¿½Â°ï¿½ ï¿½Ð°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½È²ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ - ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½ï¿½
+        3. ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½ï¿½ï¿½ï¿½ readerï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ close ï¿½ï¿½ ï¿½Ø¾ï¿½ï¿½Ñ´ï¿½
          */
 
         try
@@ -110,11 +101,11 @@ public class SQL_Manager : MonoBehaviour
 
             string sqlcommend = string.Format(@"SELECT User_ID,User_Password,User_Name FROM user_info WHERE User_ID = '{0}' AND User_Password = '{1}';", id, password);
 
-            MySqlCommand cmd = new MySqlCommand(sqlcommend, con); // Äõ¸®¹®À» ¿¬°áµÈ DB¿¡ ³¯¸®±â À§ÇÑ °´Ã¼
+            MySqlCommand cmd = new MySqlCommand(sqlcommend, con); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
             reader = cmd.ExecuteReader();
-            if (reader.HasRows) // reader°¡ ÀÐÀº µ¥ÀÌÅÍ°¡ 1°³ ÀÌ»ó Á¸ÀçÇØ?
+            if (reader.HasRows) // readerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ 1ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
             {
-                // ÀÐÀº µ¥ÀÌÅÍ¸¦ ³ª¿­
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½
                 while (reader.Read())
                 {
                     string ID = (reader.IsDBNull(0)) ? string.Empty : reader["User_ID"].ToString();
@@ -125,6 +116,9 @@ public class SQL_Manager : MonoBehaviour
                     {
                         info = new User_info(ID, pwd, name);
                         if (!reader.IsClosed) reader.Close();
+
+                        User_info user = SQL_Manager.I.info;
+                        (NetworkManager.singleton as NetworkLobbyManager).clientSession = new(ID, name, "");
                         return true;
                     }
                     else
@@ -141,6 +135,8 @@ public class SQL_Manager : MonoBehaviour
             if (!reader.IsClosed) reader.Close();
             return false;
         }
+
+
     }
     public bool SingnUp(string id, string password, string name)
     {
@@ -151,7 +147,7 @@ public class SQL_Manager : MonoBehaviour
 
             string sqlcommend = string.Format(@"INSERT INTO user_info VALUES ('{0 }','{1 }','{2 }')", id, password, name);
 
-            MySqlCommand cmd = new MySqlCommand(sqlcommend, con); // Äõ¸®¹®À» ¿¬°áµÈ DB¿¡ ³¯¸®±â À§ÇÑ °´Ã¼
+            MySqlCommand cmd = new MySqlCommand(sqlcommend, con); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
             reader = cmd.ExecuteReader();
             if (!reader.IsClosed) reader.Close();
             return true;
@@ -173,11 +169,11 @@ public class SQL_Manager : MonoBehaviour
             }
             string sqlcommend = string.Format(@"SELECT User_ID FROM user_info WHERE User_ID = '{0}'", id);
 
-            MySqlCommand cmd = new MySqlCommand(sqlcommend, con); // Äõ¸®¹®À» ¿¬°áµÈ DB¿¡ ³¯¸®±â À§ÇÑ °´Ã¼
+            MySqlCommand cmd = new MySqlCommand(sqlcommend, con); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
             reader = cmd.ExecuteReader();
-            if (reader.HasRows) // reader°¡ ÀÐÀº µ¥ÀÌÅÍ°¡ 1°³ ÀÌ»ó Á¸ÀçÇØ?
+            if (reader.HasRows) // readerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ 1ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
             {
-                // ÀÐÀº µ¥ÀÌÅÍ¸¦ ³ª¿­
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½
                 while (reader.Read())
                 {
                     string _id = (reader.IsDBNull(0)) ? string.Empty : reader["User_ID"].ToString();
@@ -211,7 +207,7 @@ public class SQL_Manager : MonoBehaviour
 
             string sqlcommend = string.Format(@"UPDATE user_info SET User_Password = '{1}' WHERE User_ID = '{0}'", id, password);
 
-            MySqlCommand cmd = new MySqlCommand(sqlcommend, con); // Äõ¸®¹®À» ¿¬°áµÈ DB¿¡ ³¯¸®±â À§ÇÑ °´Ã¼
+            MySqlCommand cmd = new MySqlCommand(sqlcommend, con); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
             reader = cmd.ExecuteReader();
             if (!reader.IsClosed) reader.Close();
             return true;
@@ -233,7 +229,7 @@ public class SQL_Manager : MonoBehaviour
 
             string sqlcommend = string.Format(@"DELETE FROM user_info WHERE User_ID = '{0}'", id);
 
-            MySqlCommand cmd = new MySqlCommand(sqlcommend, con); // Äõ¸®¹®À» ¿¬°áµÈ DB¿¡ ³¯¸®±â À§ÇÑ °´Ã¼
+            MySqlCommand cmd = new MySqlCommand(sqlcommend, con); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
             reader = cmd.ExecuteReader();
             if (!reader.IsClosed) reader.Close();
             return true;
@@ -245,4 +241,6 @@ public class SQL_Manager : MonoBehaviour
             return false;
         }
     }
+
+    protected override bool IsDontdestroy() => false;
 }

@@ -12,20 +12,20 @@ public class UpdateControl : MonoBehaviour
     {
         if (id_i.text.Equals(string.Empty))
         {
-            log.text = "È¸¿øÁ¤º¸¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.";
+            log.text = "È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
             return;
         }
-        if (SQL_Manager.i.UpdatePW(id_i.text, Password_i.text))
+        if (SQL_Manager.I.UpdatePW(id_i.text, Password_i.text))
             g.SetActive(false);
 
         else
-            log.text = "È¸¿øÁ¤º¸¸¦ È®ÀÎÇØÁÖ¼¼¿ä.";
+            log.text = "È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½.";
     }
 
     public void UpdateAfter(GameObject g)
     {
         if (id_i.text.Equals(string.Empty)) return;
-        if (SQL_Manager.i.UpdatePW(id_i.text, Password_i.text))
+        if (SQL_Manager.I.UpdatePW(id_i.text, Password_i.text))
             g.SetActive(true);
     }
 }

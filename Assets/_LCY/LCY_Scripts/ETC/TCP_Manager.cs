@@ -1,16 +1,16 @@
 # region using
-// .net ¶óÀÌºê·¯¸®
+// .net ï¿½ï¿½ï¿½Ìºê·¯ï¿½ï¿½
 using System;
-// .net ¿¡¼­ ³×Æ®¿öÅ© ¹× ¼ÒÄÏÅë½ÅÀ» ÇÏ±â À§ÇÑ ¶óÀÌºê·¯¸®
+// .net ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½Å© ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºê·¯ï¿½ï¿½
 using System.Net;
 using System.Net.Sockets;
-// µ¥ÀÌÅÍ¸¦ ÀÐ±â / ¾²±â ÇÏ±â À§ÇÑ ¶óÀÌºê·¯¸®
+// ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ð±ï¿½ / ï¿½ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºê·¯ï¿½ï¿½
 using System.IO;
-using System.Threading; // ¸ÖÆ¼½º·¹µùÀ» ÇÏ±â À§ÇÑ ¶óÀÌºê·¯¸®
+using System.Threading; // ï¿½ï¿½Æ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºê·¯ï¿½ï¿½
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-// .net ¿¡¼­ ¸»ÇÏ´Â ÆÐÅ¶ÀÇ ´ÜÀ§´Â stream
+// .net ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Å¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ stream
 #endregion
 
 public class TCP_Manager : MonoBehaviour
@@ -22,8 +22,8 @@ public class TCP_Manager : MonoBehaviour
     [SerializeField] private Text log;
 
 
-    StreamReader reader; // µ¥ÀÌÅÍ ÀÐ´Â ³ð
-    StreamWriter writer; // µ¥ÀÌÅÍ ¾²´Â ³ð
+    StreamReader reader; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð´ï¿½ ï¿½ï¿½
+    StreamWriter writer; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 
     private Message_Pooling message;
 
@@ -49,19 +49,19 @@ public class TCP_Manager : MonoBehaviour
 
     private void ServerConnect()
     {
-        // Áö¼ÓÀûÀ¸·Î µ¹¾Æ°¡¾ß ÇÔ
-        // ¸Þ¼¼Áö°¡ µé¾î¿Ã¶§¸¶´Ù ¿­¾îÁà¾ßÇÔ
-        // Èå¸§¿¡ ¿¹¿ÜÃ³¸®
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ ï¿½ï¿½
+        // ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        // ï¿½å¸§ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½
         try
         {
             TcpListener tcp = new TcpListener(IPAddress.Parse(ip.text), int.Parse(port.text));
-            tcp.Start(); // ¼­¹ö ½ÃÀÛ -> ¼­¹ö ¿ÀÇÂ
+            tcp.Start(); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             Log.Enqueue("ServerOpen");
 
             TcpClient client = tcp.AcceptTcpClient();
-            // TcpListener ¿¡ ¿¬°áµÉ¶§±îÁö ±â´Ù·È´Ù°¡
-            // client°¡ ¿¬°áÀÌµÇ¸é TcpClient¿¡ ÇÒ´ç
-            Log.Enqueue(" Client Á¢¼Ó È®ÀÎ");
+            // TcpListener ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½É¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ù·È´Ù°ï¿½
+            // clientï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ÌµÇ¸ï¿½ TcpClientï¿½ï¿½ ï¿½Ò´ï¿½
+            Log.Enqueue(" Client ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½");
             reader = new StreamReader(client.GetStream());
             writer = new StreamWriter(client.GetStream());
             writer.AutoFlush = true;
@@ -74,7 +74,7 @@ public class TCP_Manager : MonoBehaviour
         }
         catch (Exception e)
         {
-            // ¿¡·¯°¡ »ý±â¸é µé¾î¿À´Â °÷
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
             Log.Enqueue(e.Message);
         }
     }
@@ -89,7 +89,7 @@ public class TCP_Manager : MonoBehaviour
         thread.Start();
     }
 
-    private void ClientConnect() // ¼­¹ö¿¡ Á¢±ÙÇÏ´Â ÂÊ
+    private void ClientConnect() // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½
     {
         try
         {
@@ -116,8 +116,8 @@ public class TCP_Manager : MonoBehaviour
     #region Sending
     public void SendingBTN()
     {
-        string textsum = $"[{SQL_Manager.i.info.User_Name}] : {messageInput.text}";
-        // ³»°¡ º¸³½ ¸Þ¼¼Áöµµ messagebox¿¡ ³Ö¾î¾ß ÇÔ
+        string textsum = $"[{SQL_Manager.I.info.User_Name}] : {messageInput.text}";
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½ï¿½ messageboxï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ ï¿½ï¿½
         if (SendingMessage(textsum))
         {
             message.message(textsum);
