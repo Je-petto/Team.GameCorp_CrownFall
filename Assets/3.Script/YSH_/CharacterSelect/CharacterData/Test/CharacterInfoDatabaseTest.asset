@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CharacterInfoDatabaseTest
   m_EditorClassIdentifier: 
   characterInfoList:
-  - {fileID: 11400000, guid: b59c7846cb16c724d97cbe886d46c999, type: 2}
-  - {fileID: 11400000, guid: a13324b28b0559e4085a88ebc7d6f218, type: 2}
-  - {fileID: 11400000, guid: 228c89b9d0c27834fa9ab97640be5c07, type: 2}
-  - {fileID: 11400000, guid: 88d6031866687b446955cb285ac4e3b7, type: 2}
+  - {fileID: 11400000, guid: 906b121eaad8d0c4ba0bb653e8ba0c09, type: 2}
+  - {fileID: 11400000, guid: 2a9a95227f1e6a748ab4709e3f5f5c31, type: 2}
+  - {fileID: 11400000, guid: 58d3d73f6a60817499a27346e702d75d, type: 2}
+  - {fileID: 11400000, guid: 2095cb67f385ede4fb6d05ce6d2681c4, type: 2}

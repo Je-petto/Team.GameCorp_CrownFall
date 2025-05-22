@@ -495,6 +495,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Magician_RIOGreenRest
       objectReference: {fileID: 0}
+    - target: {fileID: 4278682061525355532, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9160559f7e8efb64a902d5eee09e6a56, type: 2}
     - target: {fileID: 7826755211687780485, guid: fd605db031fd6c147b17f8dccc636745, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
