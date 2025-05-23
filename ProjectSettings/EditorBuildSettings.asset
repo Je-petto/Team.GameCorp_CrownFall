@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scene/PWH_Network/Client/net.1.LobbyScene.unity
     guid: 551799598e7588d4faad6b07ae6372d9
+  - enabled: 1
+    path: Assets/1.Scene/PWH_Network/Client/net.2.SelectScene.unity
+    guid: 0439f7199c1a4374080a25df7c8e9910
   m_configObjects: {}
