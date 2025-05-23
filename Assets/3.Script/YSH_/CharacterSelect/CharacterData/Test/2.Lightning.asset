@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1259c80363e304a8a045bbd39103fb, type: 3}
   m_Name: 2.Lightning
   m_EditorClassIdentifier: 
-  cid: 2
+  cid: P-002
   characterName: C
   description: Sorcerer
   hp: 1650

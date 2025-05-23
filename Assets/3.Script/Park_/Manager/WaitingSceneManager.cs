@@ -66,17 +66,15 @@ public class WaitingSceneManager : BehaviourSingleton<WaitingSceneManager>
     public UnityAction<PlayerMatchState> OnChangeMatchState;
 
     //버튼 클릭 이벤트
-    public void OnClickSelectCharacter(int index)
+    public void SelectCharacter(CharacterInfo selectedCharacter)
     {
-        Debug.Log($"Select char Index : {index}");
-
-        CharacterInfo selectedCharacter = characterList[index];
+        Debug.Log($"Select character : {selectedCharacter.name}");
 
         // 패킷을 만들고 Matchmanager에게 보내기
         OnChangeSelectedCharacter?.Invoke(selectedCharacter.cid);
     }
 
-    public void OnClickReadyButton()
+    public void SetReadyState()
     {
         NetworkPlayer myPlayer = networkPlayers.Find(a => a.isLocalPlayer);
         PlayerMatchState state = myPlayer.matchState;

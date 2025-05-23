@@ -108,10 +108,10 @@ public class MatchManager : NetworkBehaviour
     private void MakeGameRoom(MatchGroup group)
     {
         Debug.Log("Match Complete...");
-        string sceneName = "GameWaitingScene";
-
+        string sceneName = "net.2.SelectorScene";
 
         SetTeam(group);
+
         // 클라이언트들에게 WaitingScene으로 이동하도록 한다.
         foreach (var conn in group.players)
         {
