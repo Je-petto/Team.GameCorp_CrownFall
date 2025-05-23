@@ -1,24 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using Mirror;
 using UnityEngine;
 
 public class CharacterSelectManager : MonoBehaviour
 {
-    public static CharacterSelectManager Instance { get; private set; }
-
     [SerializeField] private CharacterInfoDatabase characterDatabase;
     [SerializeField] private CharacterInfoUI characterInfoUI;
     [SerializeField] private Transform spawnPoint;
 
+    private string selected_cid;
     private GameObject currentCharacterModel;
 
     public CharacterInfo SelectedCharacterInfo { get; private set; }
 
-    private void Awake()
+    void OnEnable()
     {
-        if (Instance != null) Destroy(gameObject);
-        else Instance = this;
+        Debug.Log($"[Client] {"CharacterSelectManager"} : Enable!");
+        selected_cid = characterDatabase.characterInfos[0].cid;
+        SelectedCharacterInfo = characterDatabase.characterInfos[0];
+        SelectCharacterByCID(selected_cid);
     }
 
     public void SelectCharacterByCID(string cid)
@@ -36,22 +35,14 @@ public class CharacterSelectManager : MonoBehaviour
             Destroy(currentCharacterModel);
 
         currentCharacterModel = Instantiate(info.model, spawnPoint.position, spawnPoint.rotation);
-
+        WaitingSceneManager.I.SelectCharacter(info);
         characterInfoUI?.SetCharacterInfo(info);
     }
 
-    public void SaveSelectedCharacterCID()
+    public void OnClickReadyButton()
     {
-        if (SelectedCharacterInfo != null)
-        {
-            PlayerPrefs.SetString("SelectedCharacterCID", SelectedCharacterInfo.cid);
-            PlayerPrefs.Save();
-        }
-    }
-
-    public void OnStartGame()
-    {
-        SaveSelectedCharacterCID();
-        UnityEngine.SceneManagement.SceneManager.LoadScene("InGameScene");
+        (NetworkManager.singleton as NetworkLobbyManager).clientSession.selected_cid = "test1";
+        WaitingSceneManager.I.SetReadyState();
+        Debug.Log("Ready!!");
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1259c80363e304a8a045bbd39103fb, type: 3}
   m_Name: 3.Heal
   m_EditorClassIdentifier: 
-  cid: 3
+  cid: P-003
   characterName: D
   description: Priest
   hp: 1400

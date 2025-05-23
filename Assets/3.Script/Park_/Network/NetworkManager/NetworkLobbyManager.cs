@@ -18,13 +18,6 @@ public class ClientSession
     }
 }
 
-[System.Serializable]
-public class PlayerSessionList
-{
-    public List<ClientSession> conns = new();
-}
-
-
 public class NetworkLobbyManager : NetworkRoomManager
 {
     public ClientSession clientSession = null;

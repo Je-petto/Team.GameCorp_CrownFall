@@ -1928,7 +1928,7 @@ GameObject:
   - component: {fileID: 508966180}
   - component: {fileID: 508966179}
   m_Layer: 0
-  m_Name: CharacterSelectManager
+  m_Name: CharacterSelector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1957,12 +1957,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 508966178}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1950188716}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &520034946
 GameObject:
@@ -3138,9 +3138,8 @@ GameObject:
   - component: {fileID: 867479859}
   - component: {fileID: 867479858}
   - component: {fileID: 867479857}
-  - component: {fileID: 867479860}
   m_Layer: 5
-  m_Name: Button (Legacy) (3)
+  m_Name: CharButton4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3211,16 +3210,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1950188717}
-        m_TargetAssemblyTypeName: WaitingSceneManager, Assembly-CSharp
-        m_MethodName: OnClickSelectCharacter
-        m_Mode: 3
+      - m_Target: {fileID: 508966179}
+        m_TargetAssemblyTypeName: CharacterSelectManager, Assembly-CSharp
+        m_MethodName: SelectCharacterByCID
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 3
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: P-003
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &867479858
@@ -3261,19 +3260,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 867479855}
   m_CullTransparentMesh: 1
---- !u!114 &867479860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 867479855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5246846aecef3054bac6245d247d7e57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterCID: 3
 --- !u!1 &923873645
 GameObject:
   m_ObjectHideFlags: 0
@@ -3788,9 +3774,8 @@ GameObject:
   - component: {fileID: 1042000297}
   - component: {fileID: 1042000296}
   - component: {fileID: 1042000295}
-  - component: {fileID: 1042000298}
   m_Layer: 5
-  m_Name: Button (Legacy) (1)
+  m_Name: CharButton2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3860,16 +3845,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1950188717}
-        m_TargetAssemblyTypeName: WaitingSceneManager, Assembly-CSharp
-        m_MethodName: OnClickSelectCharacter
-        m_Mode: 3
+      - m_Target: {fileID: 508966179}
+        m_TargetAssemblyTypeName: CharacterSelectManager, Assembly-CSharp
+        m_MethodName: SelectCharacterByCID
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: P-001
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1042000296
@@ -3910,19 +3895,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042000293}
   m_CullTransparentMesh: 1
---- !u!114 &1042000298
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1042000293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5246846aecef3054bac6245d247d7e57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterCID: 1
 --- !u!1 &1051473021
 GameObject:
   m_ObjectHideFlags: 0
@@ -6262,9 +6234,8 @@ GameObject:
   - component: {fileID: 1396250666}
   - component: {fileID: 1396250665}
   - component: {fileID: 1396250664}
-  - component: {fileID: 1396250667}
   m_Layer: 5
-  m_Name: Button (Legacy) (2)
+  m_Name: CharButton3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6334,16 +6305,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1950188717}
-        m_TargetAssemblyTypeName: WaitingSceneManager, Assembly-CSharp
-        m_MethodName: OnClickSelectCharacter
-        m_Mode: 3
+      - m_Target: {fileID: 508966179}
+        m_TargetAssemblyTypeName: CharacterSelectManager, Assembly-CSharp
+        m_MethodName: SelectCharacterByCID
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: P-002
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1396250665
@@ -6384,19 +6355,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1396250662}
   m_CullTransparentMesh: 1
---- !u!114 &1396250667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1396250662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5246846aecef3054bac6245d247d7e57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterCID: 2
 --- !u!1 &1413755873
 GameObject:
   m_ObjectHideFlags: 0
@@ -7092,9 +7050,8 @@ GameObject:
   - component: {fileID: 1496018069}
   - component: {fileID: 1496018068}
   - component: {fileID: 1496018067}
-  - component: {fileID: 1496018070}
   m_Layer: 5
-  m_Name: Button (Legacy)
+  m_Name: CharButton1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7164,16 +7121,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1950188717}
-        m_TargetAssemblyTypeName: WaitingSceneManager, Assembly-CSharp
-        m_MethodName: OnClickSelectCharacter
-        m_Mode: 3
+      - m_Target: {fileID: 508966179}
+        m_TargetAssemblyTypeName: CharacterSelectManager, Assembly-CSharp
+        m_MethodName: SelectCharacterByCID
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: P-000
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1496018068
@@ -7214,19 +7171,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1496018065}
   m_CullTransparentMesh: 1
---- !u!114 &1496018070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1496018065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5246846aecef3054bac6245d247d7e57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterCID: 0
 --- !u!1 &1503806055
 GameObject:
   m_ObjectHideFlags: 0
@@ -9378,7 +9322,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 508966180}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1950188717
@@ -9393,6 +9338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b4d75bad1511a243aebdbb2176edf5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkManager: {fileID: 0}
   _testCount: 0
   nicknamePanParent: {fileID: 1847028509}
   playerPanBase: {fileID: 0}
@@ -17881,7 +17827,6 @@ SceneRoots:
   - {fileID: 107163106}
   - {fileID: 1423434297}
   - {fileID: 1706075455}
-  - {fileID: 508966180}
   - {fileID: 1950188716}
   - {fileID: 9132148117195601424}
   - {fileID: 1680162473}

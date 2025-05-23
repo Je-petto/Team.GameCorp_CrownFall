@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1259c80363e304a8a045bbd39103fb, type: 3}
   m_Name: 1.Fire
   m_EditorClassIdentifier: 
-  cid: 1
+  cid: P-001
   characterName: B
   description: Tank
   hp: 3500

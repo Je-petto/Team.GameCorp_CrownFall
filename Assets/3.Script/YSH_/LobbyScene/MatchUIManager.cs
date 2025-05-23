@@ -50,7 +50,8 @@ public class MatchUIManager : MonoBehaviour
         Debug.Log("[UI] 매칭 FX 활성화, 취소 버튼 표시");
 
         // 테스트용 매칭 완료 시뮬레이션 (2초 후 매칭 완료)
-        StartCoroutine(SimulateMatchComplete());
+        
+        LobbyManager.I.StartMatching();
     }
 
     /// <summary>
@@ -68,6 +69,8 @@ public class MatchUIManager : MonoBehaviour
 
         Debug.Log(">> 매칭 취소");
         Debug.Log("[UI] 매칭 FX 비활성화, 매칭 버튼 표시");
+
+        LobbyManager.I.CancelMatching();
     }
 
     /// <summary>
