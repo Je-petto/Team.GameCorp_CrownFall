@@ -6,7 +6,7 @@ public class PlayerStateMachine : MonoBehaviour
 
     void Start()
     {
-        ChangeState(new IdleState());
+        
     }
 
     public void ChangeState(IPlayerState state)

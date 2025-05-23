@@ -46,7 +46,7 @@ public class IdleCommand : ICommand
 
     public void Execute()
     {
-        player.stateMachine.ChangeState(new IdleState());
+        player.stateMachine.ChangeState(new IdleState(player));
     }
 }
 

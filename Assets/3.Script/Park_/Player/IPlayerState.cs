@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public interface IPlayerState
@@ -10,10 +11,19 @@ public interface IPlayerState
 
 public class IdleState : IPlayerState
 {
-    public void Enter() { }
+    PlayerController player;
 
-    public void Update(){ }
-
+    public IdleState(PlayerController player)
+    {
+        this.player = player;
+    }
+    public void Enter()
+    {
+        player.animator.SetFloat("Movement", 0f);
+    }
+    public void Update(){ 
+        
+    }
     public void Exit() { }
 }
 
@@ -76,11 +86,10 @@ public class DeadState : IPlayerState
     public void Enter()
     {
         player.animator.SetTrigger("Death");
+        player.pState = PlayerState.DEATH;
         player.inputHandler.enabled = false;
 
-        Debug.Log("죽음");
-        player.StartCoroutine(Respawn_Co());
-        IngameUIManager.Instance.ShowRespawnUI(respawnTime);
+        StartDeathSequence();
     }
 
     public void Update() {}
@@ -88,21 +97,51 @@ public class DeadState : IPlayerState
     public void Exit()
     {
         player.inputHandler.enabled = true;
-        IngameUIManager.Instance.HideRespawnUI();
     }
 
-    private IEnumerator Respawn_Co()
+    private void StartDeathSequence()
     {
-        float timer = respawnTime;
-        while (timer > 0)
+        Sequence seq = DOTween.Sequence();
+
+        int elapsed = (int)respawnTime;
+
+        seq.AppendInterval(0.5f)
+            .AppendCallback(() =>
+            {
+                Debug.Log("죽음...");
+                IngameUIManager.I.ShowRespawnUI(respawnTime);
+            });
+
+        for (int i = elapsed; i > 0; i--)
         {
-            IngameUIManager.Instance.UpdateRespawnTime(timer);
-            yield return new WaitForSeconds(1f);
-            timer -= 1f;
+            int time = i; // 클로저 문제 방지
+            seq.AppendCallback(() =>
+            {
+                IngameUIManager.I.UpdateRespawnTime(time);
+                Debug.Log($"Respawn remain: {time}");
+            });
+            seq.AppendInterval(1f);
         }
 
-        player.transform.position = SpawnManager.Instance.GetSpawnPoint(player.teamData.type);
-        player.currentHp = player.data.hp;
-        player.stateMachine.ChangeState(new IdleState());
+        seq.OnComplete(() =>
+        {
+            Debug.Log("리스폰...");
+            IngameUIManager.I.HideRespawnUI();
+
+            // 위치 초기화
+            player.transform.position = Vector3.zero;
+            player.transform.rotation = Quaternion.identity;
+
+            // 체력 회복
+            player.currentHp = player.data.hp;
+
+            // UI 숨기기
+
+            // 애니메이션 초기화
+            player.animator.SetFloat("Movement", 0f);
+
+            // 상태 전환
+            player.stateMachine.ChangeState(new IdleState(player));
+        });
     }
 }

@@ -2,11 +2,13 @@ using System.Collections;
 using Cinemachine;
 using UnityEngine;
 
+public enum PlayerState{ ALIVE, DEATH }
 public class PlayerController : MonoBehaviour
 {
     #region PlayerStat
     public int currentHp;
     public CharacterInfo data;
+    public PlayerState pState;
 
     [Header("Respawn Settings")]
     public float respawnTime = 5f;
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour
     #region Test
     public TeamComponent teamData = null;
     public PlayerController target = null;                          //제거 예정
+
     public Vector3 targetPoint;
     // private 
     #endregion
@@ -36,6 +39,7 @@ public class PlayerController : MonoBehaviour
     {
         //test Code
         teamData = new(TeamType.RED);
+        pState = PlayerState.ALIVE;
     }
 
     public void SetCharacter(CharacterInfo data)
@@ -78,6 +82,7 @@ public class PlayerController : MonoBehaviour
         inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackIK(this));                         // IK
         inputHandler.detectCommand = new DetectionCommand(this, new PlayerDetection(this));
         inputHandler.deathCommand = new DeathCommand(this, new DeadState(this));
+
         SkillData sd = data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
         inputHandler.skillCastCommand = new SkillCastCommand(this, SkillFactory.CreateSkillAction(this, sd));
     }
@@ -113,4 +118,13 @@ public class PlayerController : MonoBehaviour
 
     }
     #endregion
+
+
+    // 현재 플레이어를 리셋한다.
+    public void ResetPlayer()
+    {
+        transform.position = Vector3.zero;
+        currentHp = data.hp;
+        stateMachine.ChangeState(new IdleState(this));
+    }
 }

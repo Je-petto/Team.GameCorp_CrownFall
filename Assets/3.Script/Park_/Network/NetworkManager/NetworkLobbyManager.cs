@@ -71,7 +71,7 @@ public class NetworkLobbyManager : NetworkRoomManager
         NetworkPlayer networkPlayer = roomPlayerObj.GetComponent<NetworkPlayer>();
         PlayerController gameplayer = Instantiate(playerPrefab).GetComponent<PlayerController>();
 
-        //유저 정보, 선택한 캐릭터 id, 팀 데이터 전달
+        // 유저 정보, 선택한 캐릭터 id, 팀 데이터 전달
         // gameplayer.SetNetworkData(networkPlayer._userInfo, networkPlayer.selectedCharacter_Id, networkPlayer.myTeamData);
 
         return gameplayer.gameObject;
