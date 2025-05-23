@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Mirror;
 using UnityEngine;
 
 public class InGameNetworkManager : NetworkManager
 {
-
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         Debug.Log("[InGameServer] Add Player...");

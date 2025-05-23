@@ -9,25 +9,29 @@ public class LobbyManager : MonoBehaviour
     public void OnClickMatchingBtn() => StartMatching();
     public void OnClickCancelBtn() => CancelMatching();
 
-    [SerializeField] Text matchingLog;
+    [SerializeField] GameObject matchingLog;
     NetworkPlayer networkPlayer;
+
+    [SerializeField] GameObject matchingStateComponent;
 
     void Awake()
     {
         NetworkClient.RegisterHandler<SceneMessage>(OnSceneMessageReceived, false);
+        matchingLog.SetActive(false);
     }
 
     public void StartMatching()
     {
+        // 로비에서는 유일한 컴포넌트이다.
         networkPlayer = NetworkClient.connection.identity.GetComponent<NetworkPlayer>();
-        matchingLog.text = "Matching...";
+        matchingLog.gameObject.SetActive(true);
         networkPlayer.CmdRequestStartMatching(true);
     }
 
     public void CancelMatching()
     {
         networkPlayer = NetworkClient.connection.identity.GetComponent<NetworkPlayer>();
-        matchingLog.text = "Not-Matching...";
+        matchingLog.gameObject.SetActive(false);
         networkPlayer.CmdRequestStartMatching(false);
     }
     #endregion

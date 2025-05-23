@@ -184,13 +184,13 @@ GameObject:
   - component: {fileID: 6022695317468072854}
   - component: {fileID: 2456417140182304207}
   - component: {fileID: 2347696000160597485}
+  - component: {fileID: -6267555201739785472}
   - component: {fileID: 7825714550399199096}
   - component: {fileID: 8445013702451322883}
   - component: {fileID: 7340440302698692442}
   - component: {fileID: 576379316962066249}
   - component: {fileID: 7262542014333003741}
   - component: {fileID: -1578124326595381146}
-  - component: {fileID: 2228935014391756853}
   m_Layer: 0
   m_Name: Player_Net
   m_TagString: Untagged
@@ -266,6 +266,35 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &-6267555201739785472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8436226803424169134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99db4aaf3bb3b8f47b0d03ce77e3682a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  uid: 
+  characterId: 
+  currentHp: 0
+  data: {fileID: 0}
+  rb: {fileID: 0}
+  animator: {fileID: 0}
+  attackPoint: {fileID: 0}
+  lineRenderer: {fileID: 0}
+  stateMachine: {fileID: 0}
+  inputHandler: {fileID: 0}
+  effectHandler: {fileID: 0}
+  target: {fileID: 0}
+  targetPoint: {x: 0, y: 0, z: 0}
+  bone: 0
 --- !u!114 &7825714550399199096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,35 +491,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &2228935014391756853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8436226803424169134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99db4aaf3bb3b8f47b0d03ce77e3682a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  uid: 
-  characterId: 0
-  currentHp: 0
-  data: {fileID: 0}
-  rb: {fileID: 0}
-  animator: {fileID: 0}
-  attackPoint: {fileID: 0}
-  lineRenderer: {fileID: 0}
-  stateMachine: {fileID: 0}
-  inputHandler: {fileID: 0}
-  effectHandler: {fileID: 0}
-  target: {fileID: 0}
-  targetPoint: {x: 0, y: 0, z: 0}
-  bone: 0
 --- !u!1 &9013810072752666758
 GameObject:
   m_ObjectHideFlags: 0

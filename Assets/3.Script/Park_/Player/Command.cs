@@ -78,8 +78,6 @@ public class DetectionCommand : ICommand
     }
 }
 
-
-
 public class AttackCommand : ICommand
 {
     PlayerController player;
