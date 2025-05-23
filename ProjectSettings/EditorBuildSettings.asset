@@ -5,15 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/1.Scene/SHScene.unity
-    guid: 42eb472481d26a24f9d79b0e1e744e58
-  - enabled: 1
-    path: Assets/1.Scene/InGameScene.unity
-    guid: 81cb246487513b54086d1b6e62b0c8ef
   - enabled: 0
     path: Assets/1.Scene/PWH_Network/Server/net.0.InGameServerScene.unity
     guid: dc4b39140c7ddb843a06e425d1da4b90
+  - enabled: 0
+    path: Assets/1.Scene/PWH_Network/Client/net.3.InGameScene.unity
+    guid: d4dd6773705d04e4e826e9fc33981d5b
   - enabled: 1
     path: Assets/1.Scene/PWH_Network/Server/net.0.ServerScene.unity
     guid: 705603f00d2b3a6408114401a6de4a1b
@@ -23,7 +20,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scene/PWH_Network/Client/net.1.LobbyScene.unity
     guid: 551799598e7588d4faad6b07ae6372d9
-  - enabled: 1
-    path: Assets/1.Scene/PWH_Network/Client/net.3.InGameScene.unity
-    guid: d4dd6773705d04e4e826e9fc33981d5b
   m_configObjects: {}

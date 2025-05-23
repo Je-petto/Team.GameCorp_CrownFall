@@ -78,8 +78,6 @@ public class DetectionCommand : ICommand
     }
 }
 
-
-
 public class AttackCommand : ICommand
 {
     PlayerController player;
@@ -153,6 +151,8 @@ public class SkillCastCommand : ICommand
                 Debug.Log("None Action");
                 return;
             }
+
+            caster.animator.SetTrigger("Attack");
 
             skillAction.Perform(skillPoint);
             mark.SetActive(false);
