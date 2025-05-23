@@ -147,14 +147,18 @@ public class NetworkPlayer : NetworkRoomPlayer
     //     WaitingManager.I.SetMatchedPlayers(matchedUserList);
     // }
 
-
-
     //InGame 서버로 이동한다.           ==============================>>> 로비 서버와 인게임 서버가 따로 있다.
     [TargetRpc] // 서버에서 특정 클라이언트에게 호출되는 RPC
     public void TargetConnectToInGame(NetworkConnection target, int port)
     {
         Debug.Log($"Connecting to InGame Server on port {port}");
         Debug.Log("게임 시작!!!");
+
+        if (NetworkClient.isConnected || NetworkServer.active)
+        {
+            NetworkManager.singleton.StopClient(); // 로비 서버 연결 종료
+            // NetworkManager.Shutdown();             // 네트워크 상태 초기화
+        }
 
         // 접속할 서버의 IP 주소 설정 (테스트용은 localhost, 실제론 공인 IP 또는 도메인)
         NetworkManager.singleton.networkAddress = "127.0.0.1";                  //즉, 서버 ip : 

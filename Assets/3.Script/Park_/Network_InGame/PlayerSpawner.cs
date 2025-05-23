@@ -5,16 +5,16 @@ using UnityEngine;
 public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] List<CharacterInfo> characterList;
-    private Dictionary<CharacterType, CharacterInfo> characterDic = new();
+    private Dictionary<string, CharacterInfo> characterDic = new();
 
     [SerializeField] GameObject playerBase;               // 캐릭터 베이스
     [Header("Selector")]
-    public CharacterType selectType;
+    public string selectCId;
     void Start()
     {
         foreach (var p in characterList)
         {
-            characterDic.Add(p.Type, p);
+            characterDic.Add(p.cid, p);
         }
 
         StartCoroutine(SpawnPlayer_Co());
@@ -35,10 +35,6 @@ public class PlayerSpawner : MonoBehaviour
 
         */
         //테스트용
-        player.SetCharacter(characterDic[selectType]);
+        player.SetCharacter(characterDic[selectCId]);
     }
-}
-
-public static class PlayerSession{
-    public static CharacterInfo data = null;
 }
