@@ -1,9 +1,13 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillControl : MonoBehaviour
 {
+    [Header("Show")]
+    [SerializeField] private GameObject show;
+
     [Header("Skill CoolDown")]
     [SerializeField] private bool isCoolDown = false;
 
@@ -17,11 +21,14 @@ public class SkillControl : MonoBehaviour
     [Header("Ray")]
     public LineRenderer line;
 
-
     [Header("Target")]
     [SerializeField] private float targetHp;
     [SerializeField] private float targetMoveSpeed;
     [SerializeField] private float targetAttackSpeed;
+
+    [SerializeField] private LayerMask layer;
+    [SerializeField] private int healAmount;
+    GameObject[] objectsWithTag;
 
 
     private void Awake()
@@ -29,10 +36,16 @@ public class SkillControl : MonoBehaviour
         Initialize();
     }
 
+    void Start()
+    {
+        objectsWithTag = GameObject.FindGameObjectsWithTag($"{gameObject.tag}");
+    }
+
     private void Update()
     {
         SkillClick();
         SkillRay();
+        SkillHeal();
     }
 
     private void Initialize()
@@ -41,6 +54,7 @@ public class SkillControl : MonoBehaviour
         skillType = data.type;
         skillEffectPrefab = Instantiate(data.prefab);
         skillEffectPrefab.SetActive(false);
+        show.SetActive(false);
 
 
         //effects = EffectFactory.CreateEffects(data.effects);
@@ -48,7 +62,7 @@ public class SkillControl : MonoBehaviour
 
     private void SkillClick()
     {
-        if (skillType.Equals(SkillType.YELLOW)) return;
+        if (skillType.Equals(SkillType.YELLOW) || skillType.Equals(SkillType.GREEN)) return;
 
         if (Input.GetMouseButtonDown(1) && !isCoolDown)
         {
@@ -56,6 +70,8 @@ public class SkillControl : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
+                show.SetActive(true);
+                StartCoroutine(ShowRange_Co());
                 isCoolDown = true;
                 skillEffectPrefab.transform.position = hit.point;
                 skillEffectPrefab.SetActive(true);
@@ -65,6 +81,18 @@ public class SkillControl : MonoBehaviour
         }
     }
 
+    private void SkillHeal()
+    {
+        if (!skillType.Equals(SkillType.GREEN)) return;
+
+        if (Input.GetMouseButtonDown(1) && !isCoolDown)
+        {
+            isCoolDown = true;
+            Heal();
+            StartCoroutine(SkillDuration_Co());
+            StartCoroutine(SkillCoolDown_Co());
+        }
+    }
 
 
     // ��ų ���ӽð�
@@ -79,6 +107,12 @@ public class SkillControl : MonoBehaviour
     {
         yield return new WaitForSeconds(data.coolDown);
         isCoolDown = false;
+    }
+
+    IEnumerator ShowRange_Co()
+    {
+        yield return new WaitForSeconds(2);
+        show.SetActive(false);
     }
 
     // Red
@@ -105,6 +139,20 @@ public class SkillControl : MonoBehaviour
         targetAttackSpeed = tempAS;
     }
 
+    // Green
+    private void Heal()
+    {
+        // 찾은 오브젝트들 처리
+        if (objectsWithTag.Equals(null)) return;
+        foreach (GameObject obj in objectsWithTag)
+        {
+            if (obj.layer != layer)
+                continue;
+            PlayerController pc = obj.GetComponent<PlayerController>();
+            pc.currentHp += healAmount;
+        }
+    }
+
     // Yellow
     private void SkillRay()
     {
@@ -125,11 +173,11 @@ public class SkillControl : MonoBehaviour
                 hitPos.y = transform.position.y;
             }
 
-            StartCoroutine(ShotEffect(hitPos));
+            StartCoroutine(ShotEffect_Co(hitPos));
         }
     }
 
-    private IEnumerator ShotEffect(Vector3 point)
+    private IEnumerator ShotEffect_Co(Vector3 point)
     {
 
         line.SetPosition(0, transform.position);
