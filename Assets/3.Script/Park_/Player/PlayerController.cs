@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     #region PlayerStat
     public int currentHp;
     public CharacterInfo data;
+
+    [Header("Respawn Settings")]
+    public float respawnTime = 5f;
     #endregion
 
     #region [HideInspector]
@@ -74,10 +77,26 @@ public class PlayerController : MonoBehaviour
         // inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackNonTargeting(this));            // Backstep
         inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackIK(this));                         // IK
         inputHandler.detectCommand = new DetectionCommand(this, new PlayerDetection(this));
-
+        inputHandler.deathCommand = new DeathCommand(this, new DeadState(this));
         SkillData sd = data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
         inputHandler.skillCastCommand = new SkillCastCommand(this, SkillFactory.CreateSkillAction(this, sd));
     }
+
+    //추가한 부분 시작
+    public void TakeDamage(int damage)
+    {
+        currentHp -= damage;
+        if (currentHp <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        stateMachine.ChangeState(new DeadState(this));
+    }
+    //추가한 부분  시작
 
     void OnDrawGizmos()
     {

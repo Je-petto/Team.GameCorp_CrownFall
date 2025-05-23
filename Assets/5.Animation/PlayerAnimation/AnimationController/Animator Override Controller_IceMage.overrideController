@@ -1,0 +1,13 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Animator Override Controller_IceMage
+  m_Controller: {fileID: 9100000, guid: 2a23db505c3314d46be36b2d3b893d68, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: b7e69a1f634010a428cc3317de7383fc, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 0440d9b31e6743249a4ad9ff3559e402, type: 2}

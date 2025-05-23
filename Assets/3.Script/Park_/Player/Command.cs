@@ -6,6 +6,22 @@ public interface ICommand
     public void Execute();
 }
 
+public class DeathCommand : ICommand
+{
+    PlayerController player;
+    DeadState state;
+    public DeathCommand(PlayerController player, DeadState state)
+    {
+        this.player = player;
+        this.state = state;
+    }
+
+    public void Execute()
+    {
+        player.stateMachine.ChangeState(state);
+    }
+}
+
 public class MoveCommand : ICommand
 {
     PlayerController player;
