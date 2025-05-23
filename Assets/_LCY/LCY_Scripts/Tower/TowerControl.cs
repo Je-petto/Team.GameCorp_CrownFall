@@ -1,4 +1,6 @@
+using CustomInspector;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public struct TowerState
 {
@@ -14,33 +16,40 @@ public struct TowerState
 
 public class TowerControl : MonoBehaviour
 {
-    // Debug
-    [SerializeField] private int debugHealth;
-    [SerializeField] private int debugShieldHealth;
-    // Debug
-
-    public float maxhp;
-
     public TowerProfile profile { get => towerProfile; set => towerProfile = value; }
     [SerializeField] private TowerProfile towerProfile;
     public TowerState state;
 
-    public Collider col;
+    [ReadOnly] public float maxHealth;
+    [ReadOnly] public Collider col;
 
-    public bool protect = false;
-    public bool recovery = false;
-    public bool isHit = false;
-    public bool isDestroy = false;
+    [HorizontalLine("DEBUG"), HideField] public bool b0;
+    [SerializeField] private int debugHealth;
+    [SerializeField] private int debugShieldHealth;
 
-    public GameObject shield;
+    [HorizontalLine("TOWER STATE"), HideField] public bool b1;
+    [ReadOnly] public bool protect = false;
+    [ReadOnly] public bool recovery = false;
+    [ReadOnly] public bool isHit = false;
+    [ReadOnly] public bool isDestroy = false;
 
-    private float timer;
-    private float delay;
+    [HorizontalLine("SHIELD"), HideField] public bool b2;
+    [ReadOnly] public GameObject shield;
+    [ReadOnly] public ParticleSystem shieldParticle;
+
+    [HorizontalLine("???"), HideField] public bool b3;
+    [SerializeField, Tooltip("회복량")] private int heelAmount;
+    [SerializeField, Tooltip("회복 딜레이")] private int heelDelay;
+    [SerializeField, Tooltip("회복 상태 돌입 시간")] private int recoveryDelay;
+
+    private float rDelay;
+    private float hDelay;
 
     private void Awake()
     {
         shield = Instantiate(towerProfile.shieldModel);
         shield.SetActive(false);
+
 
         col = GetComponent<Collider>();
         col.isTrigger = true;
@@ -48,13 +57,14 @@ public class TowerControl : MonoBehaviour
 
     private void Start()
     {
-        maxhp = state.health;
+        maxHealth = state.health;
     }
 
     private void Update()
     {
         debugHealth = state.health;
         debugShieldHealth = state.shieldHealth;
+
         SetShieldPosition();
         OnProtect();
         OnRecovery();
@@ -68,11 +78,14 @@ public class TowerControl : MonoBehaviour
 
     private void OnProtect()
     {
-        if (state.health <= 60)
+        if (state.health <= (maxHealth * 0.6f))
             protect = true;
 
         if (protect)
+        {
             shield.SetActive(true);
+            //shieldParticle.Play();
+        }
 
         if (state.shieldHealth <= 0)
         {
@@ -81,10 +94,9 @@ public class TowerControl : MonoBehaviour
         }
     }
 
-
     private void OnRecovery()
     {
-        if (state.health <= 25 && !isHit)
+        if (state.health <= (maxHealth * 0.25f) && !isHit)
             recovery = true;
 
         if (recovery)
@@ -94,15 +106,15 @@ public class TowerControl : MonoBehaviour
                 recovery = false;
                 return;
             }
-            timer += Time.deltaTime;
-            delay += Time.deltaTime;
-            if (timer >= 3 && delay >= 1)
+            rDelay += Time.deltaTime;
+            hDelay += Time.deltaTime;
+            if (rDelay >= recoveryDelay && hDelay >= heelDelay)
             {
-                delay = 0;
-                state.health += 10;
-                if (state.health == maxhp / 2)
+                hDelay = 0;
+                state.health += heelAmount;
+                if (state.health == (maxHealth / 2))
                 {
-                    timer = 0;
+                    rDelay = 0;
                     recovery = false;
                     return;
                 }

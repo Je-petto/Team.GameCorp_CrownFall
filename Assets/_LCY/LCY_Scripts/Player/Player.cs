@@ -75,8 +75,8 @@ public class Player : MonoBehaviour
         {
             curHp -= 900;
             state = STATE.PERSIST;
-            if (state == STATE.PERSIST) ;
-            StartCoroutine(PersistDamage_Co());
+            if (state == STATE.PERSIST)
+                StartCoroutine(PersistDamage_Co());
         }
 
         if (other.tag == "BlueSkill")

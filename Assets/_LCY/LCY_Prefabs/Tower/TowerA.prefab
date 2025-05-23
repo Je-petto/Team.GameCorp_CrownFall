@@ -118,13 +118,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06fa302f8fac6469da9d83ffaf91124d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towerProfile: {fileID: 11400000, guid: 201b253d04b70be41804c730c7f84bb0, type: 2}
+  maxHealth: 0
+  col: {fileID: 0}
+  b0: 0
   debugHealth: 0
   debugShieldHealth: 0
-  maxhp: 0
-  towerProfile: {fileID: 11400000, guid: 201b253d04b70be41804c730c7f84bb0, type: 2}
-  col: {fileID: 0}
+  b1: 0
   protect: 0
   recovery: 0
   isHit: 0
   isDestroy: 0
+  b2: 0
   shield: {fileID: 0}
+  shieldParticle: {fileID: 0}
+  b3: 0
+  heelAmount: 5
+  heelDelay: 2
+  recoveryDelay: 5

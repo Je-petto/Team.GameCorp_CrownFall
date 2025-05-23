@@ -24,5 +24,5 @@ public class SkillData : ScriptableObject
     public float distance; // ���� �߻� �Ÿ�
 
     //��뿡�� �ִ� ȿ�� �÷���
-    public List<EffectType> effectTypes; 
+    public List<EffectType> effectTypes;
 }
