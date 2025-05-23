@@ -11,7 +11,7 @@ public class PlayerIKController : MonoBehaviour
         player = GetComponentInParent<PlayerController>();
     }
 
-    void OnAnimatorIK()
+    void OnAnimatorIK(int layerIndex)
     {
         if (animator == null) return;
 

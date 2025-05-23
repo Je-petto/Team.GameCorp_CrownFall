@@ -6,11 +6,21 @@ public class PlayerInputHandler : MonoBehaviour
     public ICommand attackCommand;
     public ICommand detectCommand;                  // Debugging T
     public ICommand skillCastCommand;
+    public ICommand deathCommand;
     private SkillCastCommand castCommand => skillCastCommand as SkillCastCommand;
+
+    bool isDeath = false;           //test
 
     void Update()
     {
         // if (!isLocalPlayer) return;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            deathCommand.Execute();
+        }
+
+        if (isDeath) return;        //test
 
         skillCastCommand.Execute();
 
