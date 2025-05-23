@@ -1,5 +1,6 @@
 using kcp2k;
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -183,15 +184,16 @@ public class NetworkPlayer : NetworkRoomPlayer
 
         // 클라이언트 실행.
         process.Start();
-        
+
 
         //기존 클라이언트는 종료!
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         // 에디터에서는 플레이 모드 종료
         EditorApplication.isPlaying = false;
-        #else
+#else
             // 빌드된 게임에서는 애플리케이션 종료
             Application.Quit();
-        #endif
+#endif
     }
+
 }
