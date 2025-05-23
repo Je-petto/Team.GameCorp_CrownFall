@@ -121,19 +121,21 @@ public class PlayerAttackIK : PlayerAbility
     {
         // 추후 오브젝트 풀링으로 변경 예정.
         GameObject projection = GameObject.Instantiate(player.data.projection, player.attackPoint.transform.position, Quaternion.identity);
+
         projection.transform.DOMove(player.targetPoint, 0.2f)
         .OnComplete(() =>
         {
             player.targetPoint = Vector3.zero;
             GameObject.Destroy(projection);
         });
+
+        SequenceUpperBody();
     }
 
     private void SequenceUpperBody()
     {
-        Sequence seq = DOTween.Sequence();
-
         Transform ub = player.animator.GetBoneTransform(player.bone);
+        ub.LookAt(player.targetPoint);
     }
 }
 #endregion  

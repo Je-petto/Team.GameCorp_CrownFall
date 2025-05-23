@@ -289,7 +289,7 @@ MonoBehaviour:
   effectHandler: {fileID: 0}
   target: {fileID: 0}
   targetPoint: {x: 0, y: 0, z: 0}
-  bone: 0
+  bone: 7
 --- !u!114 &7825714550399199096
 MonoBehaviour:
   m_ObjectHideFlags: 0
