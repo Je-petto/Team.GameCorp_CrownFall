@@ -132,12 +132,6 @@ public class NetworkHandler : MonoBehaviour
             };
         }
     }
-
-    public void SetServer()
-    {
-        
-    }
-
     public void StartClient()
     {
         Debug.Log($"{manager.networkAddress} : Start Client");

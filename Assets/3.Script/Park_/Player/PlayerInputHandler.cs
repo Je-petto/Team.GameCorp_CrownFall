@@ -20,8 +20,6 @@ public class PlayerInputHandler : MonoBehaviour
             deathCommand.Execute();
         }
 
-        if (isDeath) return;        //test
-
         skillCastCommand.Execute();
 
         if (!castCommand.isCasting)

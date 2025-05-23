@@ -28,5 +28,5 @@ MonoBehaviour:
   selectorAnimator: {fileID: 9100000, guid: 84118ed6066b631408e608eb5b31cee5, type: 2}
   inGameAnimator: {fileID: 9100000, guid: dabedca5d56ff304b88a716da4874e11, type: 2}
   projection: {fileID: 4787629297208117674, guid: 7dc38648839529242831dfbfe052991f, type: 3}
-  face: {fileID: 0}
+  face: {fileID: 21300000, guid: 62aa1fee4bb1f444ba515b4b68d39703, type: 3}
   rotateSpeed: 244.99168

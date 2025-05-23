@@ -1,21 +1,25 @@
-using System.Collections;
 using UnityEngine;
 using TMPro;
 
-public class IngameUIManager : MonoBehaviour
+public class IngameUIManager : BehaviourSingleton<IngameUIManager>
 {
-    public static IngameUIManager Instance;
     public CanvasGroup respawnCanvasGroup;
     public TextMeshProUGUI respawnText;
 
-    void Awake()
+    void Start()
     {
-        Instance = this;
+        Init();
+    }
+
+    void Init()
+    {
+        respawnCanvasGroup.alpha = 0;
+        respawnCanvasGroup.blocksRaycasts = false;
     }
 
     public void ShowRespawnUI(float duration)
     {
-        respawnCanvasGroup.alpha = 1;
+        respawnCanvasGroup.alpha = 0.3f;
         respawnCanvasGroup.blocksRaycasts = true;
         respawnText.text = $"Respawning in {duration:F0}s...";
     }
@@ -27,7 +31,10 @@ public class IngameUIManager : MonoBehaviour
 
     public void HideRespawnUI()
     {
+        Debug.Log("ui 숨기기");
         respawnCanvasGroup.alpha = 0;
         respawnCanvasGroup.blocksRaycasts = false;
     }
+
+    protected override bool IsDontdestroy() => false;
 }

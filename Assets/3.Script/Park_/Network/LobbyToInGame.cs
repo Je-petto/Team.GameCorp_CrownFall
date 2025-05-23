@@ -39,7 +39,7 @@ public class LobbyToInGame : MonoBehaviour
 
         Debug.Log("[Test] 포트 열림 → 클라이언트 접속 시도");
 
-        StartNewClient(port);
+        StartNewClient(port, "dsf", "sdfa");
 
         // 2. 기존 네트워크 종료 (로비 연결 끊기)
         if (NetworkClient.isConnected || NetworkServer.active)
@@ -50,10 +50,10 @@ public class LobbyToInGame : MonoBehaviour
     }
 
 
-    void StartNewClient(int port)
+    void StartNewClient(int port, string uid, string cid)
     {
         string ip = "127.0.0.1"; // 로컬 테스트용. 실제 환경에선 서버에서 전달받거나 DNS 사용.
-        string args = $"-inGame -ip={ip} -port={port} -uid={"u-1234"} -cid={"c_1234"}"; // 예시: 매치 ID도 넘길 수 있음
+        string args = $"-inGame -ip={ip} -port={port} -uid={uid} -cid={cid}"; // 예시: 매치 ID도 넘길 수 있음
         var process = new System.Diagnostics.Process();
         process.StartInfo.FileName = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameClient/Team.GameCorp_CrownFall.exe";
         
