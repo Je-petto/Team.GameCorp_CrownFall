@@ -138,6 +138,8 @@ public class SkillCastCommand : ICommand
                 return;
             }
 
+            caster.animator.SetTrigger("Attack");
+
             skillAction.Perform(skillPoint);
             mark.SetActive(false);
 

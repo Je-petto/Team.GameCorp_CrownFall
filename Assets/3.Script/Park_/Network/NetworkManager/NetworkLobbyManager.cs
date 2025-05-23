@@ -111,7 +111,7 @@ public class GameSpawner
 {
     private static int basePort = 8000; // 포트 시작점 (순차 증가용)
 
-    public static (System.Diagnostics.Process process, int port) StartGameInstance(Guid matchId, List<ClientSession> conns)
+    public static (System.Diagnostics.Process process, int port) StartInGameServer(Guid matchId)
     {
         int port = GetAvailablePort(); // 사용 가능한 포트 확보
 
@@ -126,11 +126,8 @@ public class GameSpawner
 
         // string jsonData = JsonUtility.ToJson(matchPlayers);
         // string encoded = Uri.EscapeDataString(jsonData); // 안전하게 변환
-    
-        string json = JsonUtility.ToJson(new PlayerSessionList { conns = conns });
-        string encoded = Uri.EscapeDataString(json);
 
-        process.StartInfo.Arguments = $"-batchmode -nographics -port={port} -matchId={matchId} -session={encoded}";
+        process.StartInfo.Arguments = $"-batchmode -nographics -port={port} -matchId={matchId}";
         process.StartInfo.UseShellExecute = true;
         process.StartInfo.CreateNoWindow = false;       // 콘솔 띄우기.
         process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;               // 일반 창
@@ -142,7 +139,7 @@ public class GameSpawner
     }
 
     //Test Game instance.
-    public static (System.Diagnostics.Process process, int port) StartGameInstance(string matchId)
+    public static (System.Diagnostics.Process process, int port) StartInGameServer(string matchId)
     {
         int port = GetAvailablePort(); // 사용 가능한 포트 확보
 

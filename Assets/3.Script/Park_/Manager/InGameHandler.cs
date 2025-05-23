@@ -1,12 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using System;
-using LitJson;
-using System.IO;
 
 public class InGameHandler : MonoBehaviour
-{
+{   
     public Type type;
 
     private NetworkManager manager;
@@ -19,25 +16,33 @@ public class InGameHandler : MonoBehaviour
         kcp = (kcp2k.KcpTransport)manager.transport;
 
         string[] args = Environment.GetCommandLineArgs();
+
         foreach (var arg in args)
         {
-            if (arg.StartsWith("-port"))
+            if (arg.StartsWith("-port="))
             {
-                var split = arg.Split('=');
-                if (split.Length == 2)
-                    Port = split[1];
+                Port = arg.Substring("-port=".Length);
             }
-            if (arg.StartsWith("-ip"))
+            else if (arg.StartsWith("-ip="))
             {
-                var split = arg.Split('=');
-                if (split.Length == 2)
-                    ServerIP = split[1];
+                ServerIP = arg.Substring("-ip=".Length);
+            }
+            else if (arg.StartsWith("-uid="))
+            {
+                InGameSession.uid = arg.Substring("-uid=".Length);
+            }
+            else if (arg.StartsWith("-cid="))
+            {
+                InGameSession.characterId = arg.Substring("-cid=".Length);
             }
         }
 
         ServerIP = GetLocalIPAddress();             //Test용으로 로컬에서 수행.
         kcp.port = ushort.Parse(Port);
     }
+
+    // 파싱을 하고 데이터를 플레이어에게 전달하기
+
 
     private string GetLocalIPAddress()
     {
@@ -68,7 +73,33 @@ public class InGameHandler : MonoBehaviour
 
     void Start()
     {
-        StartServer();
+        if (type.Equals(Type.Server))
+        {
+            StartServer();
+        }
+        else
+        {
+            StartClient();
+        }
+    }
+
+    public void StartClient()
+    {
+        Debug.Log($"{manager.networkAddress} : Start Client");
+        manager.StartClient();
+
+        // NetworkClient.OnConnectedEvent += () =>
+        // {
+        //     Debug.Log("[Client] Connected. Sending AddPlayer request...");
+        //     if (!NetworkClient.ready) NetworkClient.Ready();
+        //     if (NetworkClient.localPlayer == null) NetworkClient.AddPlayer();
+        // };
+
+        // NetworkClient.OnDisconnectedEvent += () =>
+        // {
+        //     Debug.Log("[Client] Connected. Sending AddPlayer request...");
+        //     if (!NetworkClient.ready) NetworkClient.Disconnect();
+        // };
     }
 
     public void StartServer()
