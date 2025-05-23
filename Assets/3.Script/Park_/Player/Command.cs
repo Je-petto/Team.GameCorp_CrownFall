@@ -92,13 +92,13 @@ public class SkillCastCommand : ICommand
     public bool isCasting { get; private set; }
     public SkillCastCommand(PlayerController caster, ISkillAction skillAction)
     {
+        isCasting = false;
+
         SkillData skillData = caster.data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
         mark = GameObject.Instantiate(skillData.castingMark, caster.transform);
         mark.SetActive(false);
 
         this.skillAction = skillAction;
-
-        isCasting = false;
     }
 
     public void Execute()

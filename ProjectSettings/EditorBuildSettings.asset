@@ -11,16 +11,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1.Scene/InGameScene.unity
     guid: 81cb246487513b54086d1b6e62b0c8ef
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.Scene/PWH_Network/Server/net.0.InGameServerScene.unity
     guid: dc4b39140c7ddb843a06e425d1da4b90
-  - enabled: 0
+  - enabled: 1
     path: Assets/1.Scene/PWH_Network/Server/net.0.ServerScene.unity
     guid: 705603f00d2b3a6408114401a6de4a1b
-  - enabled: 0
+  - enabled: 1
     path: Assets/1.Scene/PWH_Network/Client/net.0.LoginScene.unity
     guid: 1f3126219e5b56b48b34e81d7bb2d5a2
-  - enabled: 0
+  - enabled: 1
     path: Assets/1.Scene/PWH_Network/Client/net.1.LobbyScene.unity
     guid: 551799598e7588d4faad6b07ae6372d9
   - enabled: 1
