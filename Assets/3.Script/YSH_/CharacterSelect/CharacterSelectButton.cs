@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CharacterSelectButton : MonoBehaviour
 {
-    public int characterID;
+    public string characterCID;
 
     public void OnClick()
     {
-        CharacterSelectManager.Instance.SelectCharacter(characterID);
+        CharacterSelectManager.Instance.SelectCharacterByCID(characterCID);
     }
 }

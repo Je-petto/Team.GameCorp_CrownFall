@@ -27,6 +27,13 @@ public class CharacterInfoUI : MonoBehaviour
     /// <summary>
     /// 캐릭터 정보를 UI에 표시
     /// </summary>
+    /// 
+    private void Awake()
+    {
+        // 씬 시작 시 UI 비활성화
+        gameObject.SetActive(false);
+    }
+
     public void SetCharacterInfo(CharacterInfo info)
     {
         if (info == null)
@@ -34,6 +41,9 @@ public class CharacterInfoUI : MonoBehaviour
             Debug.LogWarning("CharacterInfo is null!");
             return;
         }
+
+        if (!gameObject.activeSelf)
+            gameObject.SetActive(true);
 
         Debug.Log($"Setting info for character: {info.characterName}");
 
