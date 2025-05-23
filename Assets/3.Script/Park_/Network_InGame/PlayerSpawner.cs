@@ -10,6 +10,7 @@ public class PlayerSpawner : MonoBehaviour
     [SerializeField] GameObject playerBase;               // 캐릭터 베이스
     [Header("Selector")]
     public string selectCId;
+
     void Start()
     {
         foreach (var p in characterList)

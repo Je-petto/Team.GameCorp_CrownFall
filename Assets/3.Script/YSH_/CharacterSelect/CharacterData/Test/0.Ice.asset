@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1259c80363e304a8a045bbd39103fb, type: 3}
   m_Name: 0.Ice
   m_EditorClassIdentifier: 
-  cid: 
+  cid: 0
   characterName: A
   description: "\uBD81\uCABD\uC5D0\uC11C \uC628 \uBE59\uACB0\uB9C8\uBC95\uC758 \uB300\uAC00"
   hp: 2000

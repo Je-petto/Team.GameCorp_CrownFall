@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public LineRenderer lineRenderer;
 
     public PlayerStateMachine stateMachine;
-    private PlayerInputHandler inputHandler;
+    public PlayerInputHandler inputHandler;
     public EffectHandler effectHandler;
     #endregion
 

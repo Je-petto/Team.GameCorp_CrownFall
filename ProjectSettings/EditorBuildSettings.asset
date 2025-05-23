@@ -5,11 +5,11 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/1.Scene/SHScene.unity
     guid: 42eb472481d26a24f9d79b0e1e744e58
-  - enabled: 0
-    path: Assets/1.Scene/SHInGameScene.unity
+  - enabled: 1
+    path: Assets/1.Scene/InGameScene.unity
     guid: 81cb246487513b54086d1b6e62b0c8ef
   - enabled: 1
     path: Assets/1.Scene/PWH_Network/Server/net.0.InGameServerScene.unity
