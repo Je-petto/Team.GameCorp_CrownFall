@@ -188,7 +188,7 @@ MonoBehaviour:
   editorAutoStart: 0
   sendRate: 60
   offlineScene: 
-  onlineScene: 
+  onlineScene: Assets/1.Scene/PWH_Network/Client/net.3.InGameScene.unity
   offlineSceneLoadDelay: 0
   transport: {fileID: 1715541446}
   networkAddress: localhost
@@ -198,7 +198,7 @@ MonoBehaviour:
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 6605601181913705485, guid: f687a97cd227f9b4190ea757dacca4d3, type: 3}
   autoCreatePlayer: 1
-  playerSpawnMethod: 0
+  playerSpawnMethod: 1
   spawnPrefabs: []
   exceptionsDisconnect: 1
   snapshotSettings:

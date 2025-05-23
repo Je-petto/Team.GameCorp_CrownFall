@@ -174,12 +174,12 @@ public class MatchManager : NetworkBehaviour
         yield return new WaitForSeconds(5f);
 
         // var (inGameServerProcess, port) = GameSpawner.StartGameInstance(group.matchId);
-        // // 매칭된 유저들에게 포트 정보 전송 (TargetRPC 호출)
+        // 매칭된 유저들에게 포트 정보 전송 (TargetRPC 호출)
 
-        // foreach (var conn in group.players)
-        // {
-        //     conn.identity.GetComponent<NetworkPlayer>().TargetConnectToInGame(conn, port);
-        // }
+        foreach (var conn in group.players)
+        {
+            // conn.identity.GetComponent<NetworkPlayer>().TargetConnectToInGame(conn, port);
+        }
     }
 
     [Server]

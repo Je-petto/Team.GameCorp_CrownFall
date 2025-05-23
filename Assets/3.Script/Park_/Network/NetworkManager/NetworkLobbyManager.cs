@@ -16,7 +16,14 @@ public class ClientSession
         this.nickname = nickname;
         this.selected_cid = selected_cid;
     }
-}   
+}
+
+[System.Serializable]
+public class PlayerSessionList
+{
+    public List<ClientSession> conns = new();
+}
+
 
 public class NetworkLobbyManager : NetworkRoomManager
 {
@@ -104,7 +111,7 @@ public class GameSpawner
 {
     private static int basePort = 8000; // 포트 시작점 (순차 증가용)
 
-    public static (System.Diagnostics.Process process, int port) StartGameInstance(Guid matchId)
+    public static (System.Diagnostics.Process process, int port) StartGameInstance(Guid matchId, List<ClientSession> conns)
     {
         int port = GetAvailablePort(); // 사용 가능한 포트 확보
 
@@ -117,7 +124,13 @@ public class GameSpawner
             return (null, port);
         }
 
-        process.StartInfo.Arguments = $"-batchmode -nographics -port={port} -matchId={matchId}";    // 포트와 매치 ID 전달
+        // string jsonData = JsonUtility.ToJson(matchPlayers);
+        // string encoded = Uri.EscapeDataString(jsonData); // 안전하게 변환
+    
+        string json = JsonUtility.ToJson(new PlayerSessionList { conns = conns });
+        string encoded = Uri.EscapeDataString(json);
+
+        process.StartInfo.Arguments = $"-batchmode -nographics -port={port} -matchId={matchId} -session={encoded}";
         process.StartInfo.UseShellExecute = true;
         process.StartInfo.CreateNoWindow = false;       // 콘솔 띄우기.
         process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;               // 일반 창
