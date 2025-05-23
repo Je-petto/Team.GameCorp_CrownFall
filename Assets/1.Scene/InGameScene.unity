@@ -688,7 +688,7 @@ GameObject:
   - component: {fileID: 2016685454}
   - component: {fileID: 2016685453}
   - component: {fileID: 2016685452}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -786,7 +786,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 783081818}
   - {fileID: 1854153036}
   - {fileID: 2016685455}
-  - {fileID: 783081818}
   - {fileID: 1101903632}

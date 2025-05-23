@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     {
         this.data = data;
         currentHp = data.hp;
-        Instantiate(data.model, transform.Find("_mesh"));
+        Instantiate(data.model, Vector3.zero, Quaternion.Euler(Vector3.zero), transform.Find("_mesh"));
 
         // 로컬 테스트용.
         StartCoroutine(InitComponents_Co());

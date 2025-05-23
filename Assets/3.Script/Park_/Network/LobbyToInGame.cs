@@ -10,7 +10,7 @@ public class LobbyToInGame : MonoBehaviour
 
     void Start()
     {
-        networkManager = FindAnyObjectByType<NetworkManager>();    
+        networkManager = NetworkManager.singleton;
     }
 
     public void OnClickTestMatchButton()
@@ -40,12 +40,18 @@ public class LobbyToInGame : MonoBehaviour
         if (NetworkClient.isConnected || NetworkServer.active)
         {
             Debug.Log(" 로비와의 접속을 종료하고 인게임 서버로 넘어갑니다.");
-            
-            Destroy(NetworkManager.singleton.gameObject);
+
             networkManager.StopClient();
+
+            if (networkManager != null && networkManager.gameObject != null)
+            {
+                Debug.Log("네트워크 매니저 싱글톤 제거");
+                Destroy(networkManager.gameObject); // ✅ NetworkManager 중복 방지
+            }
         }
 
-        // 3. 클라이언트 설정 후 접속
+        yield return new WaitForSeconds(0.5f); // ⏳ 약간의 지연 후 재접속
+
         networkManager.networkAddress = ip;
         var transport = networkManager.GetComponent<KcpTransport>();
         transport.port = ushort.Parse(port.ToString());

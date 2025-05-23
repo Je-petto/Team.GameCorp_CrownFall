@@ -31,7 +31,7 @@ public class InGameNetworkManager : NetworkManager
         Debug.Log($"[InGameServer] Client connected: {conn.address}");
 
         Debug.Log($"[InGameServer] Changing Scene to: {ingameSceneName}");
-        ServerChangeScene(ingameSceneName); // ✅ 이게 호출돼야 씬 이동함
+        ServerChangeScene(ingameSceneName);                                     // ✅ 이게 호출돼야 씬 이동함
     }
 
     [Server]
