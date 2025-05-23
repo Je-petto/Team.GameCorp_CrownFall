@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b7427a83cafc954498edf016c61547e, type: 3}
+  m_Name: Fire(Red)_SkillData
+  m_EditorClassIdentifier: 
+  type: 1
+  damage: 0
+  duration: 0
+  coolDown: 0
+  castingTime: 0
+  dot: 0
+  castingMark: {fileID: 3718856034927834208, guid: d67613357a940e547afc5976c850550e, type: 3}
+  prefab: {fileID: 6062935484455973164, guid: 2348e780c642a1f46beb55ccc36f2364, type: 3}
+  distance: 0
+  effectTypes: 

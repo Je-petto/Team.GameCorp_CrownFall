@@ -9,7 +9,7 @@ public interface ISkillAction
 }
 
 //장판 소환
-public class Skill_Red : ISkillAction
+public class Skill_Fire : ISkillAction
 {
     PlayerController caster;
     private SkillData data;
@@ -17,7 +17,7 @@ public class Skill_Red : ISkillAction
 
     private bool isCoolDown;
 
-    public Skill_Red(PlayerController caster, SkillData data)
+    public Skill_Fire(PlayerController caster, SkillData data)
     {
         this.caster = caster;
         this.data = data;
@@ -48,7 +48,7 @@ public class Skill_Red : ISkillAction
 }
 
 //장판 소환
-public class Skill_Blue : MonoBehaviour, ISkillAction
+public class Skill_Frost : MonoBehaviour, ISkillAction
 {
     PlayerController caster;
     private SkillData data;
@@ -56,7 +56,7 @@ public class Skill_Blue : MonoBehaviour, ISkillAction
 
     private bool isCoolDown;
 
-    public Skill_Blue(PlayerController caster, SkillData data)
+    public Skill_Frost(PlayerController caster, SkillData data)
     {
         this.caster = caster;
         this.data = data;
@@ -83,7 +83,7 @@ public class Skill_Blue : MonoBehaviour, ISkillAction
 }
 
 // Heal
-public class Skill_Green : ISkillAction
+public class Skill_Heal : ISkillAction
 {
     PlayerController caster;
     private SkillData data;
@@ -91,7 +91,7 @@ public class Skill_Green : ISkillAction
 
     private bool isCoolDown;
 
-    public Skill_Green(PlayerController caster, SkillData data)
+    public Skill_Heal(PlayerController caster, SkillData data)
     {
         skillEffectObject = GameObject.Instantiate(data.prefab);
         skillEffectObject.SetActive(false);
@@ -118,14 +118,14 @@ public class Skill_Green : ISkillAction
     }
 }
 
-public class Skill_Yellow : ISkillAction
+public class Skill_YellowRod : ISkillAction
 {
     PlayerController caster;
     private SkillData data;
 
     private bool isCoolDown;
 
-    public Skill_Yellow(PlayerController caster, SkillData data)
+    public Skill_YellowRod(PlayerController caster, SkillData data)
     {
         this.caster = caster;
         this.data = data;
