@@ -43,6 +43,5 @@ public class CharacterSelectManager : MonoBehaviour
     {
         (NetworkManager.singleton as NetworkLobbyManager).clientSession.selected_cid = "test1";
         WaitingSceneManager.I.SetReadyState();
-        Debug.Log("Ready!!");
     }
 }

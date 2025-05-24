@@ -30,7 +30,6 @@ public class NetworkPlayer : NetworkRoomPlayer
 
     public UserAuth userAuth;
 
-    // public CharacterData selectedCharacter;
     public TeamComponent myTeamData = null;
     public string selectedCharacter_Id = "";
 
@@ -56,18 +55,19 @@ public class NetworkPlayer : NetworkRoomPlayer
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "GameWaitingScene")
+        if (scene.name == "net.2.SelectorScene")
         {
-            // StartCoroutine(BindEvent());
+            matchState = PlayerMatchState.Matched;
+            StartCoroutine(BindEvent());
         }
     }
 
-    // IEnumerator BindEvent()
-    // {
-    //     yield return new WaitUntil(() => WaitingManager.I != null);
-    //     WaitingManager.I.OnChangeSelectedCharacter += CmdSendPlayerSelectedCharacterData;
-    //     WaitingManager.I.OnChangeMatchState += CmdSendPlayerReadyState;
-    // }
+    IEnumerator BindEvent()
+    {
+        yield return new WaitUntil(() => WaitingSceneManager.I != null);
+        WaitingSceneManager.I.OnChangeSelectedCharacter += CmdSendPlayerSelectedCharacterData;
+        WaitingSceneManager.I.OnChangeMatchState += CmdSendPlayerReadyState;
+    }
 
     [Command]
     public void CmdRequestStartMatching(bool on)
@@ -98,8 +98,8 @@ public class NetworkPlayer : NetworkRoomPlayer
     [TargetRpc]
     public void ReceivePlayerCharacterData(MatchPlayerCharacterDataPacket packet)
     {
-        // if (WaitingManager.I == null) return;
-        // WaitingManager.I.UpdateSelectWindow(packet.uid, packet.dynamicData);
+        if (WaitingSceneManager.I == null) return;
+        WaitingSceneManager.I.UpdateSelectWindow(packet.uid, packet.dynamicData);
         Debug.Log("Get Character Data!");
     }
 
@@ -119,8 +119,8 @@ public class NetworkPlayer : NetworkRoomPlayer
     [TargetRpc]
     public void ReceivePlayerReadyState(MatchPlayerReadyDataPacket packet)
     {
-        // if (WaitingManager.I == null) return;
-        // WaitingManager.I.UpdatePlayerReady(packet.uid, packet.dynamicData);
+        if (WaitingSceneManager.I == null) return;
+        WaitingSceneManager.I.UpdatePlayerReady(packet.uid, packet.dynamicData);
     }
 
     [TargetRpc]
@@ -144,11 +144,11 @@ public class NetworkPlayer : NetworkRoomPlayer
         myTeamData = new(team);
     }
 
-    // IEnumerator GetMatchedMemberList_Co(List<UserAuth> matchedUserList)
-    // {
-    //     yield return new WaitUntil(() => WaitingManager.I != null);
-    //     WaitingManager.I.SetMatchedPlayers(matchedUserList);
-    // }
+    IEnumerator GetMatchedMemberList_Co(List<UserAuth> matchedUserList)
+    {
+        yield return new WaitUntil(() => WaitingSceneManager.I != null);
+        WaitingSceneManager.I.SetMatchedPlayers(matchedUserList);
+    }
 
     //InGame 서버로 이동한다.           ==============================>>> 로비 서버와 인게임 서버가 따로 있다.
     [TargetRpc] // 서버에서 특정 클라이언트에게 호출되는 RPC
@@ -157,16 +157,16 @@ public class NetworkPlayer : NetworkRoomPlayer
         Debug.Log($"Connecting to InGame Server on port {port}");
         Debug.Log("게임 시작!!!");
 
-        StartNewClient(target, port);
+        StartInGameClient(target, port);
 
         Application.Quit(); // 또는 로비 UI 종료 처리
     }
 
-    void StartNewClient(NetworkConnection target, int port)
+    void StartInGameClient(NetworkConnection target, int port)
     {
         string ip = "127.0.0.1"; // 로컬 테스트용. 실제 환경에선 서버에서 전달받거나 DNS 사용.
         string args = $"-inGame -ip={ip} -port={port} -uid={userAuth.uid} -cid={userAuth.c_id}"; // 예시: 매치 ID도 넘길 수 있음
-        string ingameClientPath = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameClient/Team.GameCorp_CrownFall_Client.exe";
+        string ingameClientPath = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameClient/Team.GameCorp_CrownFall.exe";
 
         // 인게임 클라이언트
         if (!File.Exists(ingameClientPath))
@@ -174,6 +174,8 @@ public class NetworkPlayer : NetworkRoomPlayer
             Debug.LogError($"InGame Client executable not found at: {ingameClientPath}");
             return;
         }
+
+        Debug.Log($"[Client] : InGame Client Start!");
 
         var process = new System.Diagnostics.Process();
         process.StartInfo.FileName = ingameClientPath;

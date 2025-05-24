@@ -18,7 +18,7 @@ public class WaitingSceneManager : BehaviourSingleton<WaitingSceneManager>
 
     private List<NetworkPlayer> networkPlayers;
     [SerializeField] Transform nicknamePanParent;
-    [SerializeField] PlayerDataPanel playerPanBase;
+    [SerializeField] PlayerDataPanel teamMatePan;
 
     List<PlayerDataPanel> playerList = new();
 
@@ -32,7 +32,7 @@ public class WaitingSceneManager : BehaviourSingleton<WaitingSceneManager>
     {
         foreach (var user in matchedUserList)
         {
-            PlayerDataPanel playerPan = Instantiate(playerPanBase, nicknamePanParent);
+            PlayerDataPanel playerPan = Instantiate(teamMatePan, nicknamePanParent);
             playerPan.Init(user);
             playerList.Add(playerPan);
         }
@@ -77,6 +77,7 @@ public class WaitingSceneManager : BehaviourSingleton<WaitingSceneManager>
     public void SetReadyState()
     {
         NetworkPlayer myPlayer = networkPlayers.Find(a => a.isLocalPlayer);
+    
         PlayerMatchState state = myPlayer.matchState;
 
         if (state.Equals(PlayerMatchState.Ready))
