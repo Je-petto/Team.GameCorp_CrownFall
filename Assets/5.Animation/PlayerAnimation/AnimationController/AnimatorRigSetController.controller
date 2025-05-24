@@ -10,8 +10,8 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: -5563725552040178641}
-    m_Position: {x: 290, y: 110, z: 0}
+    m_State: {fileID: -8295393585677878107}
+    m_Position: {x: 289.4456, y: 114.835724, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -21,15 +21,15 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 50, y: 20, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: -5563725552040178641}
---- !u!1102 &-5563725552040178641
+  m_DefaultState: {fileID: -8295393585677878107}
+--- !u!1102 &-8295393585677878107
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Magic Attack_Final
+  m_Name: Skill_Ice
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -42,7 +42,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: f4667fc9be94e2a4a9f84637cc471fc8, type: 2}
+  m_Motion: {fileID: 7400000, guid: 0440d9b31e6743249a4ad9ff3559e402, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

@@ -34,15 +34,17 @@ public abstract class BehaviourSingleton<T> : MonoBehaviour where T : MonoBehavi
 
     protected virtual void Awake()
     {
-        if (I != null && I != this)
+        if (_instance == null)
+            _instance = this as T;
+
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
-        
+
         if (IsDontdestroy())
             DontDestroyOnLoad(gameObject);
-
     }
 
 }
