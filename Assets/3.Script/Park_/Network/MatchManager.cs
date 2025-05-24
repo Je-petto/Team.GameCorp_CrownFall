@@ -173,12 +173,12 @@ public class MatchManager : NetworkBehaviour
         Debug.Log(">> All Ready Complete => Game Start after 5 seconds");
         yield return new WaitForSeconds(5f);
 
-        // var (inGameServerProcess, port) = GameSpawner.StartGameInstance(group.matchId);
+        var (inGameServerProcess, port) = GameSpawner.StartInGameServer(group.matchId);
         // 매칭된 유저들에게 포트 정보 전송 (TargetRPC 호출)
 
         foreach (var conn in group.players)
         {
-            // conn.identity.GetComponent<NetworkPlayer>().TargetConnectToInGame(conn, port);
+            conn.identity.GetComponent<NetworkPlayer>().TargetConnectToInGame(conn, port);
         }
     }
 
@@ -214,6 +214,7 @@ public class MatchManager : NetworkBehaviour
             group.readyCount--;
         }
 
+        Debug.Log($"Current Ready State : {group.readyCount}");
         foreach (var player in group.players)
         {
             player.identity.GetComponent<NetworkPlayer>().ReceivePlayerReadyState(packet);

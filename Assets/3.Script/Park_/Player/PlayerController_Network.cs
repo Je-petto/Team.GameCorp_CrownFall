@@ -3,12 +3,6 @@ using Cinemachine;
 using Mirror;
 using UnityEngine;
 
-public static class InGameSession
-{
-    public static string uid;
-    public static string characterId;
-}
-
 public class PlayerController_Network : NetworkBehaviour
 {
     #region Network

@@ -4746,8 +4746,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   user:
-    uid: uid122
-    nickname: nick265
+    uid: uid_666
+    nickname: nick_3333
     c_id: 
 --- !u!1 &1106225916
 GameObject:

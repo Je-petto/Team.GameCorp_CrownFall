@@ -1,9 +1,18 @@
 using System.Collections;
 using Cinemachine;
+using Mirror;
 using UnityEngine;
 
-public enum PlayerState{ ALIVE, DEATH }
-public class PlayerController : MonoBehaviour
+    
+public static class InGameSession
+{
+    public static string uid;
+    public static string characterId;
+}
+
+public enum PlayerState { ALIVE, DEATH }
+
+public class PlayerController : NetworkBehaviour
 {
     #region PlayerStat
     public int currentHp;

@@ -1663,7 +1663,7 @@ GameObject:
   - component: {fileID: 502751775}
   - component: {fileID: 502751774}
   m_Layer: 5
-  m_Name: GameStartButton
+  m_Name: GameReadyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1735,7 +1735,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 508966179}
         m_TargetAssemblyTypeName: CharacterSelectManager, Assembly-CSharp
-        m_MethodName: OnStartGame
+        m_MethodName: OnClickReadyButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9341,7 +9341,7 @@ MonoBehaviour:
   networkManager: {fileID: 0}
   _testCount: 0
   nicknamePanParent: {fileID: 1847028509}
-  playerPanBase: {fileID: 0}
+  playerPanBase: {fileID: 6656879776605554067, guid: 328e49b4b8507384da4955b5469b49e8, type: 3}
   characterList:
   - {fileID: 11400000, guid: 906b121eaad8d0c4ba0bb653e8ba0c09, type: 2}
   - {fileID: 11400000, guid: 2a9a95227f1e6a748ab4709e3f5f5c31, type: 2}
@@ -9972,7 +9972,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: StartGame
+  m_text: Ready
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

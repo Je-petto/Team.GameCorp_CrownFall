@@ -109,16 +109,13 @@ public class GameSpawner
         int port = GetAvailablePort(); // 사용 가능한 포트 확보
 
         var process = new System.Diagnostics.Process();
-        process.StartInfo.FileName = "D:/Server_Path"; // 빌드된 서버 실행파일
+        process.StartInfo.FileName = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe"; // 빌드된 서버 실행파일
 
         if (!File.Exists(process.StartInfo.FileName))
         {
             Debug.LogError($"게임 서버 실행 파일을 찾을 수 없습니다: {process.StartInfo.FileName}");
             return (null, port);
         }
-
-        // string jsonData = JsonUtility.ToJson(matchPlayers);
-        // string encoded = Uri.EscapeDataString(jsonData); // 안전하게 변환
 
         process.StartInfo.Arguments = $"-batchmode -nographics -port={port} -matchId={matchId}";
         process.StartInfo.UseShellExecute = true;
