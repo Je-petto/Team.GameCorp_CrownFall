@@ -21,7 +21,6 @@ public class PlayerSpawner : BehaviourSingleton<PlayerSpawner>
 
     public CharacterInfo GetCharacterInfo(string cid = "0")
     {
-        
         return characterDic[cid];
     }
 }

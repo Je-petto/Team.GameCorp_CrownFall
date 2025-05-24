@@ -2,6 +2,13 @@ using UnityEngine;
 using Mirror;
 using System;
 
+public static class InGameSession
+{
+    public static bool isInit = false;
+    public static string uid;
+    public static string characterId;
+}
+
 public class InGameHandler : MonoBehaviour
 {   
     public Type type;
@@ -26,14 +33,6 @@ public class InGameHandler : MonoBehaviour
             else if (arg.StartsWith("-ip="))
             {
                 ServerIP = arg.Substring("-ip=".Length);
-            }
-            else if (arg.StartsWith("-uid="))
-            {
-                InGameSession.uid = arg.Substring("-uid=".Length);
-            }
-            else if (arg.StartsWith("-cid="))
-            {
-                InGameSession.characterId = arg.Substring("-cid=".Length);
             }
         }
 
@@ -86,20 +85,28 @@ public class InGameHandler : MonoBehaviour
     public void StartClient()
     {
         Debug.Log($"{manager.networkAddress} : Start Client");
+
         manager.StartClient();
 
-        // NetworkClient.OnConnectedEvent += () =>
-        // {
-        //     Debug.Log("[Client] Connected. Sending AddPlayer request...");
-        //     if (!NetworkClient.ready) NetworkClient.Ready();
-        //     if (NetworkClient.localPlayer == null) NetworkClient.AddPlayer();
-        // };
 
-        // NetworkClient.OnDisconnectedEvent += () =>
-        // {
-        //     Debug.Log("[Client] Connected. Sending AddPlayer request...");
-        //     if (!NetworkClient.ready) NetworkClient.Disconnect();
-        // };
+        string[] args = Environment.GetCommandLineArgs();
+
+
+        foreach (var arg in args)
+        {
+            if (arg.StartsWith("-uid="))
+            {
+                InGameSession.uid = arg.Substring("-uid=".Length);
+            }
+            else if (arg.StartsWith("-cid="))
+            {
+                InGameSession.characterId = arg.Substring("-cid=".Length);
+            }
+        }
+
+        Debug.Log($"uid : {InGameSession.uid} || characterId : {InGameSession.characterId}");
+
+        InGameSession.isInit = true;
     }
 
     public void StartServer()

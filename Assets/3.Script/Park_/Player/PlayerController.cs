@@ -3,21 +3,21 @@ using Cinemachine;
 using Mirror;
 using UnityEngine;
 
-    
-public static class InGameSession
-{
-    public static string uid;
-    public static string characterId;
-}
 
-public enum PlayerState { ALIVE, DEATH }
+public enum LifeState { ALIVE, DEATH }
+
+public class PlayerStat
+{
+    public int hp;
+    public float moveSpeed;
+}
 
 public class PlayerController : NetworkBehaviour
 {
     #region PlayerStat
     public int currentHp;
     public CharacterInfo data;
-    public PlayerState pState;
+    public LifeState pState;
 
     [Header("Respawn Settings")]
     public float respawnTime = 5f;
@@ -46,15 +46,38 @@ public class PlayerController : NetworkBehaviour
 
     void Start()
     {
-        //test Code
+        Debug.Log("Player Init Start!");
+        pState = LifeState.ALIVE;
         teamData = new(TeamType.RED);
-        pState = PlayerState.ALIVE;
+
+        StartCoroutine(SetCharacter_Co());
     }
 
-    public void SetCharacter(CharacterInfo data)
+    IEnumerator SetCharacter_Co()
     {
+        Debug.Log("Player Character Setting...");
+        yield return new WaitUntil(() => InGameSession.isInit);
+
+        Debug.Log("InGameSession Complete.");
+        yield return new WaitUntil(() => PlayerSpawner.I != null);
+
+        Debug.Log($"{InGameSession.characterId}...");
+        
+        Debug.Log("PlayerSpawner Complete.");
+        CharacterInfo data = PlayerSpawner.I.GetCharacterInfo(InGameSession.characterId);
+
+        if (data != null)
+        {
+            Debug.Log("char data is not null.");
+        }
+        else
+        {
+            Debug.Log("char data is null.");   
+        }
+
         this.data = data;
         currentHp = data.hp;
+
         Instantiate(data.model, Vector3.zero, Quaternion.Euler(Vector3.zero), transform.Find("_mesh"));
 
         // 로컬 테스트용.
@@ -64,6 +87,8 @@ public class PlayerController : NetworkBehaviour
     IEnumerator InitComponents_Co()
     {
         yield return new WaitForEndOfFrame();
+        Debug.Log("InitComponents_Co Ing...");
+        lineRenderer.enabled = false;
 
         attackPoint = transform.Find("_attackPoint");
 
@@ -72,7 +97,27 @@ public class PlayerController : NetworkBehaviour
         TryGetComponent(out inputHandler);
         TryGetComponent(out lineRenderer);
 
-        lineRenderer.enabled = false;
+        if (rb == null)
+        {
+            Debug.Log("rb is null\n");
+        }
+
+        if (stateMachine == null)
+        {
+            Debug.Log("stateMachine is null\n");
+        }
+
+        if (inputHandler == null)
+        {
+            Debug.Log("inputHandler is null\n");
+        }
+
+        if (lineRenderer == null)
+        {
+            Debug.Log("lineRenderer is null\n");
+        }
+
+
 
         animator = GetComponentInChildren<Animator>();
         animator.runtimeAnimatorController = data.inGameAnimator;
@@ -85,15 +130,16 @@ public class PlayerController : NetworkBehaviour
         yield return new WaitUntil(() => inputHandler != null);
 
         inputHandler.moveCommand = new MoveCommand(this);
+        inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackNonTargeting(this));            // Backstep
 
-        // inputHandler.attackCommand = new AttackCommand(this. new PlayerAttack(this));
-        // inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackNonTargeting(this));            // Backstep
-        inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackIK(this));                         // IK
+        // inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackIK(this));                         // IK
         inputHandler.detectCommand = new DetectionCommand(this, new PlayerDetection(this));
         inputHandler.deathCommand = new DeathCommand(this, new DeadState(this));
 
-        SkillData sd = data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
-        inputHandler.skillCastCommand = new SkillCastCommand(this, SkillFactory.CreateSkillAction(this, sd));
+        // SkillData sd = data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
+        // inputHandler.skillCastCommand = new SkillCastCommand(this, SkillFactory.CreateSkillAction(this, sd));
+
+
     }
 
     //추가한 부분 시작
@@ -110,7 +156,6 @@ public class PlayerController : NetworkBehaviour
     {
         stateMachine.ChangeState(new DeadState(this));
     }
-    //추가한 부분  시작
 
     void OnDrawGizmos()
     {
@@ -119,21 +164,5 @@ public class PlayerController : NetworkBehaviour
         //공격 범위 드로우
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + Vector3.up, data.attackableRange);
-    }
-
-    #region Inspector Test
-    void LateUpdate()
-    {
-
-    }
-    #endregion
-
-
-    // 현재 플레이어를 리셋한다.
-    public void ResetPlayer()
-    {
-        transform.position = Vector3.zero;
-        currentHp = data.hp;
-        stateMachine.ChangeState(new IdleState(this));
     }
 }

@@ -25,7 +25,7 @@ public class InGameCharacterSpawner : MonoBehaviour
             return;
         }
 
-        StartCoroutine(SpawnPlayer_Co(info));
+        // StartCoroutine(SpawnPlayer_Co(info));
 
         // GameObject character = Instantiate(info.model, spawnPoint.position, spawnPoint.rotation);
         // Animator animator = character.GetComponent<Animator>();
@@ -38,11 +38,11 @@ public class InGameCharacterSpawner : MonoBehaviour
     }
 
     
-    IEnumerator SpawnPlayer_Co(CharacterInfo info)
+    IEnumerator SpawnPlayer_Co(CharacterInfo info, string teamData)
     {
         yield return new WaitForEndOfFrame();
         PlayerController player = Instantiate(playerBase).GetComponent<PlayerController>();
   
-        player.SetCharacter(info);
+        // player.SetCharacter(info, teamData);
     }
 }

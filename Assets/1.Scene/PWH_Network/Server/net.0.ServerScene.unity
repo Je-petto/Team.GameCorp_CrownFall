@@ -157,7 +157,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  maxPlayerCount: 2
+  maxPlayerCount: 1
 --- !u!114 &318351797
 MonoBehaviour:
   m_ObjectHideFlags: 0

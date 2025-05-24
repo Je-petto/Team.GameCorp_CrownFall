@@ -80,7 +80,6 @@ public class PlayerDetection : PlayerAbility
 // non-target [IK]
 public class PlayerAttackNonTargeting : PlayerAbility
 {
-    private LineRenderer lineRenderer;
     public PlayerAttackNonTargeting(PlayerController player) : base(player){ }
 
     public override void Perform()
