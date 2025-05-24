@@ -51,6 +51,7 @@ public static class SkillFactory
             case SkillType.FIRE: return new Skill_Fire(caster, data);
             case SkillType.HEAL: return new Skill_Heal(caster, data);
             case SkillType.FROST: return new Skill_Frost(caster, data);
+            case SkillType.LIGHTNING : return new Skill_YellowRod(caster, data);
         }
         return null;
     }   

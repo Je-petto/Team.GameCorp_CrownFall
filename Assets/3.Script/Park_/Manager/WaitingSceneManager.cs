@@ -70,6 +70,10 @@ public class WaitingSceneManager : BehaviourSingleton<WaitingSceneManager>
     {
         Debug.Log($"Select character : {selectedCharacter.name}");
 
+
+        NetworkPlayer myPlayer = networkPlayers.Find(a => a.isLocalPlayer);
+        myPlayer.userAuth.c_id = selectedCharacter.cid;
+        
         // 패킷을 만들고 Matchmanager에게 보내기
         OnChangeSelectedCharacter?.Invoke(selectedCharacter.cid);
     }

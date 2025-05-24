@@ -118,7 +118,11 @@ public class SQL_Manager : BehaviourSingleton<SQL_Manager>
                         if (!reader.IsClosed) reader.Close();
 
                         User_info user = SQL_Manager.I.info;
-                        (NetworkManager.singleton as NetworkLobbyManager).clientSession = new(ID, name, "");
+
+                        (NetworkManager.singleton as NetworkLobbyManager).clientSession.uid = ID;
+                        (NetworkManager.singleton as NetworkLobbyManager).clientSession.nickname = name;
+                        (NetworkManager.singleton as NetworkLobbyManager).clientSession.selected_cid = "";
+                        
                         return true;
                     }
                     else

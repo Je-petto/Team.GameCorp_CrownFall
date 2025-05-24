@@ -84,8 +84,6 @@ public class AttackCommand : ICommand
 
     PlayerAttackNonTargeting attack;
 
-    // PlayerAttackIK attack;
-
     public AttackCommand(PlayerController player, PlayerAttackNonTargeting attack)
     {
         this.player = player;
@@ -117,6 +115,8 @@ public class SkillCastCommand : ICommand
 
     public void Execute()
     {
+        Debug.Log("Skill Execute");
+        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (mark.activeSelf)

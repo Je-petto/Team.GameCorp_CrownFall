@@ -1,25 +1,23 @@
-using kcp2k;
 using Mirror;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Telepathy;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [System.Serializable]
-public struct UserAuth
+public class UserAuth
 {
     public string uid;
     public string nickname;
     public string c_id;
+    public UserAuth() { }
     public UserAuth(string uid, string nickname)
     {
         this.uid = uid;
         this.nickname = nickname;
-        c_id = null;
+        c_id = "";
     }
 }
 
@@ -31,7 +29,6 @@ public class NetworkPlayer : NetworkRoomPlayer
     public UserAuth userAuth;
 
     public TeamComponent myTeamData = null;
-    public string selectedCharacter_Id = "";
 
     public override void OnStartClient()
     {
@@ -88,8 +85,6 @@ public class NetworkPlayer : NetworkRoomPlayer
     {
         // selectedCharacter = data;
         Debug.Log($"Client U_ID[{userAuth.uid}] : Select Character : {c_id}");
-
-        selectedCharacter_Id = c_id;
         userAuth.c_id = c_id;
         MatchPlayerCharacterDataPacket packet = new MatchPlayerCharacterDataPacket(userAuth.uid, userAuth.nickname, userAuth.c_id);
         ((NetworkLobbyManager)NetworkManager.singleton).matchManager.ReceiveCharacterSelection(connectionToClient, packet);
@@ -166,7 +161,7 @@ public class NetworkPlayer : NetworkRoomPlayer
     {
         string ip = "127.0.0.1"; // 로컬 테스트용. 실제 환경에선 서버에서 전달받거나 DNS 사용.
         string args = $"-inGame -ip={ip} -port={port} -uid={userAuth.uid} -cid={userAuth.c_id}"; // 예시: 매치 ID도 넘길 수 있음
-        string ingameClientPath = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameClient/Team.GameCorp_CrownFall.exe";
+        string ingameClientPath = "D:/Project/LocalGit/Team.GameCorp_CrownFall/Builds/InGameClient/Team.GameCorp_CrownFall.exe";
 
         // 인게임 클라이언트
         if (!File.Exists(ingameClientPath))
@@ -187,7 +182,6 @@ public class NetworkPlayer : NetworkRoomPlayer
         // 클라이언트 실행.
         process.Start();
 
-
         //기존 클라이언트는 종료!
 #if UNITY_EDITOR
         // 에디터에서는 플레이 모드 종료
@@ -197,5 +191,4 @@ public class NetworkPlayer : NetworkRoomPlayer
             Application.Quit();
 #endif
     }
-
 }

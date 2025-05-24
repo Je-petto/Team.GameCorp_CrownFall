@@ -15,13 +15,13 @@ public enum Type
 public class Item
 {
     public string License;
-    public string ServerIP;
+    public string Server_IP;
     public string Port;
 
     public Item(string L_index, string IPValue, string port)
     {
         License = L_index;
-        ServerIP = IPValue;
+        Server_IP = IPValue;
         Port = port;
     }
 }
@@ -41,12 +41,12 @@ public class SeverChecker : MonoBehaviour
     {
         path = Application.dataPath + "/License";
 
-        // Æú´õ °Ë»ç
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
         if (!File.Exists(path))
         {
             Directory.CreateDirectory(path);
         }
-        // ÆÄÀÏ °Ë»ç
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
         if (!File.Exists(path + "/License.json"))
         {
             DefaultData(path);
@@ -58,7 +58,7 @@ public class SeverChecker : MonoBehaviour
 
     private void DefaultData(string path)
     {
-        // Json ¸¸µå´Â ÀÛ¾÷
+        // Json ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¾ï¿½
         List<Item> item = new List<Item>();
         item.Add(new Item("0", "127.0.0.1", "7777"));
 
