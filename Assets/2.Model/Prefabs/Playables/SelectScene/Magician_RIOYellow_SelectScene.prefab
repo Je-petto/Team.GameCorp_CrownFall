@@ -818,9 +818,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fxSpawnInfos:
   - fxName: SUMMON
-    prefab: {fileID: 1228110654730953357, guid: 0ca4493ecd7e0734b9b57cf868b4f851, type: 3}
+    prefab: {fileID: 6802172298145955920, guid: d92d12a8633f0f74292f1f45eecbd7a0, type: 3}
     spawnPoint: {fileID: 2410099487308611895}
-    positionOffset: {x: 0, y: 0, z: 0}
+    positionOffset: {x: 0, y: 0, z: 0.3}
     rotationEuler: {x: 90, y: 0, z: 0}
     duration: 1.7
   - fxName: LORBLEFT

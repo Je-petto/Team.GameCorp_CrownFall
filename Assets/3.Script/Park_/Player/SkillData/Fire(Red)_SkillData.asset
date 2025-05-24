@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b7427a83cafc954498edf016c61547e, type: 3}
   m_Name: Fire(Red)_SkillData
   m_EditorClassIdentifier: 
-  type: 1
+  type: 2
   damage: 450
   duration: 3
   coolDown: 10
