@@ -1,6 +1,7 @@
+using Mirror;
 using UnityEngine;
 
-public class PlayerInputHandler : MonoBehaviour
+public class PlayerInputHandler : NetworkBehaviour
 {
     public ICommand moveCommand;
     public ICommand attackCommand;
@@ -13,14 +14,22 @@ public class PlayerInputHandler : MonoBehaviour
 
     void Update()
     {
-        // if (!isLocalPlayer) return;
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!isLocalPlayer)
         {
-            deathCommand.Execute();
+            return;
         }
 
-        skillCastCommand.Execute();
+        if (Input.GetKeyDown(KeyCode.Space))
+            {
+                deathCommand.Execute();
+            }
+
+        if (skillCastCommand == null)
+        {
+            Debug.Log("skill command is null");
+            skillCastCommand.Execute();
+            return;
+        }
 
         if (!castCommand.isCasting)
         {
@@ -44,7 +53,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     void FixedUpdate()
     {
-        // if (!isLocalPlayer) return;
+        if (!isLocalPlayer) return;
         if (moveCommand == null) return;
         moveCommand.Execute();
     }

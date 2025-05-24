@@ -90,8 +90,8 @@ public class NetworkPlayer : NetworkRoomPlayer
         Debug.Log($"Client U_ID[{userAuth.uid}] : Select Character : {c_id}");
 
         selectedCharacter_Id = c_id;
-
-        MatchPlayerCharacterDataPacket packet = new MatchPlayerCharacterDataPacket(userAuth.uid, userAuth.nickname, c_id);
+        userAuth.c_id = c_id;
+        MatchPlayerCharacterDataPacket packet = new MatchPlayerCharacterDataPacket(userAuth.uid, userAuth.nickname, userAuth.c_id);
         ((NetworkLobbyManager)NetworkManager.singleton).matchManager.ReceiveCharacterSelection(connectionToClient, packet);
     }
 

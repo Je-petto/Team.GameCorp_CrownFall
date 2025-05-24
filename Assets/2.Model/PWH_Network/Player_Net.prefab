@@ -182,9 +182,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6022695317468072854}
+  - component: {fileID: -8317341498878769677}
   - component: {fileID: 2456417140182304207}
   - component: {fileID: 2347696000160597485}
-  - component: {fileID: -6267555201739785472}
   - component: {fileID: 7825714550399199096}
   - component: {fileID: 8445013702451322883}
   - component: {fileID: 7340440302698692442}
@@ -216,6 +216,35 @@ Transform:
   - {fileID: 7265157748679799199}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-8317341498878769677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8436226803424169134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 648f67040a127ac46917949aeabdc488, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  currentHp: 0
+  data: {fileID: 0}
+  pState: 0
+  respawnTime: 5
+  rb: {fileID: 0}
+  animator: {fileID: 0}
+  attackPoint: {fileID: 0}
+  lineRenderer: {fileID: 0}
+  stateMachine: {fileID: 0}
+  inputHandler: {fileID: 0}
+  effectHandler: {fileID: 0}
+  target: {fileID: 0}
+  targetPoint: {x: 0, y: 0, z: 0}
+  bone: 7
 --- !u!136 &2456417140182304207
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -266,35 +295,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &-6267555201739785472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8436226803424169134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99db4aaf3bb3b8f47b0d03ce77e3682a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  uid: 
-  characterId: 
-  currentHp: 0
-  data: {fileID: 0}
-  rb: {fileID: 0}
-  animator: {fileID: 0}
-  attackPoint: {fileID: 0}
-  lineRenderer: {fileID: 0}
-  stateMachine: {fileID: 0}
-  inputHandler: {fileID: 0}
-  effectHandler: {fileID: 0}
-  target: {fileID: 0}
-  targetPoint: {x: 0, y: 0, z: 0}
-  bone: 0
 --- !u!114 &7825714550399199096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,11 +314,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8436226803424169134}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87cfe39fcdd1aa24fb08d2b1acc51e8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!114 &7340440302698692442
 MonoBehaviour:
   m_ObjectHideFlags: 0

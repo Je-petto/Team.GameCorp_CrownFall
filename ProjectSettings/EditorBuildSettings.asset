@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/1.Scene/PWH_Network/Client/net.3.InGameScene.unity
     guid: d4dd6773705d04e4e826e9fc33981d5b
-  - enabled: 0
+  - enabled: 1
     path: Assets/1.Scene/PWH_Network/Server/net.0.ServerScene.unity
     guid: 705603f00d2b3a6408114401a6de4a1b
   - enabled: 1

@@ -86,7 +86,7 @@ public class DeadState : IPlayerState
     public void Enter()
     {
         player.animator.SetTrigger("Death");
-        player.pState = PlayerState.DEATH;
+        player.pState = LifeState.DEATH;
         player.inputHandler.enabled = false;
 
         StartDeathSequence();

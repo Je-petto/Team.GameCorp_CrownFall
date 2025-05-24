@@ -82,11 +82,11 @@ public class AttackCommand : ICommand
 {
     PlayerController player;
 
-    // PlayerAttackNonTargeting attack;
+    PlayerAttackNonTargeting attack;
 
-    PlayerAttackIK attack;
+    // PlayerAttackIK attack;
 
-    public AttackCommand(PlayerController player, PlayerAttackIK attack)
+    public AttackCommand(PlayerController player, PlayerAttackNonTargeting attack)
     {
         this.player = player;
         this.attack = attack;
