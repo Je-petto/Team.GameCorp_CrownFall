@@ -21,11 +21,12 @@ MonoBehaviour:
   speed: 8
   attackableRange: 7
   attackInterval: 0.5
-  skillSet: []
+  skillSet:
+  - {fileID: 11400000, guid: 0dc5b9c72aa3c02498e8062e06d81b4b, type: 2}
   characterType: 3
   model: {fileID: 5784237667751818885, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
   selectorAnimator: {fileID: 9100000, guid: 34c4576610c1c5c44acc58e73cf6d15e, type: 2}
   inGameAnimator: {fileID: 9100000, guid: dabedca5d56ff304b88a716da4874e11, type: 2}
-  projection: {fileID: 4787629297208117674, guid: 7dc38648839529242831dfbfe052991f, type: 3}
+  projection: {fileID: 4451188901321450200, guid: a811b82eb0a8af6489baa65531462ee3, type: 3}
   face: {fileID: 21300000, guid: 8ad1c221d3a51f54bb6f817f3bd55e7a, type: 3}
   rotateSpeed: 720

@@ -62,7 +62,7 @@ public class SkillControl : MonoBehaviour
 
     private void SkillClick()
     {
-        if (skillType.Equals(SkillType.YELLOW) || skillType.Equals(SkillType.GREEN)) return;
+        if (skillType.Equals(SkillType.FROST) || skillType.Equals(SkillType.FIRE) || skillType.Equals(SkillType.LIGHTNING)) return;
 
         if (Input.GetMouseButtonDown(1) && !isCoolDown)
         {
@@ -83,7 +83,7 @@ public class SkillControl : MonoBehaviour
 
     private void SkillHeal()
     {
-        if (!skillType.Equals(SkillType.GREEN)) return;
+        if (!skillType.Equals(SkillType.HEAL)) return;
 
         if (Input.GetMouseButtonDown(1) && !isCoolDown)
         {
@@ -156,7 +156,7 @@ public class SkillControl : MonoBehaviour
     // Yellow
     private void SkillRay()
     {
-        if (!skillType.Equals(SkillType.YELLOW)) return;
+        if (!skillType.Equals(SkillType.LIGHTNINGRAY)) return;
 
         Vector3 hitPos;
         if (Input.GetMouseButtonDown(1))

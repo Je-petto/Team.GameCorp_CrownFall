@@ -19,10 +19,9 @@ public class PoolManager : BehaviourSingleton<PoolManager>
 
     public void ClearPool()
     {
-        prefabs.ToList().ForEach(p => p.Value.Clear());
+        foreach (var p in prefabs) p.Value.Clear();
+        foreach (var i in instances) i.Value.Clear();
         prefabs.Clear();
-
-        instances.ToList().ForEach(i => i.Value.Clear());
         instances.Clear();
     }
 
@@ -57,19 +56,15 @@ public class PoolManager : BehaviourSingleton<PoolManager>
 
         prefabs[pb] = pool;
 
-        // 오브젝트 미리 생성 후 풀에 저장
         for (int i = 0; i < size; i++)
         {
             var obj = pool.Get();
             if (obj != null && obj.gameObject != null)
-            {
                 pool.Release(obj);
-            }
         }
     }
 
-
-    public PoolBehaviour Spawn(PoolBehaviour pb, Vector3 pos, Quaternion rot, Transform parent)
+    public PoolBehaviour Spawn(PoolBehaviour pb, Vector3 pos, Quaternion rot, Transform parent = null)
     {
         if (!prefabs.ContainsKey(pb))
             WarmPool(pb);
@@ -77,7 +72,8 @@ public class PoolManager : BehaviourSingleton<PoolManager>
         var pool = prefabs[pb];
         var clone = pool.Get();
 
-        clone.transform.SetParent(parent ?? transform, true); // ✅ 따라가게 만들기
+        clone.poolmanager = this; // 안전하게 다시 설정
+        clone.transform.SetParent(parent ?? transform, true);
         clone.transform.position = pos;
         clone.transform.rotation = rot;
 
@@ -93,11 +89,10 @@ public class PoolManager : BehaviourSingleton<PoolManager>
         var pool = prefabs[pb];
         var clone = pool.Get();
 
-        // 문제가 있는 경우 WarmPool을 재시도
         if (clone == null || clone.gameObject == null)
         {
             Debug.LogWarning("ForceSpawn 실패: pool 손상 감지 – WarmPool 재시도");
-            WarmPool(pb); // 다시 만들어서 교체
+            WarmPool(pb);
             pool = prefabs[pb];
             clone = pool.Get();
 
@@ -108,6 +103,7 @@ public class PoolManager : BehaviourSingleton<PoolManager>
             }
         }
 
+        clone.poolmanager = this;
         instances[clone] = pool;
         clone.gameObject.SetActive(true);
         return clone;
@@ -124,5 +120,5 @@ public class PoolManager : BehaviourSingleton<PoolManager>
         instances[pb].Release(pb);
         instances.Remove(pb);
     }
-
 }
+

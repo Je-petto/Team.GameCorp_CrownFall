@@ -48,9 +48,9 @@ public static class SkillFactory
     {
         switch (data.type)
         {
-            case SkillType.RED: return new Skill_Red(caster, data);
-            case SkillType.GREEN: return new Skill_Green(caster, data);
-            case SkillType.BLUE: return new Skill_Blue(caster, data);
+            case SkillType.FIRE: return new Skill_Fire(caster, data);
+            case SkillType.HEAL: return new Skill_Heal(caster, data);
+            case SkillType.FROST: return new Skill_Frost(caster, data);
         }
         return null;
     }   

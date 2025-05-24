@@ -4,10 +4,11 @@ using UnityEngine;
 public enum SkillType
 {
     NONE,
-    RED,
-    GREEN,
-    BLUE,
-    YELLOW
+    FROST,
+    FIRE,
+    LIGHTNING,
+    LIGHTNINGRAY,
+    HEAL
 }
 
 [CreateAssetMenu(menuName = "Data/SkillData")]
