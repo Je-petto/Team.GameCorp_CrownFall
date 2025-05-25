@@ -43,6 +43,7 @@ public class MoveState : IPlayerState
 
     public void Update()
     {
+        if (player.inputHandler.isStop || player.inputHandler.isDeath) return;
         Move();
         Rotate();
     }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -79,21 +78,4 @@ public class PlayerAttackNonTargeting : PlayerAbility
     }
 }
 
-#endregion  
-
-public class PlayerSkill : PlayerAbility
-{
-    private SkillData skillData;
-    public List<IEffect> effects;           //스킬이 주는 효과.
-
-    public PlayerSkill(PlayerController player) : base(player)
-    {
-        skillData = player.data.skillSet.Find(data => !data.Equals(SkillType.NONE));
-        effects = EffectFactory.CreateSkillEffects(skillData);
-    }
-
-    public override void Perform()
-    {
-        
-    }
-}
+#endregion

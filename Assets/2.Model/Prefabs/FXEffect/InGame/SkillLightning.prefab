@@ -9667,7 +9667,6 @@ GameObject:
   - component: {fileID: 3352949521652982999}
   - component: {fileID: 769677643755004553}
   - component: {fileID: 6772054437719862101}
-  - component: {fileID: 4915466417629776313}
   m_Layer: 0
   m_Name: LightningExplosion1 (1)
   m_TagString: Untagged
@@ -14516,19 +14515,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &4915466417629776313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 578769585297522215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolmanager: {fileID: 0}
 --- !u!1 &646575381042497472
 GameObject:
   m_ObjectHideFlags: 0
@@ -33845,7 +33831,6 @@ GameObject:
   - component: {fileID: 8452369289127218742}
   - component: {fileID: 5885085131264226114}
   - component: {fileID: 213925499337327244}
-  - component: {fileID: 704520312066555596}
   m_Layer: 0
   m_Name: LightningExplosionYellow 1
   m_TagString: Untagged
@@ -38790,19 +38775,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &704520312066555596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1584807441012419999}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolmanager: {fileID: 0}
 --- !u!1 &1623544942902550722
 GameObject:
   m_ObjectHideFlags: 0
@@ -48434,7 +48406,6 @@ GameObject:
   - component: {fileID: 4588493465083603452}
   - component: {fileID: 1772408979509009468}
   - component: {fileID: 6302181448775075384}
-  - component: {fileID: 8856815092538417211}
   m_Layer: 0
   m_Name: Skill_Lightning
   m_TagString: Untagged
@@ -53197,19 +53168,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &8856815092538417211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2863140598949562339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolmanager: {fileID: 0}
 --- !u!1 &3347880915803882034
 GameObject:
   m_ObjectHideFlags: 0
@@ -53221,7 +53179,6 @@ GameObject:
   - component: {fileID: 5223737952104916263}
   - component: {fileID: 3776011151387434958}
   - component: {fileID: 7572501375282619513}
-  - component: {fileID: 2452679999158292514}
   m_Layer: 0
   m_Name: LightningExplosion1 (2)
   m_TagString: Untagged
@@ -58070,19 +58027,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &2452679999158292514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3347880915803882034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolmanager: {fileID: 0}
 --- !u!1 &3729244220945064850
 GameObject:
   m_ObjectHideFlags: 0
@@ -62920,10 +62864,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5662938651876896036}
-  - component: {fileID: 7333860594806386736}
   - component: {fileID: 4116518630822170479}
   - component: {fileID: 3507763507189700742}
   - component: {fileID: 657469877451421818}
+  - component: {fileID: 5311914470442848328}
   m_Layer: 0
   m_Name: SkillLightning
   m_TagString: Untagged
@@ -62951,19 +62895,6 @@ Transform:
   - {fileID: 4588493465083603452}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7333860594806386736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3774895442575710189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolmanager: {fileID: 0}
 --- !u!198 &4116518630822170479
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -67776,7 +67707,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -67784,6 +67715,20 @@ CapsuleCollider:
   m_Height: 7.47
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5311914470442848328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3774895442575710189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afdfba3e4a812b34f9009dea42ee277f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caster: {fileID: 0}
+  data: {fileID: 0}
 --- !u!1 &4043042978236069770
 GameObject:
   m_ObjectHideFlags: 0
@@ -116165,7 +116110,6 @@ GameObject:
   - component: {fileID: 128715495910033998}
   - component: {fileID: 5442808629985706057}
   - component: {fileID: 5866000239256962170}
-  - component: {fileID: 3558197539864016077}
   m_Layer: 0
   m_Name: LightningExplosion1
   m_TagString: Untagged
@@ -121014,16 +120958,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &3558197539864016077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9119499162052485091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolmanager: {fileID: 0}
