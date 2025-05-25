@@ -1,15 +1,21 @@
+using System.IO;
+using UnityEditor;
+using UnityEngine;
+
 [System.Serializable]
 public class UserAuth
 {
     public string uid;
     public string nickname;
     public string c_id;
+    public int teamCode;
     public UserAuth() { }
     public UserAuth(string uid, string nickname)
     {
         this.uid = uid;
         this.nickname = nickname;
         c_id = "";
+        teamCode = 0;
     }
 }
 
@@ -19,9 +25,46 @@ public class UserCache : BehaviourSingleton<UserCache>
 
     public UserAuth cacheData;
 
-    public void StartInGameClient()
+    public void StartInGameClient(int port)
     {
+        string ip = "127.0.0.1"; // 로컬 테스트용. 실제 환경에선 서버에서 전달받거나 DNS 사용.
+        string args = $"-inGame -ip={ip} -port={port} -uid={cacheData.uid} -cid={cacheData.c_id} -team={cacheData.teamCode}"; // 예시: 매치 ID도 넘길 수 있음
+        string ingameClientPath = "D:/Project/LocalGit/Team.GameCorp_CrownFall/Builds/InGameClient/Team.GameCorp_CrownFall.exe";
 
+        // 인게임 클라이언트
+        if (!File.Exists(ingameClientPath))
+        {
+            Debug.LogError($"InGame Client executable not found at: {ingameClientPath}");
+            return;
+        }
+
+        Debug.Log($"[Client] : InGame Client Start!");
+
+        var inGameprocess = new System.Diagnostics.Process();
+        inGameprocess.StartInfo.FileName = ingameClientPath;
+        inGameprocess.StartInfo.Arguments = args;
+        inGameprocess.StartInfo.UseShellExecute = true;
+        inGameprocess.StartInfo.CreateNoWindow = false;       // 콘솔 띄우기.
+        inGameprocess.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+
+        inGameprocess.EnableRaisingEvents = true;
+        inGameprocess.Exited += (sender, e) =>
+        {
+            string uid = "uid-test";
+            // ReconnectToLobbyServer(uid);
+        };
+
+        // 클라이언트 실행.
+        inGameprocess.Start();
+
+        //기존 클라이언트는 종료!
+#if UNITY_EDITOR
+        // 에디터에서는 플레이 모드 종료
+        EditorApplication.isPlaying = false;
+#else
+            // 빌드된 게임에서는 애플리케이션 종료
+            Application.Quit();
+#endif
     }
 
     public void StartLobbyClient()

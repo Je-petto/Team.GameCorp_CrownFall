@@ -13,14 +13,19 @@ public class PlayerStateMachine : MonoBehaviour
     {
         // if (!isLocalPlayer) return;
 
-        if (state.Equals(currentState)) return;
+        // if (state.Equals(currentState)) return;
 
         currentState?.Exit();
         currentState = state;
         currentState.Enter();
     }
 
-    public void FixedUpdate()
+    void Update()
+    {
+        
+    }
+
+    void FixedUpdate()
     {
         // if (!isLocalPlayer) return;
 

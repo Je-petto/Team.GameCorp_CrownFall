@@ -103,7 +103,9 @@ public class SkillCastCommand : ICommand
     ISkillAction skillAction;
     SkillData data;
     public bool isCasting { get; private set; }
+
     private bool isCoolDown = false;
+
     public SkillCastCommand(PlayerController caster, ISkillAction skillAction)
     {
         this.caster = caster;
@@ -149,20 +151,15 @@ public class SkillCastCommand : ICommand
         //스킬 실행!
         if (Input.GetMouseButtonDown(0))
         {
-            if (skillAction == null)
-            {
-                return;
-            }
+            if (skillAction == null) return;
 
-            if (caster.animator != null)
-            {
-                caster.animator.SetTrigger("Attack");
-
-            }
+            if (caster.animator != null) caster.animator.SetTrigger("Attack");
 
             skillAction.Perform(skillPoint);
             mark.SetActive(false);
 
+            isCasting = false;
+            
             SkillCoolDown(data.coolDown);
             SkillCast();
         }

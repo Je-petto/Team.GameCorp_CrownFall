@@ -14,9 +14,9 @@ public class SpawnManager : MonoBehaviour
         Instance = this;
     }
 
-    public Vector3 GetSpawnPoint(TeamType team)
+    public Vector3 GetSpawnPoint(int teamCode)
     {
-        Transform[] spawnPoints = team == TeamType.RED ? redTeamSpawns : blueTeamSpawns;
+        Transform[] spawnPoints = teamCode == 0 ? redTeamSpawns : blueTeamSpawns;
         return spawnPoints[Random.Range(0, spawnPoints.Length)].position;
     }
 }

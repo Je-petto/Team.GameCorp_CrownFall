@@ -35,6 +35,5 @@ public class CharacterInfo : ScriptableObject
     public GameObject projection;                 //논타겟 투사체. [원거리만 사용], [근거리는 미사용..?]
     public Sprite face;
 
-
-    [ReadOnly] public float rotateSpeed = 720f;                       // 회전 속도
+    public float rotateSpeed = 1080f;                       // 회전 속도
 }

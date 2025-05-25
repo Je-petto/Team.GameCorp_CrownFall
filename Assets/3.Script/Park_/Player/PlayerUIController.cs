@@ -1,22 +1,38 @@
+using System.Collections;
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerUIController : NetworkBehaviour
+public class PlayerUIController : MonoBehaviour         //NetworkBehaviour
 {
-    public int teamIndex = 1;
-    [SerializeField] private Image teamColorImage;
+    public int teamCode = 0;
+    [SerializeField] private Image teamColorHpbar;
+    [SerializeField] private PlayerController player;
 
     void Start()
     {
-        if (teamIndex == 1)
-            teamColorImage.color = Color.red;
-        else
-            teamColorImage.color = Color.blue;
+        StartCoroutine(SetUI_Co());
+        player.OnChangedHp += OnChangeCurrentHpBar;
     }
+
+    IEnumerator SetUI_Co()
+    {
+        yield return new WaitUntil(() => player != null);
+        this.teamCode = player.teamCode;
+        if (teamCode == 0)
+            teamColorHpbar.color = Color.red;
+        else
+            teamColorHpbar.color = Color.blue;
+    }
+
 
     public void SetTeamColor(int index)
     {
-        teamIndex = index;
+        teamCode = index;
+    }
+
+    public void OnChangeCurrentHpBar(float percent)
+    {
+        teamColorHpbar.fillAmount = percent;
     }
 }

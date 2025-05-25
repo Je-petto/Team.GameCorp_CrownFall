@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public interface IEffect
 {
     public abstract void Apply(PlayerController player);
@@ -13,7 +11,7 @@ public class DamageEffect : IEffect
     }
     public void Apply(PlayerController player)
     {
-        player.effectHandler.TakeDamage(amount);
+        player.effectHandler.ApplyDamage(amount);
     }
 }
 
@@ -30,7 +28,7 @@ public class SlowEffect : IEffect
 
     public void Apply(PlayerController player)
     {
-
+        player.effectHandler.ApplySlow(duration, amount);
     }
 }
 
@@ -47,6 +45,6 @@ public class DotEffect : IEffect
 
     public void Apply(PlayerController player)
     {
-
+        player.effectHandler.ApplyDot(duration, amount);
     }
 }

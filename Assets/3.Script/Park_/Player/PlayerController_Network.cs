@@ -51,7 +51,6 @@ public class PlayerController_Network : NetworkBehaviour
     #endregion
 
     #region Test
-    public TeamComponent teamData = null;
     public PlayerController target = null;                          //제거 예정
     public Vector3 targetPoint;
     // private 
@@ -63,7 +62,6 @@ public class PlayerController_Network : NetworkBehaviour
     {
         //test Code
         StartCoroutine(SetCharacter());
-        teamData = new(TeamType.RED);
     }
 
     IEnumerator SetCharacter()
