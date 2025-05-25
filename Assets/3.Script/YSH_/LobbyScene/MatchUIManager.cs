@@ -11,10 +11,10 @@ public class MatchUIManager : MonoBehaviour
     [SerializeField] private Button cancelMatchButton;
     [SerializeField] private GameObject matchingFx;
     [SerializeField] private TextMeshProUGUI statusText;
-    [SerializeField] private TextMeshProUGUI matchComepleteText;
 
     [Header("Match Complete UI")]
     [SerializeField] private GameObject matchCompletePanel; // "매칭 완료!" 텍스트와 버튼 포함된 패널
+    [SerializeField] private TextMeshProUGUI matchComepleteText;
     [SerializeField] private Button goToCharacterSelectButton;
 
     private bool isMatching = false;

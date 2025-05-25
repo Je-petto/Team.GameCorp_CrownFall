@@ -1,6 +1,7 @@
 using CustomInspector;
 using UnityEngine;
 using static UnityEngine.ParticleSystem;
+using System.Collections;
 
 public struct TowerState
 {
@@ -38,12 +39,18 @@ public class TowerControl : MonoBehaviour
     [ReadOnly] public ParticleSystem shieldParticle;
 
     [HorizontalLine("???"), HideField] public bool b3;
-    [SerializeField, Tooltip("È¸º¹·®")] private int heelAmount;
-    [SerializeField, Tooltip("È¸º¹ µô·¹ÀÌ")] private int heelDelay;
-    [SerializeField, Tooltip("È¸º¹ »óÅÂ µ¹ÀÔ ½Ã°£")] private int recoveryDelay;
+    [SerializeField, Tooltip("íšŒë³µëŸ‰")] private int heelAmount;
+    [SerializeField, Tooltip("íšŒë³µ ê°„ê²©")] private int heelDelay;
+    [SerializeField, Tooltip("íšŒë³µ ì‹œì‘ê¹Œì§€ ëŒ€ê¸° ì‹œê°„")] private int recoveryDelay;
+
+    [Header("Game Over UI")]
+    [SerializeField] private GameObject gameOverPanel;
 
     private float rDelay;
     private float hDelay;
+    private bool isGameOver = false;
+
+    [SerializeField] private TeamType towerTeam; // ì´ íƒ€ì›Œì˜ ì†Œì† íŒ€
 
     private void Awake()
     {
@@ -124,14 +131,23 @@ public class TowerControl : MonoBehaviour
 
     private void DestroyTower()
     {
-        if (state.health <= 0)
-            isDestroy = true;
+        isDestroy = true;
+        isHit = false;
+        gameObject.SetActive(false);
+        col.isTrigger = false;
 
-        if (isDestroy)
-        {
-            isHit = false;
-            gameObject.SetActive(false);
-            col.isTrigger = false;
-        }
+        Time.timeScale = 0f;
+
+        GameManager.I?.OnGameWin();
+
+        TeamType winnerTeam = (towerTeam == TeamType.RED) ? TeamType.BLUE : TeamType.RED;
+        StartCoroutine(ShowGameOverPanel_Co(winnerTeam));
+    }
+
+    private IEnumerator ShowGameOverPanel_Co(TeamType winnerTeam)
+    {
+        yield return new WaitForSecondsRealtime(2f);
+
+        UIManager.I?.ShowGameEndPanel(winnerTeam.ToString());
     }
 }
