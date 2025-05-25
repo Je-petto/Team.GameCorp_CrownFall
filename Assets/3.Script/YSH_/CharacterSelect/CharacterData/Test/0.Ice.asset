@@ -26,7 +26,7 @@ MonoBehaviour:
   characterType: 0
   model: {fileID: 2571230342630475205, guid: 9b11069076be55444a96e16b31102737, type: 3}
   selectorAnimator: {fileID: 9100000, guid: 483e4c5dba607ca48be5a61a0d9c3474, type: 2}
-  inGameAnimator: {fileID: 9100000, guid: dabedca5d56ff304b88a716da4874e11, type: 2}
+  inGameAnimator: {fileID: 22100000, guid: 262873ebf65e6bb4989f195b8ee5b4b4, type: 2}
   projection: {fileID: 5623835019506186275, guid: e2aec3037dc15f14b84f9acdcec1d4f9, type: 3}
   face: {fileID: 21300000, guid: 93ecd7ea64681304cb03697c9236bb96, type: 3}
   rotateSpeed: 116.18853
