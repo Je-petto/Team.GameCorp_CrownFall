@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2500735551264818326}
   - component: {fileID: 3293400538422597797}
   - component: {fileID: 3087852942226362397}
-  - component: {fileID: 370295663757224576}
   m_Layer: 0
   m_Name: Crystals crossfade 1 (1)
   m_TagString: Untagged
@@ -4899,19 +4898,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &370295663757224576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 73703848456222699}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolmanager: {fileID: 0}
 --- !u!1 &311350497856224047
 GameObject:
   m_ObjectHideFlags: 0
@@ -108860,6 +108846,8 @@ GameObject:
   - component: {fileID: 2213583224139757974}
   - component: {fileID: 8136345943758850109}
   - component: {fileID: 1366394127294456165}
+  - component: {fileID: -752032443458218127}
+  - component: {fileID: 3059750219392836294}
   m_Layer: 0
   m_Name: Skill_Ice
   m_TagString: Untagged
@@ -113718,7 +113706,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   caster: {fileID: 0}
-  damage: 0
+  data: {fileID: 0}
+--- !u!114 &-752032443458218127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6062935484455973164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 717923690
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
+--- !u!114 &3059750219392836294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6062935484455973164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a553cb17010b2403e8523b558bffbc14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 5845468717280155799}
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  onlySyncOnChange: 1
+  compressRotation: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  coordinateSpace: 0
+  timelineOffset: 1
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  bufferResetMultiplier: 3
+  useFixedUpdate: 0
+  positionSensitivity: 0.01
+  rotationSensitivity: 0.01
+  scaleSensitivity: 0.01
 --- !u!1 &6659452882521699155
 GameObject:
   m_ObjectHideFlags: 0
@@ -118675,7 +118714,6 @@ GameObject:
   - component: {fileID: 3926081194804672772}
   - component: {fileID: 2786018226532046521}
   - component: {fileID: 4462822667794713458}
-  - component: {fileID: 2941308917262334557}
   m_Layer: 0
   m_Name: Crystals crossfade 1
   m_TagString: Untagged
@@ -123563,19 +123601,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &2941308917262334557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6822076144170301395}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolmanager: {fileID: 0}
 --- !u!1 &7336414806248259439
 GameObject:
   m_ObjectHideFlags: 0
@@ -143223,7 +143248,6 @@ GameObject:
   - component: {fileID: 7033892811838836135}
   - component: {fileID: 7823635433019539473}
   - component: {fileID: 2277790201687903935}
-  - component: {fileID: 3569234798356966539}
   m_Layer: 0
   m_Name: IceMagicCircle
   m_TagString: Untagged
@@ -148147,19 +148171,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &3569234798356966539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8870488704169261029}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolmanager: {fileID: 0}
 --- !u!1 &8920906524504941781
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,7 @@ public class TowerControl : MonoBehaviour
     public TowerProfile profile { get => towerProfile; set => towerProfile = value; }
     [SerializeField] private TowerProfile towerProfile;
     public TowerState state;
+    public int teamCode;                    //인스펙터에서 설정하기
 
     [ReadOnly] public float maxHealth;
     [ReadOnly] public Collider col;
@@ -49,8 +50,6 @@ public class TowerControl : MonoBehaviour
     private float rDelay;
     private float hDelay;
     private bool isGameOver = false;
-
-    [SerializeField] private TeamType towerTeam; // 이 타워의 소속 팀
 
     private void Awake()
     {
@@ -140,14 +139,19 @@ public class TowerControl : MonoBehaviour
 
         GameManager.I?.OnGameWin();
 
-        TeamType winnerTeam = (towerTeam == TeamType.RED) ? TeamType.BLUE : TeamType.RED;
+        int winnerTeam = (this.teamCode == 0) ? 1 : 0;
         StartCoroutine(ShowGameOverPanel_Co(winnerTeam));
     }
 
-    private IEnumerator ShowGameOverPanel_Co(TeamType winnerTeam)
+    private IEnumerator ShowGameOverPanel_Co(int winnerTeam)
     {
         yield return new WaitForSecondsRealtime(2f);
 
         UIManager.I?.ShowGameEndPanel(winnerTeam.ToString());
+    }
+
+    public void ApplyDamage(int damage)
+    {
+        //hp 데미지 주기
     }
 }

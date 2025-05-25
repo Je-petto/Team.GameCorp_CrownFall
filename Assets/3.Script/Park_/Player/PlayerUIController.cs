@@ -3,7 +3,7 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerUIController : MonoBehaviour         //NetworkBehaviour
+public class PlayerUIController : NetworkBehaviour
 {
     public int teamCode = 0;
     [SerializeField] private Image teamColorHpbar;

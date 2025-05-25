@@ -61,6 +61,8 @@ public class PlayerController : NetworkBehaviour
 
     void Start()
     {
+        if (!isLocalPlayer) return;
+
         Debug.Log("Player Init Start!");
         pState = LifeState.ALIVE;
         teamCode = 0;
@@ -70,8 +72,8 @@ public class PlayerController : NetworkBehaviour
 
     IEnumerator SetCharacter_Co()
     {
-        // Debug.Log("Player Character Setting...");
-        // yield return new WaitUntil(() => InGameSession.isInit);
+        Debug.Log("Player Character Setting...");
+        yield return new WaitUntil(() => InGameSession.isInit);
 
         Debug.Log("InGameSession Complete.");
         yield return new WaitUntil(() => PlayerSpawner.I != null);
@@ -79,8 +81,8 @@ public class PlayerController : NetworkBehaviour
         Debug.Log($"{InGameSession.characterId}...");
         Debug.Log("PlayerSpawner Complete.");
 
-        // CharacterInfo charData = PlayerSpawner.I.GetCharacterInfo(InGameSession.characterId);
-        CharacterInfo charData = T_data;
+        CharacterInfo charData = PlayerSpawner.I.GetCharacterInfo(InGameSession.characterId);
+        // CharacterInfo charData = T_data;
 
         if (charData != null)
             Debug.Log("char data is not null.");
@@ -91,6 +93,9 @@ public class PlayerController : NetworkBehaviour
 
         currentStat = new(data.hp, data.speed);
 
+        //팀 설정
+        teamCode = InGameSession.teamCode;
+        
         Instantiate(data.model, Vector3.zero, Quaternion.Euler(Vector3.zero), transform.Find("_mesh"));
 
         StartCoroutine(InitComponents_Co());
@@ -127,7 +132,7 @@ public class PlayerController : NetworkBehaviour
         if (lineRenderer != null) lineRenderer.enabled = false;
 
         animator = GetComponentInChildren<Animator>();
-        // GetComponent<NetworkAnimator>().animator = animator;                //네트워크 데이터 동기화 추가
+        GetComponent<NetworkAnimator>().animator = animator;                //네트워크 데이터 동기화 추가
         
         if (animator == null) Debug.Log("animator is null");
         animator.runtimeAnimatorController = data.inGameAnimator;
@@ -157,12 +162,14 @@ public class PlayerController : NetworkBehaviour
     
     public void RaiseOnChangeHp()
     {
+        if (!isLocalPlayer) return;
         Debug.Log("데미지 적용!");
         OnChangedHp?.Invoke(currentStat.hp / data.hp);
     }
 
     public void Die()
     {
+        if (!isLocalPlayer) return;
         stateMachine.ChangeState(new DeadState(this));
     }
 }

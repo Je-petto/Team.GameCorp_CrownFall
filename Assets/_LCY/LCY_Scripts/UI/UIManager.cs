@@ -39,7 +39,7 @@ public class UIManager : BehaviourSingleton<UIManager>
     {
         if (playerController != null)
         {
-            hpSlider.value = playerController.currentHp;
+            hpSlider.value = playerController.currentStat.hp;
         }
     }
 
@@ -61,7 +61,7 @@ public class UIManager : BehaviourSingleton<UIManager>
         if (playerController != null)
         {
             hpSlider.maxValue = playerController.data.hp;
-            hpSlider.value = playerController.currentHp;
+            hpSlider.value = playerController.currentStat.hp;
             atkText.text = playerController.data.name;
         }
     }

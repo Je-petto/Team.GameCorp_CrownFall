@@ -1,4 +1,3 @@
-using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
@@ -48,7 +47,7 @@ public class Skill_Fire : ISkillAction
 }
 
 //장판 소환
-public class Skill_Frost : MonoBehaviour, ISkillAction
+public class Skill_Frost : ISkillAction
 {
     PlayerController caster;
     private SkillData data;
@@ -61,7 +60,7 @@ public class Skill_Frost : MonoBehaviour, ISkillAction
         this.caster = caster;
         this.data = data;
 
-        skillEffectObject = Instantiate(data.prefab);
+        skillEffectObject = GameObject.Instantiate(data.prefab);
         skillEffectObject.GetComponent<SkillEffectConroller>().SetProps(caster, data);
         skillEffectObject.SetActive(false);
     }
