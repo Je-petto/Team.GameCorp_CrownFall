@@ -4,30 +4,24 @@ using System.IO;
 using Mirror;
 using UnityEngine;
 
-public class ClientSession
+public struct ClientSession
 {
     public string uid;
     public string nickname;
     public string selected_cid;
-
-    public ClientSession(string uid, string nickname, string selected_cid)
-    {
-        this.uid = uid;
-        this.nickname = nickname;
-        this.selected_cid = selected_cid;
-    }
 }
 
 public class NetworkLobbyManager : NetworkRoomManager
 {
-    public ClientSession clientSession = null;
+    // 로비에 로그인 되어있는 유저들. => 인게임 서버에서 로비로 다시 돌아 갈때 사용할 예정
+    public List<UserAuth> cachedUser;
+
+    public ClientSession clientSession;
 
     #region Sub-Component
     public MatchManager matchManager;
     public NetworkHandler networkHandler;
     #endregion
-
-    public List<NetworkPlayer> matchedPlayerList = new();
 
     public override void OnStartServer()
     {
@@ -59,18 +53,6 @@ public class NetworkLobbyManager : NetworkRoomManager
     }
 
     [Server]
-    public override GameObject OnRoomServerCreateGamePlayer(NetworkConnectionToClient conn, GameObject roomPlayerObj)
-    {
-        NetworkPlayer networkPlayer = roomPlayerObj.GetComponent<NetworkPlayer>();
-        PlayerController gameplayer = Instantiate(playerPrefab).GetComponent<PlayerController>();
-
-        // 유저 정보, 선택한 캐릭터 id, 팀 데이터 전달
-        // gameplayer.SetNetworkData(networkPlayer._userInfo, networkPlayer.selectedCharacter_Id, networkPlayer.myTeamData);
-
-        return gameplayer.gameObject;
-    }
-
-    [Server]
     public void StartMatching(NetworkConnectionToClient conn, bool on)
     {
         Debug.Log("[Receive] : Matching Request");
@@ -97,25 +79,26 @@ public class NetworkLobbyManager : NetworkRoomManager
     {
         Debug.Log($"[Server] Scene changed to: {sceneName}");
     }
-
 }
 
 public class GameSpawner
 {
-    private static int basePort = 8000; // 포트 시작점 (순차 증가용)
+    private static int basePort = 8000;
 
     public static (System.Diagnostics.Process process, int port) StartInGameServer(Guid matchId)
     {
-        int port = GetAvailablePort(); // 사용 가능한 포트 확보
+        int port = GetAvailablePort(); 
 
         var process = new System.Diagnostics.Process();
-        process.StartInfo.FileName = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe"; // 빌드된 서버 실행파일
+        process.StartInfo.FileName = "D:/Project/LocalGit/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe"; // 빌드된 서버 실행파일
 
         if (!File.Exists(process.StartInfo.FileName))
         {
-            Debug.LogError($"게임 서버 실행 파일을 찾을 수 없습니다: {process.StartInfo.FileName}");
+            Debug.LogError($"Game Server Is Not Exist : {process.StartInfo.FileName}");
             return (null, port);
         }
+
+        Debug.Log("\n+++++++++++++++++ New Server ++++++++++++++++++++\n");
 
         process.StartInfo.Arguments = $"-batchmode -nographics -port={port} -matchId={matchId}";
         process.StartInfo.UseShellExecute = true;
@@ -134,7 +117,7 @@ public class GameSpawner
         int port = GetAvailablePort(); // 사용 가능한 포트 확보
 
         var process = new System.Diagnostics.Process();
-        process.StartInfo.FileName = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe"; // 빌드된 서버 실행파일
+        process.StartInfo.FileName = "D:/Project/LocalGit/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe"; // 빌드된 서버 실행파일
 
         if (!File.Exists(process.StartInfo.FileName))
         {

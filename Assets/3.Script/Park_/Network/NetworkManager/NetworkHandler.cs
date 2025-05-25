@@ -5,28 +5,6 @@ using Mirror;
 using System;
 using LitJson;
 
-// public enum Type
-// {
-
-//     Empty = 0,
-//     Client,                 // 1
-//     Server                  // 2
-// }
-
-// public class Item
-// {
-//     public string License;
-//     public string Server_IP;
-//     public string Port;
-
-//     public Item(string L_index, string IPValue, string port)
-//     {
-//         License = L_index;
-//         Server_IP = IPValue;
-//         this.Port = port;
-//     }
-// }
-
 public class NetworkHandler : MonoBehaviour
 {
     public Type type;
@@ -135,6 +113,7 @@ public class NetworkHandler : MonoBehaviour
     public void StartClient()
     {
         Debug.Log($"{manager.networkAddress} : Start Client");
+        
         manager.StartClient();
     }
 
