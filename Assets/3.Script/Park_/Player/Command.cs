@@ -104,6 +104,7 @@ public class SkillCastCommand : ICommand
     public bool isCasting { get; private set; }
     public SkillCastCommand(PlayerController caster, ISkillAction skillAction)
     {
+        this.caster = caster;
         isCasting = false;
 
         SkillData skillData = caster.data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
@@ -152,7 +153,10 @@ public class SkillCastCommand : ICommand
                 return;
             }
 
-            caster.animator.SetTrigger("Attack");
+            if (caster.animator != null)
+            {
+                caster.animator.SetTrigger("Attack");
+            }
 
             skillAction.Perform(skillPoint);
             mark.SetActive(false);

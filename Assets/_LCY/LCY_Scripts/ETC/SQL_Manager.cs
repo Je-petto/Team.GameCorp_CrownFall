@@ -122,7 +122,9 @@ public class SQL_Manager : BehaviourSingleton<SQL_Manager>
                         (NetworkManager.singleton as NetworkLobbyManager).clientSession.uid = ID;
                         (NetworkManager.singleton as NetworkLobbyManager).clientSession.nickname = name;
                         (NetworkManager.singleton as NetworkLobbyManager).clientSession.selected_cid = "";
-                        
+
+                        UserCache.I.cacheData = new UserAuth(ID, name);
+
                         return true;
                     }
                     else

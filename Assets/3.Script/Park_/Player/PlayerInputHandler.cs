@@ -1,7 +1,7 @@
 using Mirror;
 using UnityEngine;
 
-public class PlayerInputHandler : NetworkBehaviour
+public class PlayerInputHandler : MonoBehaviour //NetworkBehaviour
 {
     public ICommand moveCommand;
     public ICommand attackCommand;
@@ -14,14 +14,14 @@ public class PlayerInputHandler : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer) return;
+        // if (!isLocalPlayer) return;  
 
-        // if (!castCommand.isCasting)
-        // {
-        if (Input.GetMouseButtonDown(0))
+        if (!castCommand.isCasting)
         {
-            (detectCommand as DetectionCommand).OnOff(true);
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                (detectCommand as DetectionCommand).OnOff(true);
+            }
 
             if (Input.GetMouseButton(0))
             {
@@ -33,17 +33,17 @@ public class PlayerInputHandler : NetworkBehaviour
                 (detectCommand as DetectionCommand).OnOff(false);
                 attackCommand.Execute();
             }
-        // }
+        }
 
-        // if (skillCastCommand != null)
-        // {
-        //     skillCastCommand.Execute();           
-        // }
+        if (skillCastCommand != null)
+        {
+            skillCastCommand.Execute();           
+        }
     }
 
     void FixedUpdate()
     {
-        if (!isLocalPlayer) return;
+        // if (!isLocalPlayer) return;
 
         if (moveCommand == null) return;
 

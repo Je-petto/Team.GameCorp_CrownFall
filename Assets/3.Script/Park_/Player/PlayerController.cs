@@ -15,12 +15,14 @@ public class PlayerStat
 public class PlayerController : NetworkBehaviour
 {
     #region Test
+    [Header("Test")]
     public CharacterInfo T_data;
     #endregion
- 
+
 
 
     #region PlayerStat
+    [Header("Player Stat")]
     public int currentHp = 1;
     public CharacterInfo data;
     public LifeState pState;
@@ -30,6 +32,7 @@ public class PlayerController : NetworkBehaviour
     #endregion
 
     #region Components
+    [Header("Private")]
     public Rigidbody rb;
     public Animator animator;
     public Transform attackPoint;
