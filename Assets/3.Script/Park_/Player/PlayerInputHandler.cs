@@ -10,11 +10,17 @@ public class PlayerInputHandler : MonoBehaviour //NetworkBehaviour
     public ICommand deathCommand;
     private SkillCastCommand castCommand => skillCastCommand as SkillCastCommand;
 
-    bool isDeath = false;           //test
+    public bool isDeath = false;           //test
+    public bool isStop = false;
 
     void Update()
     {
         // if (!isLocalPlayer) return;  
+
+        if (isStop || isDeath)
+        {
+            return;  
+        } 
 
         if (!castCommand.isCasting)
         {
@@ -44,8 +50,8 @@ public class PlayerInputHandler : MonoBehaviour //NetworkBehaviour
     void FixedUpdate()
     {
         // if (!isLocalPlayer) return;
-
         if (moveCommand == null) return;
+        if (isStop) return;
 
         moveCommand.Execute();
     }

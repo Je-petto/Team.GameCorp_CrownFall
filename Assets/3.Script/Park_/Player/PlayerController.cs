@@ -19,14 +19,12 @@ public class PlayerController : NetworkBehaviour
     public CharacterInfo T_data;
     #endregion
 
-
-
     #region PlayerStat
     [Header("Player Stat")]
     public int currentHp = 1;
     public CharacterInfo data;
     public LifeState pState;
-
+    
     [Header("Respawn Settings")]
     public float respawnTime = 5f;
     #endregion

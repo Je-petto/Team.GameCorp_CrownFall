@@ -4906,7 +4906,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 73703848456222699}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
   m_Name: 
@@ -73730,7 +73730,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 1.148e-41}
+  m_BoundingSphereOverride: {x: 2, y: 0, z: NaN, w: 0.0078125}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -98541,7 +98541,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 8.1e-44}
+  m_BoundingSphereOverride: {x: 1.02e-43, y: 2.8e-44, z: 4.039e-42, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -108859,7 +108859,7 @@ GameObject:
   - component: {fileID: 3256346105519725468}
   - component: {fileID: 2213583224139757974}
   - component: {fileID: 8136345943758850109}
-  - component: {fileID: 5537503314691418216}
+  - component: {fileID: 1366394127294456165}
   m_Layer: 0
   m_Name: Skill_Ice
   m_TagString: Untagged
@@ -113705,7 +113705,7 @@ CapsuleCollider:
   m_Height: 8.68
   m_Direction: 1
   m_Center: {x: 0, y: 0.86, z: 0}
---- !u!114 &5537503314691418216
+--- !u!114 &1366394127294456165
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113714,10 +113714,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6062935484455973164}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
+  m_Script: {fileID: 11500000, guid: afdfba3e4a812b34f9009dea42ee277f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolmanager: {fileID: 0}
+  caster: {fileID: 0}
+  damage: 0
 --- !u!1 &6659452882521699155
 GameObject:
   m_ObjectHideFlags: 0
@@ -123569,7 +123570,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6822076144170301395}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
   m_Name: 
@@ -148153,7 +148154,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8870488704169261029}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: beb0871718c6c6943a918943581fd61c, type: 3}
   m_Name: 

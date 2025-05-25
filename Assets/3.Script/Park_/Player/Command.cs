@@ -101,14 +101,16 @@ public class SkillCastCommand : ICommand
     PlayerController caster;
     public GameObject mark { get; private set; }
     ISkillAction skillAction;
+    SkillData data;
     public bool isCasting { get; private set; }
+    private bool isCoolDown = false;
     public SkillCastCommand(PlayerController caster, ISkillAction skillAction)
     {
         this.caster = caster;
         isCasting = false;
 
-        SkillData skillData = caster.data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
-        mark = GameObject.Instantiate(skillData.castingMark, caster.transform);
+        data = caster.data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
+        mark = GameObject.Instantiate(data.castingMark, caster.transform);
         mark.SetActive(false);
 
         this.skillAction = skillAction;
@@ -116,8 +118,8 @@ public class SkillCastCommand : ICommand
 
     public void Execute()
     {
-        Debug.Log("Skill Execute");
-        
+        if (isCoolDown) return;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (mark.activeSelf)
@@ -149,21 +151,40 @@ public class SkillCastCommand : ICommand
         {
             if (skillAction == null)
             {
-                Debug.Log("None Action");
                 return;
             }
 
             if (caster.animator != null)
             {
                 caster.animator.SetTrigger("Attack");
+
             }
 
             skillAction.Perform(skillPoint);
             mark.SetActive(false);
 
-            Sequence delay = DOTween.Sequence();
-
-            delay.AppendInterval(0.4f).OnComplete(() => isCasting = false);
+            SkillCoolDown(data.coolDown);
+            SkillCast();
         }
+    }
+
+
+    private void SkillCast()
+    {
+        Sequence seq = DOTween.Sequence();
+
+        //test...skilling
+        seq.AppendCallback(() => caster.inputHandler.isStop = true)
+            .AppendInterval(1f)
+            .AppendCallback(() => caster.inputHandler.isStop = false);
+        // 1초간 인풋 값 무시.
+    }
+
+    private void SkillCoolDown(float cooldown)
+    {
+        Sequence coolSeq = DOTween.Sequence();
+
+        coolSeq.AppendCallback(() => isCoolDown = true).AppendInterval(cooldown)
+                    .OnComplete(() => isCoolDown = false);
     }
 }

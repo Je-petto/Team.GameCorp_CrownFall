@@ -18,4 +18,14 @@ public class UserCache : BehaviourSingleton<UserCache>
     protected override bool IsDontdestroy() => true;
 
     public UserAuth cacheData;
+
+    public void StartInGameClient()
+    {
+
+    }
+
+    public void StartLobbyClient()
+    {
+        
+    }
 }

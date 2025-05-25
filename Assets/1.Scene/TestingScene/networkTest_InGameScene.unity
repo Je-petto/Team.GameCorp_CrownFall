@@ -1180,9 +1180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87cfe39fcdd1aa24fb08d2b1acc51e8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
+  isDeath: 0
+  isStop: 0
 --- !u!1 &3628175227332032198
 GameObject:
   m_ObjectHideFlags: 0
@@ -1358,7 +1357,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  teamIndex: 2
+  teamIndex: 1
   teamColorImage: {fileID: 1222947267250483748}
 --- !u!224 &4432915622017420432
 RectTransform:
@@ -1395,7 +1394,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  T_data: {fileID: 11400000, guid: 906b121eaad8d0c4ba0bb653e8ba0c09, type: 2}
+  T_data: {fileID: 11400000, guid: 2095cb67f385ede4fb6d05ce6d2681c4, type: 2}
   currentHp: 0
   data: {fileID: 0}
   pState: 0
@@ -1500,7 +1499,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 0
@@ -1519,7 +1518,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
