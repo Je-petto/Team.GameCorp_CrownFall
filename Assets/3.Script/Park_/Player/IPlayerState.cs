@@ -27,6 +27,7 @@ public class IdleState : IPlayerState
     public void Exit() { }
 }
 
+
 public class MoveState : IPlayerState
 {
     private PlayerController player;
@@ -44,6 +45,7 @@ public class MoveState : IPlayerState
     public void Update()
     {
         if (player.inputHandler.isStop || player.inputHandler.isDeath) return;
+
         Move();
         Rotate();
     }
@@ -52,6 +54,7 @@ public class MoveState : IPlayerState
 
     private void Move()
     {
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
@@ -61,14 +64,17 @@ public class MoveState : IPlayerState
         player.rb.MovePosition(player.transform.position + vel * Time.deltaTime);
         player.animator.SetFloat("Movement", direction.magnitude);
     }
-
-    void Rotate()
+    
+    private void Rotate()
     {
         if (direction == Vector3.zero) return;
 
-        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        float smoothAngle = Mathf.SmoothDampAngle(player.transform.eulerAngles.y, angle, ref player.data.rotateSpeed, 0.1f);
-        player.transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        player.transform.rotation = Quaternion.Slerp(
+            player.transform.rotation,
+            targetRotation,
+            Time.fixedDeltaTime * player.data.rotateSpeed * 10f
+        );
     }
 }
 
@@ -134,7 +140,7 @@ public class DeadState : IPlayerState
             player.transform.rotation = Quaternion.identity;
 
             // 체력 회복
-            player.currentHp = player.data.hp;
+            player.currentStat.hp = player.data.hp;
 
             // UI 숨기기
 

@@ -2,6 +2,7 @@ using System.Collections;
 using Cinemachine;
 using Mirror;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 public enum LifeState { ALIVE, DEATH }
@@ -10,6 +11,12 @@ public class PlayerStat
 {
     public int hp;
     public float moveSpeed;
+
+    public PlayerStat(int hp, float moveSpeed)
+    {
+        this.hp = hp;
+        this.moveSpeed = moveSpeed;
+    }
 }
 
 public class PlayerController : NetworkBehaviour
@@ -19,9 +26,16 @@ public class PlayerController : NetworkBehaviour
     public CharacterInfo T_data;
     #endregion
 
+    #region Event
+    
+    public UnityAction<float> OnChangedHp;
+    #endregion
+
     #region PlayerStat
     [Header("Player Stat")]
-    public int currentHp = 1;
+
+    public PlayerStat currentStat;
+
     public CharacterInfo data;
     public LifeState pState;
     
@@ -41,23 +55,25 @@ public class PlayerController : NetworkBehaviour
     #endregion
 
     #region Misc
-    public TeamComponent teamData = null;
+    public int teamCode = 0;
     public Vector3 targetPoint;
     #endregion
 
     void Start()
     {
+        if (!isLocalPlayer) return;
+
         Debug.Log("Player Init Start!");
         pState = LifeState.ALIVE;
-        teamData = new TeamComponent(TeamType.RED);
+        teamCode = 0;
 
         StartCoroutine(SetCharacter_Co());
     }
 
     IEnumerator SetCharacter_Co()
     {
-        // Debug.Log("Player Character Setting...");
-        // yield return new WaitUntil(() => InGameSession.isInit);
+        Debug.Log("Player Character Setting...");
+        yield return new WaitUntil(() => InGameSession.isInit);
 
         Debug.Log("InGameSession Complete.");
         yield return new WaitUntil(() => PlayerSpawner.I != null);
@@ -65,8 +81,8 @@ public class PlayerController : NetworkBehaviour
         Debug.Log($"{InGameSession.characterId}...");
         Debug.Log("PlayerSpawner Complete.");
 
-        // CharacterInfo charData = PlayerSpawner.I.GetCharacterInfo(InGameSession.characterId);
-        CharacterInfo charData = T_data;
+        CharacterInfo charData = PlayerSpawner.I.GetCharacterInfo(InGameSession.characterId);
+        // CharacterInfo charData = T_data;
 
         if (charData != null)
             Debug.Log("char data is not null.");
@@ -74,8 +90,12 @@ public class PlayerController : NetworkBehaviour
             Debug.LogWarning("char data is null.");
 
         data = charData;
-        currentHp = data.hp;
 
+        currentStat = new(data.hp, data.speed);
+
+        //팀 설정
+        teamCode = InGameSession.teamCode;
+        
         Instantiate(data.model, Vector3.zero, Quaternion.Euler(Vector3.zero), transform.Find("_mesh"));
 
         StartCoroutine(InitComponents_Co());
@@ -112,7 +132,8 @@ public class PlayerController : NetworkBehaviour
         if (lineRenderer != null) lineRenderer.enabled = false;
 
         animator = GetComponentInChildren<Animator>();
-
+        GetComponent<NetworkAnimator>().animator = animator;                //네트워크 데이터 동기화 추가
+        
         if (animator == null) Debug.Log("animator is null");
         animator.runtimeAnimatorController = data.inGameAnimator;
 
@@ -138,16 +159,17 @@ public class PlayerController : NetworkBehaviour
 
         inputHandler.skillCastCommand = new SkillCastCommand(this, skillAction);
     }
-
-    public void TakeDamage(int damage)
+    
+    public void RaiseOnChangeHp()
     {
-        currentHp -= damage;
-        if (currentHp <= 0)
-            Die();
+        if (!isLocalPlayer) return;
+        Debug.Log("데미지 적용!");
+        OnChangedHp?.Invoke(currentStat.hp / data.hp);
     }
 
     public void Die()
     {
+        if (!isLocalPlayer) return;
         stateMachine.ChangeState(new DeadState(this));
     }
 }

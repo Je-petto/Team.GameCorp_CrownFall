@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using DG.Tweening;
 using UnityEngine;
 
@@ -20,7 +21,6 @@ public class SkillEffectConroller : MonoBehaviour
     void OnEnable()
     {
         // 캐릭터 움직임 잠금
-        // LockMovementForDuration(1f);
         ps.Play();
     }
 
@@ -29,8 +29,10 @@ public class SkillEffectConroller : MonoBehaviour
         var target = other.GetComponent<PlayerController>();
         if (target == null) return;
 
-        // 적 판정
-        // if (!target.teamData.IsEnemy(caster.teamData)) return;
+        // 같은 팀이면 무시.
+        if (target.teamCode == caster.teamCode) return;
+
+        if (other.GetComponent<PlayerController>()) return;         //타워는 스킬 피해를 받지 않음.
 
         Debug.Log("스킬 적중!!");
 

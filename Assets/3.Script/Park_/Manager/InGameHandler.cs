@@ -7,6 +7,7 @@ public static class InGameSession
     public static bool isInit = false;
     public static string uid;
     public static string characterId;
+    public static int teamCode;
 }
 
 public class InGameHandler : MonoBehaviour
@@ -102,9 +103,21 @@ public class InGameHandler : MonoBehaviour
             {
                 InGameSession.characterId = arg.Substring("-cid=".Length);
             }
+            else if (arg.StartsWith("-team="))
+            {
+                // 문자열 -> int로 변환
+                if (int.TryParse(arg.Substring("-team=".Length), out int teamCode))
+                {
+                    InGameSession.teamCode = teamCode;
+                }
+                else
+                {
+                    Debug.LogWarning("팀 코드를 파싱하지 못했습니다.");
+                }
+            }
         }
 
-        Debug.Log($"uid : {InGameSession.uid} || characterId : {InGameSession.characterId}");
+        Debug.Log($"uid : {InGameSession.uid} || characterId : {InGameSession.characterId} || teamCode : {InGameSession.teamCode}");
 
         InGameSession.isInit = true;
     }

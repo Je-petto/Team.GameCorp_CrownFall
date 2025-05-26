@@ -1,8 +1,6 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,8 +10,6 @@ public class NetworkPlayer : NetworkRoomPlayer
     [SyncVar] public PlayerMatchState matchState = PlayerMatchState.NotMatched;
 
     public UserAuth userAuth;
-
-    public TeamComponent myTeamData = null;
 
     public override void OnStartClient()
     {
@@ -118,10 +114,16 @@ public class NetworkPlayer : NetworkRoomPlayer
     }
 
     [TargetRpc]
-    public void SetTeam(TeamType team)
+    public void SetTeam(int teamCode)
     {
-        Debug.Log($"Team Data Get : {team}");
-        myTeamData = new(team);
+        Debug.Log($"Team Data Get : {teamCode}");
+        userAuth.teamCode = teamCode;
+
+        if (UserCache.I != null && UserCache.I.cacheData != null)
+        {
+            UserCache.I.cacheData.teamCode = teamCode;
+            Debug.Log($"[Client] UserCache에 팀 정보 반영 완료: {teamCode}");
+        }
     }
 
     IEnumerator GetMatchedMemberList_Co(List<UserAuth> matchedUserList)
@@ -137,50 +139,8 @@ public class NetworkPlayer : NetworkRoomPlayer
         Debug.Log($"Connecting to InGame Server on port {port}");
         Debug.Log("게임 시작!!!");
 
-        StartInGameClient(port);
+        UserCache.I.StartInGameClient(port);
 
-        Application.Quit(); // 또는 로비 UI 종료 처리
-    }
-
-    void StartInGameClient(int port)
-    {
-        string ip = "127.0.0.1"; // 로컬 테스트용. 실제 환경에선 서버에서 전달받거나 DNS 사용.
-        string args = $"-inGame -ip={ip} -port={port} -uid={userAuth.uid} -cid={userAuth.c_id}"; // 예시: 매치 ID도 넘길 수 있음
-        string ingameClientPath = "D:/Project/LocalGit/Team.GameCorp_CrownFall/Builds/InGameClient/Team.GameCorp_CrownFall.exe";
-
-        // 인게임 클라이언트
-        if (!File.Exists(ingameClientPath))
-        {
-            Debug.LogError($"InGame Client executable not found at: {ingameClientPath}");
-            return;
-        }
-
-        Debug.Log($"[Client] : InGame Client Start!");
-
-        var inGameprocess = new System.Diagnostics.Process();
-        inGameprocess.StartInfo.FileName = ingameClientPath;
-        inGameprocess.StartInfo.Arguments = args;
-        inGameprocess.StartInfo.UseShellExecute = true;
-        inGameprocess.StartInfo.CreateNoWindow = false;       // 콘솔 띄우기.
-        inGameprocess.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
-
-        inGameprocess.EnableRaisingEvents = true;
-        inGameprocess.Exited += (sender, e) =>
-        {
-            string uid = "uid-test";
-            // ReconnectToLobbyServer(uid);
-        };
-
-        // 클라이언트 실행.
-        inGameprocess.Start();
-
-        //기존 클라이언트는 종료!
-#if UNITY_EDITOR
-        // 에디터에서는 플레이 모드 종료
-        EditorApplication.isPlaying = false;
-#else
-            // 빌드된 게임에서는 애플리케이션 종료
-            Application.Quit();
-#endif
+        // Application.Quit(); // 또는 로비 UI 종료 처리
     }
 }

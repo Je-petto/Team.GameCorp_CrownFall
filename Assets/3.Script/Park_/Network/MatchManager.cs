@@ -13,34 +13,13 @@ public enum PlayerMatchState
     Ready
 }
 
-public enum TeamType
-{
-    RED,
-    BLUE
-}
-
-public class TeamComponent
-{
-    public TeamType type;
-
-    public TeamComponent(TeamType type)
-    {
-        this.type = type;
-    }
-
-    public bool IsEnemy(TeamComponent component)
-    {
-        return type != component.type;
-    }
-}
-
 public class MatchManager : NetworkBehaviour
 {
     private class MatchGroup
     {
         public Guid matchId;
         public List<NetworkConnectionToClient> players = new();
-        public Dictionary<TeamType, List<NetworkConnectionToClient>> teamData = new();
+        public Dictionary<int, List<NetworkConnectionToClient>> teamData = new();
         public int readyCount = 0;
         public MatchGroup(Guid guid) { this.matchId = guid; }
     }
@@ -150,20 +129,21 @@ public class MatchManager : NetworkBehaviour
     [Server]
     private void SetTeam(MatchGroup group)
     {
-        group.teamData.Add(TeamType.RED, new());
-        group.teamData.Add(TeamType.BLUE, new());
+        group.teamData.Add(0, new());
+        group.teamData.Add(1, new());
 
         // con
         foreach (var p in group.players)
         {
-            if (group.teamData[TeamType.RED].Count > group.teamData[TeamType.BLUE].Count)
+            if (group.teamData[0].Count > group.teamData[1].Count)
             {
-                group.teamData[TeamType.BLUE].Add(p);
-                p.identity.GetComponent<NetworkPlayer>().SetTeam(TeamType.BLUE);
+                group.teamData[1].Add(p);
+                p.identity.GetComponent<NetworkPlayer>().SetTeam(1);
             }
             else
             {
-                group.teamData[TeamType.RED].Add(p);
+                group.teamData[0].Add(p);
+                p.identity.GetComponent<NetworkPlayer>().SetTeam(0);
             }
         }
     }

@@ -7,6 +7,7 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using LitJson;
 using Mirror;
+using CustomInspector.Extensions;
 # endregion
 
 public class User_info
@@ -123,7 +124,10 @@ public class SQL_Manager : BehaviourSingleton<SQL_Manager>
                         (NetworkManager.singleton as NetworkLobbyManager).clientSession.nickname = name;
                         (NetworkManager.singleton as NetworkLobbyManager).clientSession.selected_cid = "";
 
-                        UserCache.I.cacheData = new UserAuth(ID, name);
+                        if (UserCache.I != null)
+                        {
+                            UserCache.I.cacheData = new UserAuth(ID, name);
+                        }
 
                         return true;
                     }
