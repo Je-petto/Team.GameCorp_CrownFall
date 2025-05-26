@@ -14,6 +14,7 @@ public enum CharacterType
 public class CharacterInfo : ScriptableObject
 {
     public string cid;              // 캐릭터 고유 번호.
+    public string characterNickName;    // 캐릭터 이름
     public string characterName;    // 캐릭터 이름
     public string description;      // 캐릭터 설명
     public int hp;                  // 체력
@@ -34,6 +35,8 @@ public class CharacterInfo : ScriptableObject
     public RuntimeAnimatorController inGameAnimator;
     public GameObject projection;                 //논타겟 투사체. [원거리만 사용], [근거리는 미사용..?]
     public Sprite face;
+    public Sprite SkillIcon;
+    public Sprite ElementIcon;
 
     public float rotateSpeed = 1080f;                       // 회전 속도
 }

@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterInfoUI : MonoBehaviour
 {
     [Header("기본 정보")]
+    [SerializeField] private TextMeshProUGUI characterNickNameText;
     [SerializeField] private TextMeshProUGUI characterNameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI typeText;
@@ -23,6 +25,10 @@ public class CharacterInfoUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI skillDamageText;
     [SerializeField] private TextMeshProUGUI skillDescriptionText;
     [SerializeField] private TextMeshProUGUI skillCooldownText;
+
+    [Header("아이콘")]
+    [SerializeField] private Image skillIconImage;
+    [SerializeField] private Image elementIconImage;
 
     /// <summary>
     /// 캐릭터 정보를 UI에 표시
@@ -48,6 +54,7 @@ public class CharacterInfoUI : MonoBehaviour
         Debug.Log($"Setting info for character: {info.characterName}");
 
         // 기본 정보
+        characterNickNameText.text = info.characterNickName;
         characterNameText.text = info.characterName;
         descriptionText.text = info.description;
         typeText.text = info.Type.ToString();
@@ -74,5 +81,12 @@ public class CharacterInfoUI : MonoBehaviour
             skillDamageText.text = "Damage: -";
             skillCooldownText.text = "Cooldown: -";
         }
+
+        // 아이콘 설정
+        if (skillIconImage != null)
+            skillIconImage.sprite = info.SkillIcon;
+
+        if (elementIconImage != null)
+            elementIconImage.sprite = info.ElementIcon;
     }
 }

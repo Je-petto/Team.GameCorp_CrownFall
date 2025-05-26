@@ -21,6 +21,13 @@ public class SoundManager : MonoBehaviour
     // 버튼 효과음 클립의 Resources 폴더 내 경로 (Inspector에서 설정 가능)
     [SerializeField] public string buttonClipPath = "ButtonSound"; // 기본 경로 설정 (Resources 폴더 내)
 
+    [Header("Volume UI")]
+    public GameObject soundUI; // SoundUI 전체
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+
+    [Header("숨길 씬 이름")]
+    public List<string> scenesToHideUI = new List<string> { "InGameScene" };
     public void Awake()
     {
         if (Instance == null)
@@ -58,11 +65,51 @@ public class SoundManager : MonoBehaviour
                 }
             }
 
+            // 슬라이더 초기값 세팅 및 이벤트 연결
+            if (bgmSlider != null)
+            {
+                bgmSlider.value = BGMaudio.volume;
+                bgmSlider.onValueChanged.AddListener(SetBGMVolume);
+            }
+
+            if (sfxSlider != null)
+            {
+                sfxSlider.value = SFXaudio.volume;
+                sfxSlider.onValueChanged.AddListener(SetSFXVolume);
+            }
+
+            // 씬 로드 이벤트 연결
             SceneManager.sceneLoaded += OnSceneLoaded;
+
+            // 게임 시작 시 사운드 UI 숨기기
+            if (soundUI != null)
+            {
+                soundUI.SetActive(false);
+            }
         }
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    // 사운드 UI를 보이게 함
+    public void ShowSoundUI()
+    {
+        if (soundUI != null && !soundUI.activeSelf)
+        {
+            soundUI.SetActive(true);
+            OnButtonSound(); // 효과음 추가
+        }
+    }
+
+    // 사운드 UI를 숨김
+    public void HideSoundUI()
+    {
+        if (soundUI != null && soundUI.activeSelf)
+        {
+            soundUI.SetActive(false);
+            OnButtonSound(); // 효과음 추가
         }
     }
 
@@ -152,7 +199,7 @@ public class SoundManager : MonoBehaviour
         {
             if (ButtonClip != null)
             {
-                SFXaudio.PlayOneShot(ButtonClip, 3f); // 볼륨을 3으로 설정 (조정 가능)
+                SFXaudio.PlayOneShot(ButtonClip, SFXaudio.volume); // 볼륨을 3으로 설정 (조정 가능)
             }
             else
             {
@@ -160,5 +207,18 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
-    //원래 모든 씬 버튼에 효과음을 내고 싶었는데 다른 씬에서 버튼을 눌러도 소리가 안남.
+    
+    // BGM 볼륨을 슬라이더로 조절하는 함수
+    public void SetBGMVolume(float volume)
+    {
+        if (BGMaudio != null)
+            BGMaudio.volume = volume;
+    }
+
+    // SFX 볼륨을 슬라이더로 조절하는 함수
+    public void SetSFXVolume(float volume)
+    {
+        if (SFXaudio != null)
+            SFXaudio.volume = volume;
+    }
 }
