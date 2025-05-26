@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: 0.Ice
   m_EditorClassIdentifier: 
   cid: P-000
-  characterNickName: 
-  characterName: A
-  description: 
-  hp: 2000
+  characterNickName: KEEPER OF THE FROSTSPIRE
+  characterName: AELTHIR
+  description: Keeper of the ancient Frostspire Library, Aelthir guards secrets frozen
+    in time. His spells draw from forgotten runes and bitter winds that whisper knowledge
+    that has been frozen in time
+  hp: 3000
   attack: 100
-  defense: 0
-  speed: 9
+  defense: 10
+  speed: 7
   attackableRange: 7
   attackInterval: 0.5
   skillSet:

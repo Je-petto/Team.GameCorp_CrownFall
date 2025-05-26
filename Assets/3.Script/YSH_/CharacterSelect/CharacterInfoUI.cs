@@ -23,6 +23,7 @@ public class CharacterInfoUI : MonoBehaviour
     [Header("스킬 UI")]
     [SerializeField] private TextMeshProUGUI skillTypeText;
     [SerializeField] private TextMeshProUGUI skillDamageText;
+    [SerializeField] private TextMeshProUGUI skillNameText;
     [SerializeField] private TextMeshProUGUI skillDescriptionText;
     [SerializeField] private TextMeshProUGUI skillCooldownText;
 
@@ -71,15 +72,20 @@ public class CharacterInfoUI : MonoBehaviour
         if (info.skillSet != null && info.skillSet.Count > 0)
         {
             SkillData skill = info.skillSet[0];
+
+            skillNameText.text = skill.skillName;
+            skillDescriptionText.text = skill.skillDescribe;
             skillTypeText.text = $"{skill.type}";
-            skillDamageText.text = $"Damage: {skill.damage}";
-            skillCooldownText.text = $"Cooldown: {skill.coolDown}s";
+            skillDamageText.text = $"DAMAGE: {skill.damage}";
+            skillCooldownText.text = $"COOLDOWN: {skill.coolDown}s";
         }
         else
         {
+            skillNameText.text = "Skill: -";
+            skillDescriptionText.text = "Description: -";
             skillTypeText.text = "Type: -";
-            skillDamageText.text = "Damage: -";
-            skillCooldownText.text = "Cooldown: -";
+            skillDamageText.text = "DAMAGE: -";
+            skillCooldownText.text = "COOLDOWN: -";
         }
 
         // 아이콘 설정

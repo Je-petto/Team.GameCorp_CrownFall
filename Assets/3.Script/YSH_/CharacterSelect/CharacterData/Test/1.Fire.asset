@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: 1.Fire
   m_EditorClassIdentifier: 
   cid: P-001
-  characterNickName: 
-  characterName: B
-  description: Tank
-  hp: 3500
-  attack: 60
-  defense: 0
-  speed: 7
-  attackableRange: 7
+  characterNickName: THE HOLY FLAME
+  characterName: RAFAEL
+  description: Birth coincided with a celestial comet. Fire flows through his blood,
+    and his magic burns with a wild, unpredictable rhythm, much like his personality
+  hp: 3300
+  attack: 110
+  defense: 15
+  speed: 8
+  attackableRange: 5
   attackInterval: 0.5
   skillSet:
   - {fileID: 11400000, guid: 6c87a9ffbd23409408bde4abba360477, type: 2}

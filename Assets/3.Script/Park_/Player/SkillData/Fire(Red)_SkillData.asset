@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: Fire(Red)_SkillData
   m_EditorClassIdentifier: 
   type: 2
+  skillName: Inferno Bloom
+  skillDescribe: Erupts a burst of fire in a circular pattern. Additional DoT to
+    Enemy
   damage: 450
   duration: 3
-  coolDown: 10
+  coolDown: 6
   castingTime: 0.7
   dot: 7
   castingMark: {fileID: 3718856034927834208, guid: d67613357a940e547afc5976c850550e, type: 3}
   prefab: {fileID: 5106043215229604328, guid: 74621a6fcb0ce22448b9867d20d765d8, type: 3}
-  distance: 0
+  distance: 3
   effectTypes: 0100000005000000

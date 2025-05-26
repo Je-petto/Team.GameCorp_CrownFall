@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: 3.Heal
   m_EditorClassIdentifier: 
   cid: P-003
-  characterNickName: 
-  characterName: D
-  description: Priest
-  hp: 1400
-  attack: 60
-  defense: 0
-  speed: 8
-  attackableRange: 7
+  characterNickName: BEARER OF LIGHT
+  characterName: ELANDOR
+  description: A knight in a forgotten war, Elandor laid down his sword after a vision
+    from a celestial being. Now he walks among the wounded, hands glowing with gentle
+    radiance that seals flesh and soul alike
+  hp: 2800
+  attack: 75
+  defense: 5
+  speed: 6
+  attackableRange: 9
   attackInterval: 0.5
   skillSet:
   - {fileID: 11400000, guid: 0dc5b9c72aa3c02498e8062e06d81b4b, type: 2}

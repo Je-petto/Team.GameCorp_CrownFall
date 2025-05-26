@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: 2.Lightning
   m_EditorClassIdentifier: 
   cid: P-002
-  characterNickName: 
-  characterName: C
-  description: Sorcerer
-  hp: 1650
+  characterNickName: FURY OF THE SKY
+  characterName: MAGNUS
+  description: A battle-mage who once challenged a sky god and won. Roderic channels
+    storms through twin bronze rings embedded in his forearms. When he roars, the
+    sky answers
+  hp: 2750
   attack: 80
-  defense: 0
-  speed: 8
-  attackableRange: 7
+  defense: 7
+  speed: 11
+  attackableRange: 9
   attackInterval: 0.5
   skillSet:
   - {fileID: 11400000, guid: d709ad52ea36fcd43a0ac00c7354e413, type: 2}

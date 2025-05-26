@@ -15,6 +15,8 @@ public enum SkillType
 public class SkillData : ScriptableObject
 {
     public SkillType type; // ��ų ����
+    public string skillName;
+    public string skillDescribe;
     public int damage; // ��ų ������
     public float duration; // ��ų ���ӽð�
     public float coolDown; // ��ų ��Ÿ��
