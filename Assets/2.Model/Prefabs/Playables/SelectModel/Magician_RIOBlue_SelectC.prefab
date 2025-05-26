@@ -827,7 +827,7 @@ GameObject:
   - component: {fileID: 6135904872769468340}
   - component: {fileID: 9047033996493840425}
   m_Layer: 0
-  m_Name: Magician_RIOBlue_SelectScene
+  m_Name: Magician_RIOBlue_SelectC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
