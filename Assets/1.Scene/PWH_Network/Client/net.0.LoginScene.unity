@@ -1697,7 +1697,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  maxPlayerCount: 1
+  maxPlayerCount: 2
 --- !u!1 &398231165
 GameObject:
   m_ObjectHideFlags: 0
@@ -4756,8 +4756,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   user:
-    uid: uid_666
-    nickname: nick_3333
+    uid: UID_1212
+    nickname: Player_test.15555
     c_id: 
     teamCode: 0
 --- !u!1 &1106225916

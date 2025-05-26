@@ -2,6 +2,7 @@ using CustomInspector;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Mirror;
 
 public struct TowerState
 {
@@ -15,29 +16,29 @@ public struct TowerState
     }
 }
 
-public class TowerControl : MonoBehaviour
+public class TowerControl : NetworkBehaviour
 {
     public TowerProfile profile { get => towerProfile; set => towerProfile = value; }
     [SerializeField] private TowerProfile towerProfile;
     public TowerState state;
     public int teamCode;                    //인스펙터에서 설정하기
 
-    [ReadOnly] public float maxHealth;
-    [ReadOnly] public Collider col;
+    [CustomInspector.ReadOnly] public float maxHealth;
+    [CustomInspector.ReadOnly] public Collider col;
 
     [HorizontalLine("DEBUG"), HideField] public bool b0;
     [SerializeField] private int debugHealth;
     [SerializeField] private int debugShieldHealth;
 
     [HorizontalLine("TOWER STATE"), HideField] public bool b1;
-    [ReadOnly] public bool protect = false;
-    [ReadOnly] public bool recovery = false;
-    [ReadOnly] public bool isHit = false;
-    [ReadOnly] public bool isDestroy = false;
+    [CustomInspector.ReadOnly] public bool protect = false;
+    [CustomInspector.ReadOnly] public bool recovery = false;
+    [CustomInspector.ReadOnly] public bool isHit = false;
+    [CustomInspector.ReadOnly] public bool isDestroy = false;
 
     [HorizontalLine("SHIELD"), HideField] public bool b2;
-    [ReadOnly] public GameObject shield;
-    [ReadOnly] public ParticleSystem shieldParticle;
+    [CustomInspector.ReadOnly] public GameObject shield;
+    [CustomInspector.ReadOnly] public ParticleSystem shieldParticle;
 
     [HorizontalLine("???"), HideField] public bool b3;
     [SerializeField, Tooltip("회복량")] private int heelAmount;
@@ -50,6 +51,9 @@ public class TowerControl : MonoBehaviour
     [Header("HealthHPBar")]
     [SerializeField] private Image teamColorHpbar;
 
+    [SyncVar(hook = nameof(OnSyncHealthChanged))]
+    private int syncedHealth;
+    
     private float rDelay;
     private float hDelay;
     private bool isGameOver = false;
@@ -65,8 +69,12 @@ public class TowerControl : MonoBehaviour
     private void Start()
     {
         teamColorHpbar.color = teamCode == 0 ? Color.red : Color.blue;
-        Debug.Log("타워 생성!");
+
+        state.Set(towerProfile);
+        syncedHealth = state.health;
         maxHealth = state.health;
+
+        Debug.Log("타워 생성!");
     }
 
     private void Update()
@@ -158,17 +166,19 @@ public class TowerControl : MonoBehaviour
 
     public void ApplyDamage(int damage)
     {
-        state.health -= damage;
+        if (!isServer) return;
 
-        if (state.health <= 0) isGameOver = true;
-
-        //UI 갱신
+        syncedHealth -= damage;
+        syncedHealth = Mathf.Clamp(syncedHealth, 0, (int)maxHealth);
+    }
+    private void OnSyncHealthChanged(int oldValue, int newValue)
+    {
+        state.health = newValue;
         OnChangeHpbar();
     }
-
+    
     private void OnChangeHpbar()
     {
-        teamColorHpbar.fillAmount = state.health / maxHealth;
-        
+        teamColorHpbar.fillAmount = syncedHealth / maxHealth;
     }
 }
