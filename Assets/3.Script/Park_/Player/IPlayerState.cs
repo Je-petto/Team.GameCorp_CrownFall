@@ -1,4 +1,3 @@
-using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
@@ -54,7 +53,6 @@ public class MoveState : IPlayerState
 
     private void Move()
     {
-
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
@@ -64,17 +62,14 @@ public class MoveState : IPlayerState
         player.rb.MovePosition(player.transform.position + vel * Time.deltaTime);
         player.animator.SetFloat("Movement", direction.magnitude);
     }
-    
-    private void Rotate()
-    {
-        if (direction == Vector3.zero) return;
 
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        player.transform.rotation = Quaternion.Slerp(
-            player.transform.rotation,
-            targetRotation,
-            Time.fixedDeltaTime * player.data.rotateSpeed * 10f
-        );
+    private void Rotate()
+    {        
+        if (direction == Vector3.zero) return;
+    
+        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
+        float smoothAngle = Mathf.SmoothDampAngle(player.transform.eulerAngles.y, angle, ref player.data.rotateSpeed, 0.1f);
+        player.transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
     }
 }
 

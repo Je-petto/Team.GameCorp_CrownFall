@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e314bab7b8794773970653470b925af, type: 3}
   m_Name: TowerB
   m_EditorClassIdentifier: 
-  teamTag: Blue
+  b0: 0
+  teamCode: 1
+  b1: 0
+  health: 1500
   towerModel: {fileID: 7854862719914527519, guid: c1ae674d2ce3a6349a2cc37a310956d7, type: 3}
-  shieldModel: {fileID: 3745852577633761081, guid: c9cda1d501ac86f439575317bfc01ad1, type: 3}
-  health: 100
+  b2: 0
   shieldHealth: 50
+  shieldModel: {fileID: 3745852577633761081, guid: c9cda1d501ac86f439575317bfc01ad1, type: 3}
+  shieldParticle: {fileID: 0}

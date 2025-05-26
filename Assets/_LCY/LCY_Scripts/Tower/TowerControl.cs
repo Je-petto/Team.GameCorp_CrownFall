@@ -1,7 +1,7 @@
 using CustomInspector;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 using System.Collections;
+using UnityEngine.UI;
 
 public struct TowerState
 {
@@ -47,6 +47,9 @@ public class TowerControl : MonoBehaviour
     [Header("Game Over UI")]
     [SerializeField] private GameObject gameOverPanel;
 
+    [Header("HealthHPBar")]
+    [SerializeField] private Image teamColorHpbar;
+
     private float rDelay;
     private float hDelay;
     private bool isGameOver = false;
@@ -56,13 +59,13 @@ public class TowerControl : MonoBehaviour
         shield = Instantiate(towerProfile.shieldModel);
         shield.SetActive(false);
 
-
         col = GetComponent<Collider>();
-        col.isTrigger = true;
     }
 
     private void Start()
     {
+        teamColorHpbar.color = teamCode == 0 ? Color.red : Color.blue;
+        Debug.Log("타워 생성!");
         maxHealth = state.health;
     }
 
@@ -74,7 +77,8 @@ public class TowerControl : MonoBehaviour
         SetShieldPosition();
         OnProtect();
         OnRecovery();
-        DestroyTower();
+
+        if(state.health <= 0) DestroyTower();
     }
 
     private void SetShieldPosition()
@@ -118,6 +122,7 @@ public class TowerControl : MonoBehaviour
             {
                 hDelay = 0;
                 state.health += heelAmount;
+                OnChangeHpbar();
                 if (state.health == (maxHealth / 2))
                 {
                     rDelay = 0;
@@ -143,15 +148,27 @@ public class TowerControl : MonoBehaviour
         StartCoroutine(ShowGameOverPanel_Co(winnerTeam));
     }
 
-    private IEnumerator ShowGameOverPanel_Co(int winnerTeam)
+    private IEnumerator ShowGameOverPanel_Co(int teamcode)
     {
         yield return new WaitForSecondsRealtime(2f);
 
-        UIManager.I?.ShowGameEndPanel(winnerTeam.ToString());
+        string winnerTeam = teamcode == 0 ? "RED" : "BLUE";
+        UIManager.I?.ShowGameEndPanel(winnerTeam);
     }
 
     public void ApplyDamage(int damage)
     {
-        //hp 데미지 주기
+        state.health -= damage;
+
+        if (state.health <= 0) isGameOver = true;
+
+        //UI 갱신
+        OnChangeHpbar();
+    }
+
+    private void OnChangeHpbar()
+    {
+        teamColorHpbar.fillAmount = state.health / maxHealth;
+        
     }
 }
