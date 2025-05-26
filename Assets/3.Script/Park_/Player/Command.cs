@@ -151,6 +151,7 @@ public class SkillCastCommand : ICommand
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
         {
             mark.transform.position = hit.point;
+            caster.targetPoint = hit.point;
             skillPoint = hit.point;
         }
 
@@ -159,16 +160,16 @@ public class SkillCastCommand : ICommand
         {
             if (skillAction == null) return;
 
-            if (caster.animator != null) caster.animator.SetTrigger("Attack");
+            if (caster.animator != null) caster.animator.SetTrigger("Skill");
 
             Vector3 lookPoint = new Vector3(caster.targetPoint.x, 0f, caster.targetPoint.z);
             caster.transform.LookAt(lookPoint);
             skillAction.Perform(skillPoint);
             mark.SetActive(false);
 
-            isCasting = false;
-            
             SkillCoolDown(data.coolDown);
+
+            SetCasting();
         }
     }
     private void SkillCoolDown(float cooldown)
@@ -177,5 +178,12 @@ public class SkillCastCommand : ICommand
 
         coolSeq.AppendCallback(() => isCoolDown = true).AppendInterval(cooldown)
                     .OnComplete(() => isCoolDown = false);
+    }
+
+    private void SetCasting()
+    {
+        Sequence seq = DOTween.Sequence();
+
+        seq.AppendInterval(0.1f).OnComplete(() => isCasting = false);
     }
 }

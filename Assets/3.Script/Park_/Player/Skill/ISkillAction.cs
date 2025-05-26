@@ -27,12 +27,12 @@ public class Skill_Fire : ISkillAction
 
     public void Perform(Vector3 point)
     {
+        StopCaster();
         StartSkillSequence(point);
     }
 
     void StartSkillSequence(Vector3 point)
     {
-        Debug.Log("Red Skill_Case...");
         if (skillEffectObject == null) return;
 
         skillEffectObject.transform.position = point;
@@ -40,9 +40,16 @@ public class Skill_Fire : ISkillAction
         Sequence skillSeq = DOTween.Sequence();
         skillSeq.AppendInterval(data.castingTime)
                 .AppendCallback(() => skillEffectObject.SetActive(true))
-                .AppendInterval(1f)
-                .AppendCallback(() => skillEffectObject.SetActive(false))
-                .OnComplete(() => Debug.Log("Fire Cast Complete"));
+                .AppendInterval(data.duration)
+                .AppendCallback(() => skillEffectObject.SetActive(false));
+    }
+    void StopCaster()
+    {
+        Sequence stopSeq = DOTween.Sequence();
+
+        stopSeq.AppendCallback(() => caster.inputHandler.isStop = true)
+                .AppendInterval(2f)
+                .AppendCallback(() => caster.inputHandler.isStop = false);
     }
 }
 
@@ -67,6 +74,7 @@ public class Skill_Frost : ISkillAction
 
     public void Perform(Vector3 point)
     {
+        StopCaster();
         StartSkillSequence(point);
     }
 
@@ -79,6 +87,15 @@ public class Skill_Frost : ISkillAction
                 .AppendCallback(() => skillEffectObject.transform.position = point)
                 .AppendInterval(data.duration)
                 .AppendCallback(() => skillEffectObject.SetActive(false));
+    }
+
+    void StopCaster()
+    {
+        Sequence stopSeq = DOTween.Sequence();
+
+        stopSeq.AppendCallback(() => caster.inputHandler.isStop = true)
+                .AppendInterval(2f)
+                .AppendCallback(() => caster.inputHandler.isStop = false);
     }
 }
 
@@ -104,6 +121,7 @@ public class Skill_Heal : ISkillAction
 
     public void Perform(Vector3 point)
     {
+        StopCaster();
         StartSkillSequence(point);
     }
 
@@ -118,6 +136,14 @@ public class Skill_Heal : ISkillAction
                 .AppendCallback(() => skillEffectObject.transform.position = point)
                 .AppendInterval(data.duration)
                 .AppendCallback(() => skillEffectObject.SetActive(false));
+    }
+    void StopCaster()
+    {
+        Sequence stopSeq = DOTween.Sequence();
+
+        stopSeq.AppendCallback(() => caster.inputHandler.isStop = true)
+                .AppendInterval(2f)
+                .AppendCallback(() => caster.inputHandler.isStop = false);
     }
 }
 
@@ -146,6 +172,7 @@ public class Skill_YellowRod : ISkillAction
 
     public void Perform(Vector3 point)
     {
+        StopCaster();
         StartSkillSequence(point);
     }
 
@@ -158,5 +185,13 @@ public class Skill_YellowRod : ISkillAction
                 .AppendCallback(() => skillEffectObject.transform.position = point)
                 .AppendInterval(data.duration)
                 .AppendCallback(() => skillEffectObject.SetActive(false));
+    }
+    void StopCaster()
+    {
+        Sequence stopSeq = DOTween.Sequence();
+
+        stopSeq.AppendCallback(() => caster.inputHandler.isStop = true)
+                .AppendInterval(2f)
+                .AppendCallback(() => caster.inputHandler.isStop = false);
     }
 }

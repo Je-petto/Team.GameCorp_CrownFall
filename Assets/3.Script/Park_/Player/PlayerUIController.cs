@@ -19,10 +19,8 @@ public class PlayerUIController : MonoBehaviour //NetworkBehaviour
     {
         yield return new WaitUntil(() => player != null);
         this.teamCode = player.teamCode;
-        if (teamCode == 0)
-            teamColorHpbar.color = Color.red;
-        else
-            teamColorHpbar.color = Color.blue;
+
+        teamColorHpbar.color = teamCode == 0 ? Color.red : Color.blue;
     }
 
 

@@ -26,7 +26,7 @@ public class TowerSpawner : Spawner
         tower.transform.SetPositionAndRotation(spawnPoint.transform.position, look);
 
         tower.profile = towerProfile;
-        tower.tag = towerProfile.teamTag;
+        tower.teamCode = towerProfile.teamCode;
         tower.state.Set(towerProfile);
 
         StartCoroutine(SpawnAfter_Co());
@@ -37,5 +37,10 @@ public class TowerSpawner : Spawner
         yield return null;
         eventTowerSpawnAfter.towerControl = tower;
         eventTowerSpawnAfter?.Raise();
+    }
+
+    void Start()
+    {
+        eventTowerSpawnBefore?.Raise();
     }
 }

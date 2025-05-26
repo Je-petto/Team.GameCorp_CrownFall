@@ -274,9 +274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87cfe39fcdd1aa24fb08d2b1acc51e8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
   isDeath: 0
   isStop: 0
 --- !u!136 &4245709034460749858
@@ -324,8 +321,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 0
@@ -341,9 +338,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab3c0b38c783b64d82d565db96b0de7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
 --- !u!114 &9083746630376593375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,9 +350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc77bae02a4d6e4eb77d7740f364cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
   teamCode: 0
   teamColorHpbar: {fileID: 2272288962388574530}
   player: {fileID: 1613467996616923258}
@@ -374,10 +365,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 648f67040a127ac46917949aeabdc488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
   T_data: {fileID: 11400000, guid: 906b121eaad8d0c4ba0bb653e8ba0c09, type: 2}
+  currentStat:
+    hp: 0
+    moveSpeed: 0
   data: {fileID: 0}
   pState: 0
   respawnTime: 5
@@ -387,6 +378,7 @@ MonoBehaviour:
   lineRenderer: {fileID: 0}
   stateMachine: {fileID: 141090022938690188}
   inputHandler: {fileID: 2401124286162212840}
+  animationHandler: {fileID: 0}
   teamCode: 0
   targetPoint: {x: 0, y: 0, z: 0}
 --- !u!120 &3117910194395668757

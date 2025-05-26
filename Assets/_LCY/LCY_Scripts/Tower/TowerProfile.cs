@@ -5,14 +5,14 @@ using CustomInspector;
 public class TowerProfile : ScriptableObject
 {
     [HorizontalLine("TAG"), HideField] public bool b0;
-    [Tooltip("ÆÀ ÅÂ±×")] public string teamTag;
+    [Tooltip("ï¿½ï¿½ ï¿½Â±ï¿½")] public int teamCode;
 
     [SerializeField, HorizontalLine("TOWER"), HideField] public bool b1;
-    [Tooltip("Å¸¿ö Ã¼·Â")] public int health;
-    [Tooltip("Å¸¿ö ¸ðµ¨")] public GameObject towerModel;
+    [Tooltip("Å¸ï¿½ï¿½ Ã¼ï¿½ï¿½")] public int health;
+    [Tooltip("Å¸ï¿½ï¿½ ï¿½ï¿½")] public GameObject towerModel;
 
     [SerializeField, HorizontalLine("SHIELD"), HideField] public bool b2;
-    [Tooltip("º¸È£¸· Ã¼·Â")] public int shieldHealth;
-    [Tooltip("º¸È£¸· ¸ðµ¨")] public GameObject shieldModel;
-    [Tooltip("º¸È£¸· È¿°ú")] public ParticleSystem shieldParticle;
+    [Tooltip("ï¿½ï¿½È£ï¿½ï¿½ Ã¼ï¿½ï¿½")] public int shieldHealth;
+    [Tooltip("ï¿½ï¿½È£ï¿½ï¿½ ï¿½ï¿½")] public GameObject shieldModel;
+    [Tooltip("ï¿½ï¿½È£ï¿½ï¿½ È¿ï¿½ï¿½")] public ParticleSystem shieldParticle;
 }

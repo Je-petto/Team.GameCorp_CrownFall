@@ -9,5 +9,5 @@ AnimatorOverrideController:
   m_Name: Animator Override Controller_FireMage
   m_Controller: {fileID: 9100000, guid: 2a23db505c3314d46be36b2d3b893d68, type: 2}
   m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: b7e69a1f634010a428cc3317de7383fc, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 0440d9b31e6743249a4ad9ff3559e402, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: 99a08beee5b2cda4da963bfb7c6135b2, type: 2}
