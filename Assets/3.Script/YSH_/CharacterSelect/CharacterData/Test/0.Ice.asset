@@ -31,6 +31,6 @@ MonoBehaviour:
   inGameAnimator: {fileID: 22100000, guid: 262873ebf65e6bb4989f195b8ee5b4b4, type: 2}
   projection: {fileID: 5623835019506186275, guid: e2aec3037dc15f14b84f9acdcec1d4f9, type: 3}
   face: {fileID: 21300000, guid: baae007890c82d047ad696a86c6014a2, type: 3}
-  SkillIcon: {fileID: 0}
-  ElementIcon: {fileID: 0}
+  SkillIcon: {fileID: 21300000, guid: ad10095f22afb494ca166c5065a5b4bb, type: 3}
+  ElementIcon: {fileID: 21300000, guid: 5f3d13eeb1b01e643b0f734d6e7b9191, type: 3}
   rotateSpeed: 720
