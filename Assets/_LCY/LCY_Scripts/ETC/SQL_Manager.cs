@@ -120,13 +120,16 @@ public class SQL_Manager : BehaviourSingleton<SQL_Manager>
 
                         User_info user = SQL_Manager.I.info;
 
-                        (NetworkManager.singleton as NetworkLobbyManager).clientSession.uid = ID;
-                        (NetworkManager.singleton as NetworkLobbyManager).clientSession.nickname = name;
-                        (NetworkManager.singleton as NetworkLobbyManager).clientSession.selected_cid = "";
-
                         if (UserCache.I != null)
                         {
-                            UserCache.I.cacheData = new UserAuth(ID, name);
+                            
+                            UserCache.I.session.uid = ID;
+                            UserCache.I.session.nickname = name;
+                            UserCache.I.session.selected_cid = "";
+                        }
+                        else
+                        {
+                            Debug.Log("UserCache is null");
                         }
 
                         return true;

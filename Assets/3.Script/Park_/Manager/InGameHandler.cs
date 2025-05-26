@@ -1,6 +1,9 @@
 using UnityEngine;
 using Mirror;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
 
 public static class InGameSession
 {
@@ -11,7 +14,7 @@ public static class InGameSession
 }
 
 public class InGameHandler : MonoBehaviour
-{   
+{
     public Type type;
 
     private NetworkManager manager;
@@ -20,6 +23,11 @@ public class InGameHandler : MonoBehaviour
 
     private void Awake()
     {
+        if (path.Equals(string.Empty))
+        {
+            path = Application.dataPath + "/License";
+        }
+
         manager = GetComponent<NetworkManager>();
         kcp = (kcp2k.KcpTransport)manager.transport;
 
@@ -34,6 +42,10 @@ public class InGameHandler : MonoBehaviour
             else if (arg.StartsWith("-ip="))
             {
                 ServerIP = arg.Substring("-ip=".Length);
+            }
+            else if (arg.StartsWith("-jsonPath"))
+            {
+                MatchPath = arg.Substring("-jsonPath=".Length);
             }
         }
 
@@ -70,6 +82,7 @@ public class InGameHandler : MonoBehaviour
 
     public string ServerIP { get; private set; }
     public string Port { get; private set; }
+    public string MatchPath { get; private set; }
 
     void Start()
     {
@@ -89,9 +102,7 @@ public class InGameHandler : MonoBehaviour
 
         manager.StartClient();
 
-
         string[] args = Environment.GetCommandLineArgs();
-
 
         foreach (var arg in args)
         {
@@ -99,25 +110,7 @@ public class InGameHandler : MonoBehaviour
             {
                 InGameSession.uid = arg.Substring("-uid=".Length);
             }
-            else if (arg.StartsWith("-cid="))
-            {
-                InGameSession.characterId = arg.Substring("-cid=".Length);
-            }
-            else if (arg.StartsWith("-team="))
-            {
-                // 문자열 -> int로 변환
-                if (int.TryParse(arg.Substring("-team=".Length), out int teamCode))
-                {
-                    InGameSession.teamCode = teamCode;
-                }
-                else
-                {
-                    Debug.LogWarning("팀 코드를 파싱하지 못했습니다.");
-                }
-            }
         }
-
-        Debug.Log($"uid : {InGameSession.uid} || characterId : {InGameSession.characterId} || teamCode : {InGameSession.teamCode}");
 
         InGameSession.isInit = true;
     }
@@ -128,22 +121,73 @@ public class InGameHandler : MonoBehaviour
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
             Debug.LogWarning("WebGL cannot be Server");
+            return;
         }
-        else
-        {
-            manager.StartServer();
-            Debug.Log($"{manager.networkAddress} start server...");
 
-            NetworkServer.OnConnectedEvent += (NetworkConnectionToClient) =>
+        manager.StartServer();
+
+        string[] args = Environment.GetCommandLineArgs();
+        string matchId = "";
+
+        foreach (var arg in args)
+        {
+            if (arg.StartsWith("-matchId="))
             {
-                Debug.Log($"new Client : {NetworkConnectionToClient.address}");
-            };
-            NetworkServer.OnDisconnectedEvent += (NetworkConnectionToClient) =>
+                matchId = arg.Substring("-matchId=".Length);
+            }
+        }
+
+        if (string.IsNullOrEmpty(matchId))
+        {
+            Debug.LogError("[Server] matchId 인자를 찾을 수 없습니다.");
+            return;
+        }
+
+        List<UserAuth> userList = LoadMatchDataFromJson(matchId);
+
+        (NetworkManager.singleton as InGameNetworkManager).Init(userList);
+
+        Debug.Log($"{manager.networkAddress} start server...");
+
+        NetworkServer.OnConnectedEvent += (NetworkConnectionToClient) =>
+        {
+            Debug.Log($"new Client : {NetworkConnectionToClient.address}");
+        };
+        NetworkServer.OnDisconnectedEvent += (NetworkConnectionToClient) =>
+        {
+            Debug.Log($"new Client Disconnect : {NetworkConnectionToClient.address}");
+        };
+    }
+
+    private List<UserAuth> LoadMatchDataFromJson(string matchId)
+    {
+        if (!File.Exists(MatchPath))
+        {
+            Debug.LogError($"[MatchData] Match data file is null... : {MatchPath}");
+            return new List<UserAuth>();
+        }
+
+        try
+        {
+            string json = File.ReadAllText(MatchPath);
+            MatchUserListPacket data = JsonUtility.FromJson<MatchUserListPacket>(json);
+
+            if (data == null || data.userList == null)
             {
-                Debug.Log($"new Client Disconnect : {NetworkConnectionToClient.address}");
-            };
+                Debug.LogError("1 -- [MatchData] JSON Parsing Fail...");
+                return new List<UserAuth>();
+            }
+
+            Debug.Log($"2 -- [MatchData] 총 {data.userList.Count}명의 유저 데이터를 불러왔습니다.");
+            return data.userList;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"3 --[MatchData] JSON 파일 파싱 중 예외 발생: {ex.Message}");
+            return new List<UserAuth>();
         }
     }
+
 
     private void OnApplicationQuit()
     {

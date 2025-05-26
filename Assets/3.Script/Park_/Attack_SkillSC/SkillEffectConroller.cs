@@ -16,6 +16,8 @@ public class SkillEffectConroller : MonoBehaviour
     {
         this.caster = caster;
         this.data = data;
+
+        effects = EffectFactory.CreateSkillEffects(data);
     }
 
     void OnEnable()
@@ -32,7 +34,7 @@ public class SkillEffectConroller : MonoBehaviour
         // 같은 팀이면 무시.
         if (target.teamCode == caster.teamCode) return;
 
-        if (other.GetComponent<PlayerController>()) return;         //타워는 스킬 피해를 받지 않음.
+        if (other.GetComponent<TowerControl>()) return;         //타워는 스킬 피해를 받지 않음.
 
         Debug.Log("스킬 적중!!");
 

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
 using System.Collections;
+using System.Linq;
+using System.IO;
 
 public enum PlayerMatchState
 {
@@ -139,22 +141,25 @@ public class MatchManager : NetworkBehaviour
             {
                 group.teamData[1].Add(p);
                 p.identity.GetComponent<NetworkPlayer>().SetTeam(1);
+                Debug.Log($"== team {p.identity.GetComponent<NetworkPlayer>().userAuth.nickname} : {1}");
             }
             else
             {
                 group.teamData[0].Add(p);
                 p.identity.GetComponent<NetworkPlayer>().SetTeam(0);
+                Debug.Log($"== team {p.identity.GetComponent<NetworkPlayer>().userAuth.nickname} : {0}");
             }
         }
     }
 
     private IEnumerator GameStart_Co(MatchGroup group)
     {
+        // 1. 모든 유저 정보 저장
+        var userList = group.players.Select(conn => conn.identity.GetComponent<NetworkPlayer>().userAuth).ToList();
+        var (inGameServerProcess, port) = GameSpawner.StartInGameServer(group.matchId, userList);
+
         Debug.Log(">> All Ready Complete => Game Start after 5 seconds");
         yield return new WaitForSeconds(5f);
-
-        var (inGameServerProcess, port) = GameSpawner.StartInGameServer(group.matchId);
-        // 매칭된 유저들에게 포트 정보 전송 (TargetRPC 호출)
 
         foreach (var conn in group.players)
         {
@@ -187,7 +192,7 @@ public class MatchManager : NetworkBehaviour
             group.readyCount++;
 
             // 게임 시작 여부 확인하기
-            if (CheckAllReady(group))  StartCoroutine(GameStart_Co(group));   
+            if (CheckAllReady(group)) StartCoroutine(GameStart_Co(group));
         }
         else
         {
@@ -200,6 +205,46 @@ public class MatchManager : NetworkBehaviour
             player.identity.GetComponent<NetworkPlayer>().ReceivePlayerReadyState(packet);
         }
     }
-    
+
     private bool CheckAllReady(MatchGroup group) => group.readyCount >= maxPlayerCount;
+}
+
+
+public class GameSpawner
+{
+    private static int basePort = 8000;
+    public static (System.Diagnostics.Process, int) StartInGameServer(Guid matchId, List<UserAuth> users)
+    {
+        Debug.Log("\n\n");
+        Debug.Log($"user Count : {users.Count}");
+        Debug.Log("\n+++++++++++++++ New Ingame Server! ++++++++++++++++++\n");
+
+        int port = GetAvailablePort();
+
+        string jsonDirectory = Path.Combine(Application.dataPath, "MatchData");
+        if (!Directory.Exists(jsonDirectory))
+        {
+            Directory.CreateDirectory(jsonDirectory);
+        }
+
+        string jsonPath = Path.Combine(jsonDirectory, $"{matchId}.json");
+
+        string json = JsonUtility.ToJson(new MatchUserListPacket(users));
+        File.WriteAllText(jsonPath, json);
+
+        var process = new System.Diagnostics.Process();
+        process.StartInfo.FileName = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe";
+        process.StartInfo.Arguments = $"-port={port} -matchId={matchId} -jsonPath={jsonPath}";
+        process.StartInfo.UseShellExecute = true;
+        process.Start();
+
+        return (process, port);
+    }
+
+    // 실제 사용 가능한 포트를 반환 (기초 구현)
+    private static int GetAvailablePort()
+    {
+        // 실제 환경에서는 충돌 체크 필요
+        return basePort++;
+    }
 }

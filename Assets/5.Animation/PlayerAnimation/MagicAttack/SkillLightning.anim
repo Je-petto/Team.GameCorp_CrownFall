@@ -322581,6 +322581,13 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0.25
+    functionName: EnterSkillCastEvent
+    data: 
+    objectReferenceParameter: {fileID: 5995134306785910827, guid: d32cef3ef9da0aa44980615fc13be6d4, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.28333333
     functionName: PlayFX
     data: CHARGELIGHTNING
@@ -322592,6 +322599,13 @@ AnimationClip:
     functionName: PlayFX
     data: STRIKELIGHTNING
     objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 2.0833333
+    functionName: ExitSkillCastEvent
+    data: 
+    objectReferenceParameter: {fileID: 5995134306785910827, guid: d32cef3ef9da0aa44980615fc13be6d4, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

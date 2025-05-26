@@ -12,9 +12,9 @@ public class GameStart : MonoBehaviour
         //     return;
         // }
         
-        (NetworkManager.singleton as NetworkLobbyManager).clientSession.uid = user.uid;
-        (NetworkManager.singleton as NetworkLobbyManager).clientSession.nickname =  user.nickname;
-        (NetworkManager.singleton as NetworkLobbyManager).clientSession.selected_cid = "";
+        UserCache.I.session.uid = user.uid;
+        UserCache.I.session.nickname =  user.nickname;
+        UserCache.I.session.selected_cid = "";
         (NetworkManager.singleton as NetworkLobbyManager).StartClientHandler();
     }
 }

@@ -227,7 +227,7 @@ MonoBehaviour:
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 8436226803424169134, guid: 78e21a793a729584f9d0c9c22dec6b09, type: 3}
+  playerPrefab: {fileID: 5995134306785910827, guid: d32cef3ef9da0aa44980615fc13be6d4, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs: []
@@ -250,12 +250,12 @@ MonoBehaviour:
   minPlayers: 1
   roomPlayerPrefab: {fileID: 2985384076591106400, guid: 493b30a7ac9139e4db0f7b75df2a4583, type: 3}
   RoomScene: Assets/1.Scene/PWH_Network/Client/net.1.LobbyScene.unity
-  GameplayScene: 
+  GameplayScene: Assets/1.Scene/PWH_Network/Client/net.3.InGameScene.unity
   _allPlayersReady: 0
   clientIndex: 0
+  cachedUser: []
   matchManager: {fileID: 318351796}
   networkHandler: {fileID: 318351798}
-  matchedPlayerList: []
 --- !u!4 &318351800
 Transform:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
-using Mirror;
 using UnityEngine;
 
-public class PlayerInputHandler : NetworkBehaviour
+public class PlayerInputHandler : MonoBehaviour //NetworkBehaviour
 {
     public ICommand moveCommand;
     public ICommand attackCommand;
@@ -10,33 +9,45 @@ public class PlayerInputHandler : NetworkBehaviour
     public ICommand deathCommand;
     private SkillCastCommand castCommand => skillCastCommand as SkillCastCommand;
 
-    public bool isDeath = false;           //test
-    public bool isStop = false;
+    public bool isDeath;
+    public bool isStop;
+
+    void Start()
+    {
+        isDeath = false;
+        isStop = false;
+    }
 
     void Update()
     {
-        if (!isLocalPlayer) return;  
+        // if (!isLocalPlayer) return;  
 
-        if (isStop || isDeath) return;  
+        if (isStop || isDeath) return;
+
+        if (castCommand == null)
+        {
+            Debug.Log($"[Client] : castCommand is null....");
+            return;
+        }
 
         if (!castCommand.isCasting)
-        {
-            if (Input.GetMouseButtonDown(0))
             {
-                (detectCommand as DetectionCommand).OnOff(true);
-            }
+                if (Input.GetMouseButtonDown(0))
+                {
+                    (detectCommand as DetectionCommand).OnOff(true);
+                }
 
-            if (Input.GetMouseButton(0))
-            {
-                detectCommand.Execute();
-            }
+                if (Input.GetMouseButton(0))
+                {
+                    detectCommand.Execute();
+                }
 
-            if (Input.GetMouseButtonUp(0))
-            {
-                (detectCommand as DetectionCommand).OnOff(false);
-                attackCommand.Execute();
+                if (Input.GetMouseButtonUp(0))
+                {
+                    (detectCommand as DetectionCommand).OnOff(false);
+                    attackCommand.Execute();
+                }
             }
-        }
 
         if (skillCastCommand != null)
         {
@@ -46,7 +57,7 @@ public class PlayerInputHandler : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (!isLocalPlayer) return;
+        // if (!isLocalPlayer) return;
         if (moveCommand == null) return;
         if (isStop) return;
 

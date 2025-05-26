@@ -1,7 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/A.M.P. DEMO.meta
 guid: 6fd00fdf1e1c0a24c9648dd587dd94c9
 folderAsset: yes
 DefaultImporter:
+========
+guid: 139de21ac6a333f4ca47eb0181a935ff
+PrefabImporter:
+>>>>>>>> Stashed changes:Assets/2.Model/Prefabs/Playables/InGameModel/Magician_RIOGreen_InGame.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

@@ -11,13 +11,15 @@ public class EffectHandler
 
     public void ApplyDamage(int amount)
     {
+        Debug.Log($"{amount} -? Damage Apply");
         player.currentStat.hp -= amount * (100 - player.data.defense) / 100;
-        player.currentStat.hp = Mathf.Clamp(0, player.data.hp, player.currentStat.hp);
+        player.currentStat.hp = Mathf.Clamp(player.currentStat.hp, 0, player.data.hp);
         player.RaiseOnChangeHp();
     }
 
     public void ApplyHeal(float amount)
     {
+        Debug.Log("Heal Apply");
         player.currentStat.hp += (int)amount;
         player.currentStat.hp = Mathf.Clamp(0, player.data.hp, player.currentStat.hp);
         player.RaiseOnChangeHp();
@@ -25,6 +27,7 @@ public class EffectHandler
 
     public void ApplySlow(float duration, float amount)
     {
+        Debug.Log("Slow Apply");
         Sequence seq = DOTween.Sequence();
 
         seq.AppendCallback(() => player.currentStat.moveSpeed *= (amount / 100f))
@@ -34,7 +37,8 @@ public class EffectHandler
 
     public void ApplyDot(float duration, float amount)
     {
-        int tickCount = Mathf.FloorToInt(duration); // 1초마다 실행, 총 횟수
+        Debug.Log("Dot Apply");
+        int tickCount = Mathf.FloorToInt(duration);
         Sequence seq = DOTween.Sequence();
 
         for (int i = 0; i < tickCount; i++)

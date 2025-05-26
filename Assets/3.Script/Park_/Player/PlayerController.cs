@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using Cinemachine;
 using Mirror;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 public enum LifeState { ALIVE, DEATH }
 
+[Serializable]
 public class PlayerStat
 {
     public int hp;
@@ -19,7 +20,7 @@ public class PlayerStat
     }
 }
 
-public class PlayerController : NetworkBehaviour
+public class PlayerController : MonoBehaviour // NetworkBehaviour
 {
     #region Test
     [Header("Test")]
@@ -27,7 +28,7 @@ public class PlayerController : NetworkBehaviour
     #endregion
 
     #region Event
-    
+
     public UnityAction<float> OnChangedHp;
     #endregion
 
@@ -38,7 +39,7 @@ public class PlayerController : NetworkBehaviour
 
     public CharacterInfo data;
     public LifeState pState;
-    
+
     [Header("Respawn Settings")]
     public float respawnTime = 5f;
     #endregion
@@ -52,6 +53,7 @@ public class PlayerController : NetworkBehaviour
     public PlayerStateMachine stateMachine;
     public PlayerInputHandler inputHandler;
     public EffectHandler effectHandler;
+    public AnimationHandler animationHandler;
     #endregion
 
     #region Misc
@@ -61,50 +63,79 @@ public class PlayerController : NetworkBehaviour
 
     void Start()
     {
-        if (!isLocalPlayer) return;
+        // if (!isLocalPlayer) return;
 
         Debug.Log("Player Init Start!");
         pState = LifeState.ALIVE;
-        teamCode = 0;
-
-        StartCoroutine(SetCharacter_Co());
+        // CmdRequestMyUserData(InGameSession.uid); 
+        EditorTest();   
     }
 
-    IEnumerator SetCharacter_Co()
+    #region Editor
+    void EditorTest()
     {
-        Debug.Log("Player Character Setting...");
-        yield return new WaitUntil(() => InGameSession.isInit);
+        // if (teamCode == 1) return;
+        StartCoroutine(SpawnCharacter(T_data.cid));
+    }
 
-        Debug.Log("InGameSession Complete.");
+    #endregion
+
+    // #region Client
+    // [Command]
+    // private void CmdRequestMyUserData(string uid)
+    // {
+    //     var userData = ((InGameNetworkManager)NetworkManager.singleton).GetUser(uid);
+
+    //     if (userData != null)
+    //     {
+    //         TargetReceiveUserData(connectionToClient, userData);
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning($"[Server] 유저 정보 없음: {uid}");
+    //     }
+    // }
+
+    // [TargetRpc]
+    // private void TargetReceiveUserData(NetworkConnection target, UserAuth data)
+    // {
+    //     Debug.Log($"[Client] 내 유저 정보 수신: {data.nickname} / {data.c_id} / 팀: {data.teamCode}");
+
+    //     // 캐릭터 데이터 로드 및 생성
+    //     StartCoroutine(SpawnCharacter(data.c_id));
+    // }
+    // #endregion
+    
+    private IEnumerator SpawnCharacter(string cid)
+    {
         yield return new WaitUntil(() => PlayerSpawner.I != null);
 
-        Debug.Log($"{InGameSession.characterId}...");
-        Debug.Log("PlayerSpawner Complete.");
+        CharacterInfo charData = PlayerSpawner.I.GetCharacterInfo(cid);
 
-        CharacterInfo charData = PlayerSpawner.I.GetCharacterInfo(InGameSession.characterId);
-        // CharacterInfo charData = T_data;
+        Debug.Log($"[Client] 캐릭터 데이터 처리 : {charData}");
+        if (charData == null)
+        {
+            Debug.LogError($"[Client] 캐릭터 정보 없음: {cid}");
+            yield break;
+        }
 
-        if (charData != null)
-            Debug.Log("char data is not null.");
-        else
-            Debug.LogWarning("char data is null.");
+        // 캐릭터 모델 생성
+        Instantiate(charData.inGameModel, Vector3.zero, Quaternion.identity, transform.Find("_mesh"));
+
+        Debug.Log($"[Client] 캐릭터 '{cid}' instantiate Complete.");
 
         data = charData;
-
         currentStat = new(data.hp, data.speed);
 
-        //팀 설정
-        teamCode = InGameSession.teamCode;
-        
-        Instantiate(data.model, Vector3.zero, Quaternion.Euler(Vector3.zero), transform.Find("_mesh"));
+        Debug.Log($"[Client] 캐릭터 '{currentStat.hp} , {currentStat.moveSpeed}' set Complete");
 
         StartCoroutine(InitComponents_Co());
     }
 
     IEnumerator InitComponents_Co()
     {
-        yield return new WaitForEndOfFrame();
         Debug.Log("InitComponents_Co Ing...");
+        yield return new WaitForEndOfFrame();
 
         attackPoint = transform.Find("_attackPoint");
 
@@ -112,6 +143,7 @@ public class PlayerController : NetworkBehaviour
         TryGetComponent(out stateMachine);
         TryGetComponent(out inputHandler);
         TryGetComponent(out lineRenderer);
+        TryGetComponent(out animationHandler);
 
         if (inputHandler == null)
         {
@@ -132,9 +164,10 @@ public class PlayerController : NetworkBehaviour
         if (lineRenderer != null) lineRenderer.enabled = false;
 
         animator = GetComponentInChildren<Animator>();
-        GetComponent<NetworkAnimator>().animator = animator;                //네트워크 데이터 동기화 추가
         
         if (animator == null) Debug.Log("animator is null");
+
+        Debug.Log(data.inGameAnimator + $"{data.inGameAnimator}");
         animator.runtimeAnimatorController = data.inGameAnimator;
 
         // Cinemachine 카메라 설정
@@ -143,7 +176,7 @@ public class PlayerController : NetworkBehaviour
 
         // EffectHandler 초기화
         effectHandler = new EffectHandler(this);
-
+        
         yield return new WaitUntil(() => inputHandler != null);
 
         inputHandler.moveCommand = new MoveCommand(this);
@@ -162,14 +195,14 @@ public class PlayerController : NetworkBehaviour
     
     public void RaiseOnChangeHp()
     {
-        if (!isLocalPlayer) return;
+        // if (!isLocalPlayer) return;
         Debug.Log("데미지 적용!");
-        OnChangedHp?.Invoke(currentStat.hp / data.hp);
+        OnChangedHp?.Invoke((float)currentStat.hp / data.hp);
     }
 
     public void Die()
     {
-        if (!isLocalPlayer) return;
+        // if (!isLocalPlayer) return;
         stateMachine.ChangeState(new DeadState(this));
     }
 }

@@ -63,10 +63,13 @@ public class PlayerAttackNonTargeting : PlayerAbility
             Quaternion.identity
         );
 
-        player.transform.DOLookAt(player.targetPoint, 0.1f)
+        projection.GetComponent<AttackObject>().SetCaster(player, player.data.attack);
+
+        Vector3 lookPpint = new Vector3(player.targetPoint.x, 0f, player.targetPoint.z);
+        player.transform.DOLookAt(lookPpint, 0.2f)
             .OnComplete(() =>
             {
-                projection.transform.DOMove(player.targetPoint, 0.2f)
+                projection.transform.DOMove(player.targetPoint, 0.5f)
                     .OnComplete(() => GameObject.Destroy(projection));
             });
 

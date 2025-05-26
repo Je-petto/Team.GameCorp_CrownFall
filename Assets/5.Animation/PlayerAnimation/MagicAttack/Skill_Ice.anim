@@ -101368,10 +101368,24 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.33333334
+    functionName: EnterSkillCastEvent
+    data: 
+    objectReferenceParameter: {fileID: 5995134306785910827, guid: d32cef3ef9da0aa44980615fc13be6d4, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 1.2666667
     functionName: PlayFX
     data: ACTIVATESKILL_ICE
     objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 2.3333333
+    functionName: ExitSkillCastEvent
+    data: 
+    objectReferenceParameter: {fileID: 5995134306785910827, guid: d32cef3ef9da0aa44980615fc13be6d4, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

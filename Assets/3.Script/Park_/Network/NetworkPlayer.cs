@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-//해당 컴포넌트는 [로비, 게임 대기화면]에서 까지 유효하다. 
+//해당 컴포넌트는 [로비, 게임 대기화면]에서 까지 유효하다.
 public class NetworkPlayer : NetworkRoomPlayer
 {
     [SyncVar] public PlayerMatchState matchState = PlayerMatchState.NotMatched;
@@ -15,9 +15,7 @@ public class NetworkPlayer : NetworkRoomPlayer
     {
         base.OnStartClient();
 
-        ClientSession session = (NetworkManager.singleton as NetworkLobbyManager).clientSession;
-
-        userAuth = new(session.uid, session.nickname);
+        userAuth = new(UserCache.I.session.uid, UserCache.I.session.nickname);
         CmdSendUserInfo(userAuth.uid, userAuth.nickname);
 
         //씬 전환 이벤트 생성
@@ -43,7 +41,11 @@ public class NetworkPlayer : NetworkRoomPlayer
     IEnumerator BindEvent()
     {
         yield return new WaitUntil(() => WaitingSceneManager.I != null);
+
+        WaitingSceneManager.I.OnChangeSelectedCharacter -= CmdSendPlayerSelectedCharacterData;
         WaitingSceneManager.I.OnChangeSelectedCharacter += CmdSendPlayerSelectedCharacterData;
+
+        WaitingSceneManager.I.OnChangeMatchState -= CmdSendPlayerReadyState;
         WaitingSceneManager.I.OnChangeMatchState += CmdSendPlayerReadyState;
     }
 
@@ -82,7 +84,7 @@ public class NetworkPlayer : NetworkRoomPlayer
 
     // 플레이어 준비 상태 갱신.
     [Command]
-    void CmdSendPlayerReadyState(PlayerMatchState state) //CharacterData data
+    void CmdSendPlayerReadyState(PlayerMatchState state)
     {
         Debug.Log($"Client U_ID[{userAuth.uid}] : Ready State Change : {state}");
 
@@ -119,9 +121,9 @@ public class NetworkPlayer : NetworkRoomPlayer
         Debug.Log($"Team Data Get : {teamCode}");
         userAuth.teamCode = teamCode;
 
-        if (UserCache.I != null && UserCache.I.cacheData != null)
+        if (UserCache.I != null)
         {
-            UserCache.I.cacheData.teamCode = teamCode;
+            UserCache.I.session.teamCode = teamCode;
             Debug.Log($"[Client] UserCache에 팀 정보 반영 완료: {teamCode}");
         }
     }

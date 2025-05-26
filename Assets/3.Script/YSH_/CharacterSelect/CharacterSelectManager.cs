@@ -37,11 +37,12 @@ public class CharacterSelectManager : MonoBehaviour
         currentCharacterModel = Instantiate(info.model, spawnPoint.position, spawnPoint.rotation);
         WaitingSceneManager.I.SelectCharacter(info);
         characterInfoUI?.SetCharacterInfo(info);
+        UserCache.I.session.selected_cid = cid;
     }
 
     public void OnClickReadyButton()
     {
-        (NetworkManager.singleton as NetworkLobbyManager).clientSession.selected_cid = "test1";
+        Debug.Log("Ready Button On");
         WaitingSceneManager.I.SetReadyState();
     }
 }

@@ -18,6 +18,9 @@ public class DeathCommand : ICommand
 
     public void Execute()
     {
+
+        //team test
+        if (player.teamCode != 0) return;
         player.stateMachine.ChangeState(state);
     }
 }
@@ -46,6 +49,7 @@ public class IdleCommand : ICommand
 
     public void Execute()
     {
+        if (player.teamCode != 0) return;
         player.stateMachine.ChangeState(new IdleState(player));
     }
 }
@@ -74,6 +78,7 @@ public class DetectionCommand : ICommand
     {
         if (!detectionState) return;
 
+        if (player.teamCode != 0) return;
         detection.Perform();
     }
 }
@@ -92,6 +97,7 @@ public class AttackCommand : ICommand
 
     public void Execute()
     {
+        if (player.teamCode != 0) return;
         attack.Perform();
     }
 }
@@ -155,28 +161,16 @@ public class SkillCastCommand : ICommand
 
             if (caster.animator != null) caster.animator.SetTrigger("Attack");
 
+            Vector3 lookPoint = new Vector3(caster.targetPoint.x, 0f, caster.targetPoint.z);
+            caster.transform.LookAt(lookPoint);
             skillAction.Perform(skillPoint);
             mark.SetActive(false);
 
             isCasting = false;
             
             SkillCoolDown(data.coolDown);
-            SkillCast();
         }
     }
-
-
-    private void SkillCast()
-    {
-        Sequence seq = DOTween.Sequence();
-
-        //test...skilling
-        seq.AppendCallback(() => caster.inputHandler.isStop = true)
-            .AppendInterval(1f)
-            .AppendCallback(() => caster.inputHandler.isStop = false);
-        // 1초간 인풋 값 무시.
-    }
-
     private void SkillCoolDown(float cooldown)
     {
         Sequence coolSeq = DOTween.Sequence();

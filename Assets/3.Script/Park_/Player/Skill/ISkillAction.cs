@@ -130,9 +130,15 @@ public class Skill_YellowRod : ISkillAction
 
     public Skill_YellowRod(PlayerController caster, SkillData data)
     {
-                this.caster = caster;
+        this.caster = caster;
         this.data = data;
 
+        if (data.prefab == null)
+        {
+            Debug.LogError("[Skill_YellowRod] SkillData의 prefab이 설정되어 있지 않습니다!");
+            return;
+        }
+    
         skillEffectObject = GameObject.Instantiate(data.prefab);
         skillEffectObject.GetComponent<SkillEffectConroller>().SetProps(caster, data);
         skillEffectObject.SetActive(false);
