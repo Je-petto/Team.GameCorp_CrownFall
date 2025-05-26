@@ -16,9 +16,9 @@ MonoBehaviour:
   damage: 0
   duration: 1
   coolDown: 11
-  castingTime: 4
+  castingTime: 0.9
   dot: 0
   castingMark: {fileID: 3718856034927834208, guid: d67613357a940e547afc5976c850550e, type: 3}
-  prefab: {fileID: 7143221369630042384, guid: a1b1ac9ea72d8c84f9ffabb688a9d2ed, type: 3}
+  prefab: {fileID: 5906619286482871798, guid: cb530f9f156be5945909a1b68a8e9ed9, type: 3}
   distance: 0
   effectTypes: 0200000003000000
