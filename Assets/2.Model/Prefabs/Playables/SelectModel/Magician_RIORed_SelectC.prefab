@@ -1705,7 +1705,7 @@ GameObject:
   - component: {fileID: 9071864502588072449}
   - component: {fileID: 3243827126849901103}
   m_Layer: 0
-  m_Name: Magician_RIORed_SelectScene
+  m_Name: Magician_RIORed_SelectC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

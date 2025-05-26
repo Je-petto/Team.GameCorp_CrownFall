@@ -761,7 +761,7 @@ GameObject:
   - component: {fileID: 1504217644692401772}
   - component: {fileID: 874243800712639170}
   m_Layer: 0
-  m_Name: Magician_RIOYellow_SelectScene
+  m_Name: Magician_RIOYellow_C
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
