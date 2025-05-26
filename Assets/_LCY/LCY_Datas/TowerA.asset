@@ -15,9 +15,8 @@ MonoBehaviour:
   b0: 0
   teamCode: 0
   b1: 0
-  health: 1500
+  health: 5000
   towerModel: {fileID: 2003491318975420378, guid: ed9d15241e6f969499fe07484e190dbe, type: 3}
   b2: 0
-  shieldHealth: 50
-  shieldModel: {fileID: 3745852577633761081, guid: c9cda1d501ac86f439575317bfc01ad1, type: 3}
-  shieldParticle: {fileID: 0}
+  shieldHealth: 2000
+  shieldModel: {fileID: 1510642789367007747, guid: d681595879683f942aec86c577b62806, type: 3}
