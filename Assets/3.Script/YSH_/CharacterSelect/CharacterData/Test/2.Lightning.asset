@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 2.Lightning
   m_EditorClassIdentifier: 
   cid: P-002
+  characterNickName: 
   characterName: C
   description: Sorcerer
   hp: 1650
@@ -30,4 +31,6 @@ MonoBehaviour:
   inGameAnimator: {fileID: 22100000, guid: 13a4eb2cc7e6a424ba8e2bbc3be01029, type: 2}
   projection: {fileID: 1989749297337968, guid: a53a31054ffa315498495aacf017988c, type: 3}
   face: {fileID: 21300000, guid: a613dc7858d9b784f88a08223dfa82bd, type: 3}
+  SkillIcon: {fileID: 21300000, guid: 98e2586cd9b7c50488f5e16b2f9d4f38, type: 3}
+  ElementIcon: {fileID: 21300000, guid: dd7a0b4cf298f5042846bf21584f5f86, type: 3}
   rotateSpeed: 720
