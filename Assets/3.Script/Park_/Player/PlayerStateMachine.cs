@@ -1,7 +1,7 @@
 using Mirror;
 using UnityEngine;
 
-public class PlayerStateMachine : NetworkBehaviour
+public class PlayerStateMachine : MonoBehaviour//NetworkBehaviour
 {
     private IPlayerState currentState;
 
@@ -12,8 +12,8 @@ public class PlayerStateMachine : NetworkBehaviour
 
     public void ChangeState(IPlayerState state)
     {
-        if (!isLocalPlayer) return;
-
+        // if (!isLocalPlayer) return;
+        
         if (state.Equals(currentState)) return;
 
         currentState?.Exit();
@@ -28,7 +28,7 @@ public class PlayerStateMachine : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (!isLocalPlayer) return;
+        // if (!isLocalPlayer) return;
         currentState?.Update();
     }
 }

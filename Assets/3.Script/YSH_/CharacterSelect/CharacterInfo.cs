@@ -31,6 +31,7 @@ public class CharacterInfo : ScriptableObject
     // Edit from Park
     [Header("Model")]
     public GameObject model;
+    public GameObject inGameModel;
     public RuntimeAnimatorController selectorAnimator;
     public RuntimeAnimatorController inGameAnimator;
     public GameObject projection;                 //논타겟 투사체. [원거리만 사용], [근거리는 미사용..?]

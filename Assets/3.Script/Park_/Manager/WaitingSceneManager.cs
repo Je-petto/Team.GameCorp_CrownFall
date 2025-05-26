@@ -70,11 +70,9 @@ public class WaitingSceneManager : BehaviourSingleton<WaitingSceneManager>
     {
         Debug.Log($"Select character : {selectedCharacter.name}");
 
-
         NetworkPlayer myPlayer = networkPlayers.Find(a => a.isLocalPlayer);
         myPlayer.userAuth.c_id = selectedCharacter.cid;
         
-        // 패킷을 만들고 Matchmanager에게 보내기
         OnChangeSelectedCharacter?.Invoke(selectedCharacter.cid);
     }
 
@@ -114,48 +112,13 @@ public class WaitingSceneManager : BehaviourSingleton<WaitingSceneManager>
         // 클라이언트 실행.
         process.Start();
 
-        //기존 클라이언트는 종료!
-#if UNITY_EDITOR
-        // 에디터에서는 플레이 모드 종료
-        EditorApplication.isPlaying = false;
-#else
-            // 빌드된 게임에서는 애플리케이션 종료
-            Application.Quit();
-#endif
+//         //기존 클라이언트는 종료!
+// #if UNITY_EDITOR
+//         // 에디터에서는 플레이 모드 종료
+//         EditorApplication.isPlaying = false;
+// #else
+//             // 빌드된 게임에서는 애플리케이션 종료
+//             Application.Quit();
+// #endif
     }
-    
-    public void OnClickTestMatchButton()
-    {
-        // 1. 인게임 서버 실행
-        var (process, port) = GameSpawner.StartInGameServer("testing Match");
-
-        if (process == null)
-        {
-            Debug.LogError("❌ 인게임 서버 실행");
-            return;
-        }
-
-        Debug.Log($"[Test] 인게임 서버 시작됨 → 포트: {port}");
-        StartCoroutine(WaitForServerAndConnect(serverIP, port));
-    }
-
-    IEnumerator WaitForServerAndConnect(string ip, int port)
-    {
-        Debug.Log($"[Test] 서버[{port}] 포트 오픈 대기 중...");
-
-        yield return new WaitForSeconds(10f);
-
-        Debug.Log("[Test] 포트 열림 → 클라이언트 접속 시도");
-
-        StartNewClient(port, "dsf", "sdfa");
-
-        // 2. 기존 네트워크 종료 (로비 연결 끊기)
-        if (NetworkClient.isConnected || NetworkServer.active)
-        {
-            Debug.Log("[Client] 종료...");
-            networkManager.StopClient();
-        }
-    }
-
-
 }

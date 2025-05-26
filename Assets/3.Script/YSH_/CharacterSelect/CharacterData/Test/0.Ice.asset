@@ -25,6 +25,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a85a8d5111730e64cab388ed8898d8ed, type: 2}
   characterType: 0
   model: {fileID: 2571230342630475205, guid: 9b11069076be55444a96e16b31102737, type: 3}
+  inGameModel: {fileID: 2571230342630475205, guid: b93999a9b04953343ae71fda28b7eedb, type: 3}
   selectorAnimator: {fileID: 9100000, guid: 483e4c5dba607ca48be5a61a0d9c3474, type: 2}
   inGameAnimator: {fileID: 22100000, guid: 262873ebf65e6bb4989f195b8ee5b4b4, type: 2}
   projection: {fileID: 5623835019506186275, guid: e2aec3037dc15f14b84f9acdcec1d4f9, type: 3}
