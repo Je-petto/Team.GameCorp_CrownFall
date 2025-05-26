@@ -8,12 +8,15 @@ public class InGameNetworkManager : NetworkManager
 {
     public List<UserAuth> inGameUsers = new();
 
+    public List<NetworkConnectionToClient> clients = new();         //서버에 접속 중인 클라이언트들.
+
     public void Init(List<UserAuth> users)
     {
         this.inGameUsers = users;
     }
 
-    public UserAuth GetUser(string uid)
+    
+    public UserAuth GetUser(NetworkConnectionToClient conn, string uid)
     {
         UserAuth user = inGameUsers.Find(u => u.uid == uid);
         if (user == null)
@@ -22,12 +25,22 @@ public class InGameNetworkManager : NetworkManager
             return null;
         }
 
+        Debug.Log($"uid :{uid} set Character...");
+
+        //클라이언트 들에게 모두 전달하기
+        foreach (var c in clients)
+        {
+            if (c.Equals(conn)) continue;               //보낸 사람이면 넘어가기.
+            c.identity.GetComponent<PlayerController>().RecieveCharacterData(user);
+        }
+
         return user;
     }
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         base.OnServerAddPlayer(conn);
+        clients.Add(conn);
     }
 
     public override void OnServerConnect(NetworkConnectionToClient conn)
@@ -40,24 +53,5 @@ public class InGameNetworkManager : NetworkManager
     {
         Debug.Log($"[InGameServer] Scene Load Complete: {sceneName}...");
     }
-    
-    public void LoadMatchData(Guid matchId)
-    {
-        string path = $"./MatchData/{matchId}.json";
 
-        if (!File.Exists(path))
-        {
-            Debug.LogError($"[InGameServer] Match data not found: {path}");
-            return;
-        }
-
-        string json = File.ReadAllText(path);
-        MatchUserListPacket userListPacket = JsonUtility.FromJson<MatchUserListPacket>(json);
-
-        foreach (var user in userListPacket.userList)
-        {
-            inGameUsers.Add(user);
-            Debug.Log($"Loaded user: {user.uid} - {user.nickname}, char: {user.c_id}, team: {user.teamCode}");
-        }
-    }
 }

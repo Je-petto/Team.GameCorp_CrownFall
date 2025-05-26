@@ -235,7 +235,9 @@ public class GameSpawner
         File.WriteAllText(jsonPath, json);
 
         var process = new System.Diagnostics.Process();
-        process.StartInfo.FileName = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe";
+        // process.StartInfo.FileName = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe";
+        process.StartInfo.FileName = "D:/Project/LocalGit/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe";
+
         process.StartInfo.Arguments = $"-port={port} -matchId={matchId} -jsonPath={jsonPath}";
         process.StartInfo.UseShellExecute = true;
         process.Start();
