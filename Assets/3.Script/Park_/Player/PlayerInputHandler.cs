@@ -1,6 +1,7 @@
+using Mirror;
 using UnityEngine;
 
-public class PlayerInputHandler : MonoBehaviour //NetworkBehaviour
+public class PlayerInputHandler : NetworkBehaviour
 {
     public ICommand moveCommand;
     public ICommand attackCommand;
@@ -20,7 +21,7 @@ public class PlayerInputHandler : MonoBehaviour //NetworkBehaviour
 
     void Update()
     {
-        // if (!isLocalPlayer) return;  
+        if (!isLocalPlayer) return;  
 
         if (isStop || isDeath) return;
 
@@ -57,7 +58,7 @@ public class PlayerInputHandler : MonoBehaviour //NetworkBehaviour
 
     void FixedUpdate()
     {
-        // if (!isLocalPlayer) return;
+        if (!isLocalPlayer) return;
         if (moveCommand == null) return;
         if (isStop) return;
 

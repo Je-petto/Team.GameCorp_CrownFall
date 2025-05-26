@@ -4,7 +4,7 @@ using System.Data.Common;
 using DG.Tweening;
 using UnityEngine;
 
-public class SkillEffectConroller : MonoBehaviour
+public class SkillEffectController : MonoBehaviour
 {
     public PlayerController caster;
     private ParticleSystem ps;
@@ -28,6 +28,38 @@ public class SkillEffectConroller : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (data.type.Equals(SkillType.HEAL))
+        {
+            ApplyHeal(other);
+        }
+        else
+        {
+            ApplyDamage(other);
+        }
+    }
+
+    private void ApplyHeal(Collider other)
+    {
+        var target = other.GetComponent<PlayerController>();
+        if (target == null) return;
+
+        // 다른팀이면 무시.
+        if (target.teamCode != caster.teamCode) return;
+
+        if (other.GetComponent<TowerControl>()) return;         //타워는 스킬 피해를 받지 않음.
+
+        Debug.Log("힐 적중!!");
+
+        PlayerController enemy = other.GetComponent<PlayerController>();
+
+        foreach (var e in effects)
+        {
+            e.Apply(enemy);
+        }
+    }
+
+    private void ApplyDamage(Collider other)
+    {
         var target = other.GetComponent<PlayerController>();
         if (target == null) return;
 
@@ -36,7 +68,7 @@ public class SkillEffectConroller : MonoBehaviour
 
         if (other.GetComponent<TowerControl>()) return;         //타워는 스킬 피해를 받지 않음.
 
-        Debug.Log("스킬 적중!!");
+        Debug.Log("데미지 적중!!");
 
         PlayerController enemy = other.GetComponent<PlayerController>();
 

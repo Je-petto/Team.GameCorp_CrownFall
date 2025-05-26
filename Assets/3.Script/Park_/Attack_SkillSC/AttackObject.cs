@@ -1,6 +1,7 @@
+using Mirror;
 using UnityEngine;
 
-public class AttackObject : MonoBehaviour
+public class AttackObject : NetworkBehaviour
 {
     PlayerController caster;
     private int damage;

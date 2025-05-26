@@ -141,12 +141,14 @@ public class MatchManager : NetworkBehaviour
             {
                 group.teamData[1].Add(p);
                 p.identity.GetComponent<NetworkPlayer>().SetTeam(1);
+                p.identity.GetComponent<NetworkPlayer>().userAuth.teamCode = 1;
                 Debug.Log($"== team {p.identity.GetComponent<NetworkPlayer>().userAuth.nickname} : {1}");
             }
             else
             {
                 group.teamData[0].Add(p);
                 p.identity.GetComponent<NetworkPlayer>().SetTeam(0);
+                p.identity.GetComponent<NetworkPlayer>().userAuth.teamCode = 0;
                 Debug.Log($"== team {p.identity.GetComponent<NetworkPlayer>().userAuth.nickname} : {0}");
             }
         }

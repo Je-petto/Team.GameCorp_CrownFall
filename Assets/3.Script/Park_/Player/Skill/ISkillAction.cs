@@ -68,7 +68,7 @@ public class Skill_Frost : ISkillAction
         this.data = data;
 
         skillEffectObject = GameObject.Instantiate(data.prefab);
-        skillEffectObject.GetComponent<SkillEffectConroller>().SetProps(caster, data);
+        skillEffectObject.GetComponent<SkillEffectController>().SetProps(caster, data);
         skillEffectObject.SetActive(false);
     }
 
@@ -115,7 +115,7 @@ public class Skill_Heal : ISkillAction
         this.data = data;
 
         skillEffectObject = GameObject.Instantiate(data.prefab);
-        skillEffectObject.GetComponent<SkillEffectConroller>().SetProps(caster, data);
+        skillEffectObject.GetComponent<SkillEffectController>().SetProps(caster, data);
         skillEffectObject.SetActive(false);
     }
 
@@ -166,7 +166,7 @@ public class Skill_YellowRod : ISkillAction
         }
     
         skillEffectObject = GameObject.Instantiate(data.prefab);
-        skillEffectObject.GetComponent<SkillEffectConroller>().SetProps(caster, data);
+        skillEffectObject.GetComponent<SkillEffectController>().SetProps(caster, data);
         skillEffectObject.SetActive(false);
     }
 

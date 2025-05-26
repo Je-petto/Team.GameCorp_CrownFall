@@ -21,4 +21,4 @@ MonoBehaviour:
   castingMark: {fileID: 3718856034927834208, guid: d67613357a940e547afc5976c850550e, type: 3}
   prefab: {fileID: 5106043215229604328, guid: 74621a6fcb0ce22448b9867d20d765d8, type: 3}
   distance: 0
-  effectTypes: 01000000
+  effectTypes: 0100000005000000

@@ -27,7 +27,6 @@ public class InGameNetworkManager : NetworkManager
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        Debug.Log("[InGameServer] Add Player...");
         base.OnServerAddPlayer(conn);
     }
 
