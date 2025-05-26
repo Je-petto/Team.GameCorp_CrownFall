@@ -1778,13 +1778,13 @@ MonoBehaviour:
     spawnPoint: {fileID: 6888933062025288773}
     positionOffset: {x: 0, y: -2, z: 0}
     rotationEuler: {x: 0, y: -90, z: -90}
-    duration: 1.3
+    duration: 2
   - fxName: EXPLOSION
     prefab: {fileID: -4714152359878890721, guid: f85bc5c7a1682c24893b09f0378d1ea5, type: 3}
     spawnPoint: {fileID: 6888933062025288773}
     positionOffset: {x: 0, y: -2, z: 0}
     rotationEuler: {x: 0, y: -90, z: -90}
-    duration: 1
+    duration: 2
 --- !u!1 &7856805116456603126
 GameObject:
   m_ObjectHideFlags: 0
