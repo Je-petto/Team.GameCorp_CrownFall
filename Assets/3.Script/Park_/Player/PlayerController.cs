@@ -123,7 +123,7 @@ public class PlayerController : NetworkBehaviour
 
         if (charData == null)
         {
-            Debug.LogError($"[Client] 캐릭터 정보 없음: {cid}");
+            Debug.LogError($"[Client] None Character : {cid}");
             yield break;
         }
 
@@ -143,7 +143,7 @@ public class PlayerController : NetworkBehaviour
         GameObject model = Instantiate(charData.inGameModel, Vector3.zero, Quaternion.identity, meshParent);
         model.SetActive(true);
 
-        Debug.Log($"[Client] 캐릭터 '{cid}' 모델 인스턴스 생성 완료");
+        Debug.Log($"[Client] Character '{cid}' instantiate complete");
 
         data = charData;
         currentStat = new PlayerStat(data.hp, data.speed);
@@ -165,18 +165,6 @@ public class PlayerController : NetworkBehaviour
         TryGetComponent(out inputHandler);
         TryGetComponent(out lineRenderer);
         TryGetComponent(out animationHandler);
-
-        // if (inputHandler == null)
-        // {
-        //     Debug.Log("inputHandler still null, retrying...");
-        //     inputHandler = GetComponent<PlayerInputHandler>();
-        // }
-
-        // if (inputHandler == null)
-        // {
-        //     Debug.Log("inputHandler is permanently null!");
-        //     yield break;
-        // }
 
         if (rb == null) Debug.Log("rb is null");
         if (stateMachine == null) Debug.Log("stateMachine is null");
@@ -214,6 +202,12 @@ public class PlayerController : NetworkBehaviour
         inputHandler.skillCastCommand = new SkillCastCommand(this, skillAction);
 
         GetComponentInChildren<PlayerUIController>().SetUI();
+    }
+
+    IEnumerator SetIngameUI_Co()
+    {
+        yield return new WaitUntil(() => data != null);
+        UIManager.I.SetPlayerController(this);
     }
 
     public void RaiseOnChangeHp()
@@ -273,7 +267,7 @@ public class PlayerController : NetworkBehaviour
         SkillEffectController controller = skillObj.GetComponent<SkillEffectController>();
         controller.SetProps(this, data);
 
-        NetworkServer.Spawn(skillObj); // 다른 클라이언트에게도 보이게
+        NetworkServer.Spawn(skillObj);                      // 다른 클라이언트에게도 보이게
 
         RpcActivateSkill(skillObj, data.duration);
     }

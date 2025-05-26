@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
+using DG.Tweening;
 
 public class UIManager : BehaviourSingleton<UIManager>
 {
@@ -12,17 +14,20 @@ public class UIManager : BehaviourSingleton<UIManager>
     [Header("Player UI")]
     [SerializeField] private GameObject inGameUIPanel;
     [SerializeField] private TextMeshProUGUI atkText;
-    [SerializeField] private Slider hpSlider;
+    [SerializeField] private Image hpBar;
+
+    [Header("Character Profile")]
+    [SerializeField] private Image face;
+    [SerializeField] private Image skillIcon;
 
     private PlayerController playerController;
 
     private void Start()
     {
-        playerController = FindObjectOfType<PlayerController>();
+        playerController = FindObjectsOfType<PlayerController>().ToList().Find(p => p.isLocalPlayer);
+
         if (playerController != null)
         {
-            hpSlider.maxValue = playerController.data.hp;
-            hpSlider.value = playerController.data.hp;
             atkText.text = playerController.data.name;
         }
         else
@@ -35,14 +40,6 @@ public class UIManager : BehaviourSingleton<UIManager>
             inGameUIPanel.SetActive(true); // 게임 시작 시 InGameUI 활성화
     }
 
-    private void Update()
-    {
-        if (playerController != null)
-        {
-            hpSlider.value = playerController.currentStat.hp;
-        }
-    }
-
     public void ShowGameEndPanel(string winnerTeamName)
     {
         if (winnerTeamText != null)
@@ -53,43 +50,39 @@ public class UIManager : BehaviourSingleton<UIManager>
 
         gameEndPanel.SetActive(true);
     }
-    
+
     // 필요하면 플레이어를 동적으로 바꾸는 함수 추가 가능
     public void SetPlayerController(PlayerController player)
     {
         playerController = player;
         if (playerController != null)
         {
-            hpSlider.maxValue = playerController.data.hp;
-            hpSlider.value = playerController.currentStat.hp;
             atkText.text = playerController.data.name;
         }
+
+        face.sprite = player.data.face;
+        skillIcon.sprite = player.data.SkillIcon;
+    }
+
+    [SerializeField] TextMeshProUGUI timeText;
+
+    public void StartCoolDown(float duration)
+    {
+        float remainingTime = duration;
+
+        DOTween.To(() => remainingTime, x =>
+        {
+            remainingTime = x;
+
+            int displayTime = Mathf.CeilToInt(remainingTime); // 올림 (1.9 → 2)
+            timeText.text = displayTime.ToString();
+        }, 0f, duration)
+        .SetEase(Ease.Linear)
+        .OnComplete(() => timeText.text = ""); // 끝나면 텍스트 비우기
+    }
+
+    public void UpdateHpBar(float percent)
+    {
+        hpBar.fillAmount = (float)playerController.data.hp / playerController.syncedHp;
     }
 }
-
-// using UnityEngine;
-// using UnityEngine.UI;
-// using CustomInspector;
-// using TMPro;
-
-// public class UIManager : MonoBehaviour
-// {
-//     [ReadOnly] public PlayerController playerController;
-
-//     public TextMeshProUGUI atk;
-//     public Slider hpSlider;
-
-//     void Start()
-//     {
-//         playerController = FindObjectOfType<PlayerController>();
-
-//         hpSlider.maxValue = playerController.data.hp;
-//         hpSlider.value = playerController.data.hp;
-//         atk.text = playerController.data.name.ToString();
-//     }
-
-//     private void Update()
-//     {
-//         hpSlider.value = playerController.currentHp;
-//     }
-// }
