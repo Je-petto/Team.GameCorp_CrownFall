@@ -14,5 +14,5 @@ public class TowerProfile : ScriptableObject
     [SerializeField, HorizontalLine("SHIELD"), HideField] public bool b2;
     [Tooltip("��ȣ�� ü��")] public int shieldHealth;
     [Tooltip("��ȣ�� ��")] public GameObject shieldModel;
-    [Tooltip("��ȣ�� ȿ��")] public ParticleSystem shieldParticle;
+    //[Tooltip("��ȣ�� ȿ��")] public ParticleSystem shieldParticle;
 }

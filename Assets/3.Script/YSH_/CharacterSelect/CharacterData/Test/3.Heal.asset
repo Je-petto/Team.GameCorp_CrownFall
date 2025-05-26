@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 3.Heal
   m_EditorClassIdentifier: 
   cid: P-003
+  characterNickName: 
   characterName: D
   description: Priest
   hp: 1400
@@ -30,4 +31,6 @@ MonoBehaviour:
   inGameAnimator: {fileID: 9100000, guid: 2a23db505c3314d46be36b2d3b893d68, type: 2}
   projection: {fileID: 4451188901321450200, guid: a811b82eb0a8af6489baa65531462ee3, type: 3}
   face: {fileID: 21300000, guid: d60b65bdea0ec9548883b873e2f2717f, type: 3}
+  SkillIcon: {fileID: 21300000, guid: b43df006d97017e4d84d45edeb009a53, type: 3}
+  ElementIcon: {fileID: 21300000, guid: af286b6aea0c9324da37ef6eb4cdd5ad, type: 3}
   rotateSpeed: 720
