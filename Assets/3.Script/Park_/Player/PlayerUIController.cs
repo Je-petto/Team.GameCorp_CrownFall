@@ -11,14 +11,11 @@ public class PlayerUIController : NetworkBehaviour
 
     void Start()
     {
-        StartCoroutine(SetUI_Co());
         player.OnChangedHp += OnChangeCurrentHpBar;
     }
 
-    IEnumerator SetUI_Co()
+    public void SetUI()
     {
-        yield return new WaitUntil(() => player != null && player.data != null);
-
         this.teamCode = player.teamCode;
         teamColorHpbar.color = teamCode == 0 ? Color.red : Color.blue;
 

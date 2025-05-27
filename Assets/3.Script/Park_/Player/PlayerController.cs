@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Mirror;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,18 +22,6 @@ public class PlayerStat
 
 public class PlayerController : NetworkBehaviour
 {
-    [SyncVar]
-    public string uid;
-
-    [SyncVar]
-    public string nickname;
-
-    [SyncVar]
-    public string c_id;
-
-    [SyncVar]
-    public int teamCode;
-
     #region Test
     [Header("Test")]
     public CharacterInfo T_data;
@@ -77,22 +63,47 @@ public class PlayerController : NetworkBehaviour
 
     #region Misc
     public Vector3 targetPoint;
-    #endregion
 
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        StartCoroutine(SpawnCharacter(data.cid));
-    }
+
+
+    [SyncVar(hook = nameof(OnMeshIndexChanged))]
+    public int meshIndex = 0;
+
+    public int teamCode;
+    #endregion
 
     void Start()
     {
+
         Debug.Log("Player Init Start!");
         pState = LifeState.ALIVE;
 
         syncedHp = currentStat.hp; // UI 동기화를 위해
+        meshIndex = 0;
+
+        if (!isLocalPlayer) return;
         CmdRequestMyUserData(InGameSession.uid);
         // EditorTest();   
+    }
+
+    private void OnMeshIndexChanged(int oldValue, int newValue)
+    {
+        Transform meshTransform = transform.Find("_mesh");
+
+        if (meshTransform == null)
+        {
+            Debug.LogWarning("_mesh is null...");
+            return;
+        }
+
+        if (newValue < 0 || newValue >= meshTransform.childCount)
+        {
+            Debug.LogWarning("meshIndex over.");
+            return;
+        }
+
+        Transform targetChild = meshTransform.GetChild(newValue);
+        targetChild.localScale = Vector3.one;  // (1,1,1)
     }
 
     #region Editor
@@ -108,85 +119,46 @@ public class PlayerController : NetworkBehaviour
     [Command]
     private void CmdRequestMyUserData(string uid)
     {
-        var userData = ((InGameNetworkManager)NetworkManager.singleton).GetUser(uid);
+        var userData = ((InGameNetworkManager)NetworkManager.singleton).GetUser(connectionToClient, uid);
         if (userData != null)
         {
             characterId = userData.c_id; // ✅ 여기에 추가
-            TargetReceiveUserData(connectionToClient, userData);
+            switch (userData.c_id)
+            {
+                case "P-000":
+                    {
+                        meshIndex = 0;
+                    break;
+                }
+                case "P-001":
+                    {
+                        meshIndex = 1;
+                    break;
+                }
+                case "P-002":
+                    {
+                        meshIndex = 2;
+                    break;
+                }case "P-003":
+                {
+                    meshIndex = 3;
+                    break;
+                }
+            }
+            StartCoroutine(SpawnCharacter(userData.c_id));
         }
-    }
-
-    [TargetRpc]
-    private void TargetReceiveUserData(NetworkConnection target, UserAuth data)
-    {
-        Debug.Log($"[Client] 내 유저 정보 수신: {data.nickname} / {data.c_id} / 팀: {data.teamCode}");
-
-        // 서버에 캐릭터 모델 스폰 요청
-        CmdSpawnCharacterModel(data.c_id);
-
-        // 클라이언트 로컬에서 데이터 세팅 등 추가 처리
-        StartCoroutine(SpawnCharacter(data.c_id));
-    }
-
-    [Command]
-    private void CmdSpawnCharacterModel(string cid)
-    {
-        StartCoroutine(WaitAndSpawn(cid));
     }
     #endregion
 
-    private IEnumerator WaitAndSpawn(string cid)
+
+    [TargetRpc]
+    public void RecieveCharacterData(UserAuth user)
     {
-        while (PlayerSpawner.I == null)
-        {
-            Debug.Log("[Server] PlayerSpawner.I is null, 대기 중...");
-            yield return null; // 다음 프레임까지 대기
-        }
-
-        Debug.Log("[Server] PlayerSpawner.I 초기화 완료, SpawnCharacterModel 실행");
-        SpawnCharacterModel(cid);
+        //서버로 부터 메시를 매핑하라고 받은 데이터.
+        if (!isLocalPlayer) return;         //자기가 보낸 걸 받은 것이면 무시한다.
+        teamCode = user.teamCode;
+        StartCoroutine(SpawnCharacter(user.c_id));
     }
-
-    [Server]
-    public void SpawnCharacterModel(string cid)
-    {
-        CharacterInfo charInfo = PlayerSpawner.I.GetCharacterInfo(cid);
-
-        if (PlayerSpawner.I == null)
-        {
-            Debug.LogWarning($"[Server] PlayerSpawner.I Not Found: ");
-        }
-
-        if (charInfo == null)
-        {
-            Debug.LogWarning($"[Server] CharacterInfo Not Found: {cid}");
-            return;
-        }
-
-        Debug.Log($"[Server] : charInfo {charInfo}");
-
-        GameObject modelObj = Instantiate(charInfo.inGameModel, transform.Find("_mesh"));
-
-        // 소유권을 명확하게 할당
-        NetworkServer.Spawn(modelObj, connectionToClient);
-
-        Debug.Log($"[Server] 모델 Spawn 완료: {cid} (Owner: {connectionToClient.connectionId})");
-    }
-
-    // [Server]
-    // public void SpawnCharacterModel(string cid)
-    // {
-    //     CharacterInfo charInfo = PlayerSpawner.I.GetCharacterInfo(cid);
-    //     if (charInfo == null)
-    //     {
-    //         Debug.LogError($"[Server] CharacterInfo Not Found: {cid}");
-    //         return;
-    //     }
-
-    //     GameObject modelObj = Instantiate(charInfo.inGameModel);
-    //     modelObj.transform.SetParent(transform.Find("_mesh"), false);
-    //     NetworkServer.Spawn(modelObj, connectionToClient);
-    // }
 
 
     private IEnumerator SpawnCharacter(string cid)
@@ -197,7 +169,7 @@ public class PlayerController : NetworkBehaviour
 
         if (charData == null)
         {
-            Debug.LogError($"[Client] 캐릭터 정보 없음: {cid}");
+            Debug.LogError($"[Client] None Character : {cid}");
             yield break;
         }
 
@@ -208,48 +180,16 @@ public class PlayerController : NetworkBehaviour
             yield break;
         }
 
-        // 이미 모델이 있으면 삭제 또는 스킵 (중복 방지)
-        foreach (Transform child in meshParent)
-        {
-            Destroy(child.gameObject);
-        }
+        // GameObject model = Instantiate(charData.inGameModel, Vector3.zero, Quaternion.identity, meshParent);
+        // model.SetActive(true);
 
-        GameObject model = Instantiate(charData.inGameModel, Vector3.zero, Quaternion.identity, meshParent);
-        model.SetActive(true);
-
-        Debug.Log($"[Client] 캐릭터 '{cid}' 모델 인스턴스 생성 완료");
+        Debug.Log($"[Client] Character '{cid}' instantiate complete");
 
         data = charData;
         currentStat = new PlayerStat(data.hp, data.speed);
 
         StartCoroutine(InitComponents_Co());
     }
-
-    // private IEnumerator SpawnCharacter(string cid)
-    // {
-    //     yield return new WaitUntil(() => PlayerSpawner.I != null);
-
-    //     CharacterInfo charData = PlayerSpawner.I.GetCharacterInfo(cid);
-
-    //     Debug.Log($"[Client] 캐릭터 데이터 처리 : {charData}");
-    //     if (charData == null)
-    //     {
-    //         Debug.LogError($"[Client] 캐릭터 정보 없음: {cid}");
-    //         yield break;
-    //     }
-
-    //     // 캐릭터 모델 생성
-    //     Instantiate(charData.inGameModel, Vector3.zero, Quaternion.identity, transform.Find("_mesh"));
-
-    //     Debug.Log($"[Client] 캐릭터 '{cid}' instantiate Complete.");
-
-    //     data = charData;
-    //     currentStat = new(data.hp, data.speed);
-
-    //     Debug.Log($"[Client] 캐릭터 '{currentStat.hp} , {currentStat.moveSpeed}' set Complete");
-
-    //     StartCoroutine(InitComponents_Co());
-    // }
 
     IEnumerator InitComponents_Co()
     {
@@ -265,18 +205,6 @@ public class PlayerController : NetworkBehaviour
         TryGetComponent(out inputHandler);
         TryGetComponent(out lineRenderer);
         TryGetComponent(out animationHandler);
-
-        if (inputHandler == null)
-        {
-            Debug.Log("inputHandler still null, retrying...");
-            inputHandler = GetComponent<PlayerInputHandler>();
-        }
-
-        if (inputHandler == null)
-        {
-            Debug.Log("inputHandler is permanently null!");
-            yield break;
-        }
 
         if (rb == null) Debug.Log("rb is null");
         if (stateMachine == null) Debug.Log("stateMachine is null");
@@ -312,6 +240,15 @@ public class PlayerController : NetworkBehaviour
         if (skillAction == null) Debug.Log("skillAction == null");
 
         inputHandler.skillCastCommand = new SkillCastCommand(this, skillAction);
+
+        GetComponentInChildren<PlayerUIController>().SetUI();
+        StartCoroutine(SetIngameUI_Co());
+    }
+
+    IEnumerator SetIngameUI_Co()
+    {
+        yield return new WaitUntil(() => data != null);
+        UIManager.I.SetPlayerController(this);
     }
 
     public void RaiseOnChangeHp()
@@ -346,7 +283,7 @@ public class PlayerController : NetworkBehaviour
 
         RaiseOnChangeHp(); // 기존 이벤트 구조 활용
     }
-    
+
 
     [Command]
     public void CmdSpawnModel(string cid)
@@ -364,14 +301,14 @@ public class PlayerController : NetworkBehaviour
     }
 
     [Command]
-    public void CmdCastSkill(string skillId, Vector3 point,  SkillData data)
+    public void CmdCastSkill(string skillId, Vector3 point, SkillData data)
     {
         GameObject skillObj = Instantiate(data.prefab, point, Quaternion.identity);
 
         SkillEffectController controller = skillObj.GetComponent<SkillEffectController>();
         controller.SetProps(this, data);
 
-        NetworkServer.Spawn(skillObj); // 다른 클라이언트에게도 보이게
+        NetworkServer.Spawn(skillObj);                      // 다른 클라이언트에게도 보이게
 
         RpcActivateSkill(skillObj, data.duration);
     }
@@ -387,5 +324,11 @@ public class PlayerController : NetworkBehaviour
         skillObj.SetActive(true);
         yield return new WaitForSeconds(duration);
         skillObj.SetActive(false);
+    }
+
+    [Command]
+    public void CmdShoot(Vector3 targetPoint)
+    {
+        
     }
 }

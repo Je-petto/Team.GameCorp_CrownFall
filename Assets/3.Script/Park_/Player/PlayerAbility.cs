@@ -49,29 +49,15 @@ public class PlayerAttackNonTargeting : PlayerAbility
     private bool canAttack;
     public override void Perform()
     {
-        if (!canAttack) return;
         Shoot();
     }
 
     public void Shoot()
     {
+        if (!canAttack) return;
+
         canAttack = false;
-
-        GameObject projection = GameObject.Instantiate(
-            player.data.projection,
-            player.attackPoint.transform.position,
-            Quaternion.identity
-        );
-
-        projection.GetComponent<AttackObject>().SetCaster(player, player.data.attack);
-
-        Vector3 lookPpint = new Vector3(player.targetPoint.x, 0f, player.targetPoint.z);
-        player.transform.DOLookAt(lookPpint, 0.2f)
-            .OnComplete(() =>
-            {
-                projection.transform.DOMove(player.targetPoint, 0.5f)
-                    .OnComplete(() => GameObject.Destroy(projection));
-            });
+        player.CmdShoot(player.targetPoint);
 
         DOVirtual.DelayedCall(1f, () =>
         {
