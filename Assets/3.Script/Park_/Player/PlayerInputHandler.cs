@@ -21,39 +21,39 @@ public class PlayerInputHandler : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer) return;  
+        // if (!isLocalPlayer) return;  
 
-        if (isStop || isDeath) return;
+        // if (isStop || isDeath) return;
 
-        if (castCommand == null)
-        {
-            Debug.Log($"[Client] : castCommand is null....");
-            return;
-        }
+        // if (castCommand == null)
+        // {
+        //     Debug.Log($"[Client] : castCommand is null....");
+        //     return;
+        // }
 
-        if (!castCommand.isCasting)
-            {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    (detectCommand as DetectionCommand).OnOff(true);
-                }
+        // if (!castCommand.isCasting)
+        //     {
+        //         if (Input.GetMouseButtonDown(0))
+        //         {
+        //             (detectCommand as DetectionCommand).OnOff(true);
+        //         }
 
-                if (Input.GetMouseButton(0))
-                {
-                    detectCommand.Execute();
-                }
+        //         if (Input.GetMouseButton(0))
+        //         {
+        //             detectCommand.Execute();
+        //         }
 
-                if (Input.GetMouseButtonUp(0))
-                {
-                    (detectCommand as DetectionCommand).OnOff(false);
-                    attackCommand.Execute();
-                }
-            }
+        //         if (Input.GetMouseButtonUp(0))
+        //         {
+        //             (detectCommand as DetectionCommand).OnOff(false);
+        //             attackCommand.Execute();
+        //         }
+        //     }
 
-        if (skillCastCommand != null)
-        {
-            skillCastCommand.Execute();           
-        }
+        // if (skillCastCommand != null)
+        // {
+        //     skillCastCommand.Execute();           
+        // }
     }
 
     void FixedUpdate()

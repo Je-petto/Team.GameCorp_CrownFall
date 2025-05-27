@@ -27,8 +27,8 @@ public class DeathCommand : ICommand
 
 public class MoveCommand : ICommand
 {
-    PlayerController player;
-    public MoveCommand(PlayerController player)
+    PlayerController_Net player;
+    public MoveCommand(PlayerController_Net player)
     {
         this.player = player;
     }
