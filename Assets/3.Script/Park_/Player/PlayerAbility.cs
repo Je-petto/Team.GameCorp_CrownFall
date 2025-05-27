@@ -57,7 +57,6 @@ public class PlayerAttackNonTargeting : PlayerAbility
         if (!canAttack) return;
 
         canAttack = false;
-        player.CmdShoot(player.targetPoint);
 
         DOVirtual.DelayedCall(1f, () =>
         {

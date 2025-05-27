@@ -14,7 +14,7 @@ public class EffectHandler
         Debug.Log($"{amount} -? Damage Apply");
         player.currentStat.hp -= amount * (100 - player.data.defense) / 100;
         player.currentStat.hp = Mathf.Clamp(player.currentStat.hp, 0, player.data.hp);
-        player.RaiseOnChangeHp();
+       
     }
 
     public void ApplyHeal(float amount)
@@ -22,7 +22,6 @@ public class EffectHandler
         Debug.Log("Heal Apply");
         player.currentStat.hp += (int)amount;
         player.currentStat.hp = Mathf.Clamp(0, player.data.hp, player.currentStat.hp);
-        player.RaiseOnChangeHp();
     }
 
     public void ApplySlow(float duration, float amount)
@@ -45,7 +44,6 @@ public class EffectHandler
         {
             seq.AppendInterval(1f) // 1초 대기
             .AppendCallback(() => ApplyDamage((int)amount)); // 데미지 적용
-            player.RaiseOnChangeHp();
         }
     }
 

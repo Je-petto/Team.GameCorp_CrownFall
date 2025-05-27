@@ -28,7 +28,7 @@ public class PlayerController : NetworkBehaviour
     #endregion
     #region Event
 
-    [SyncVar(hook = nameof(OnSyncHpChanged))]
+    // [SyncVar(hook = nameof(OnSyncHpChanged))]
     public int syncedHp;
 
     [SyncVar]
@@ -157,133 +157,41 @@ public class PlayerController : NetworkBehaviour
         TryGetComponent(out lineRenderer);
         TryGetComponent(out animationHandler);
 
-        if (rb == null) Debug.Log("rb is null");
-        if (stateMachine == null) Debug.Log("stateMachine is null");
-        if (lineRenderer == null) Debug.Log("lineRenderer is null");
+        // if (rb == null) Debug.Log("rb is null");
+        // if (stateMachine == null) Debug.Log("stateMachine is null");
+        // if (lineRenderer == null) Debug.Log("lineRenderer is null");
 
-        if (lineRenderer != null) lineRenderer.enabled = false;
+        // if (lineRenderer != null) lineRenderer.enabled = false;
 
-        animator = GetComponentInChildren<Animator>();
+        // animator = GetComponentInChildren<Animator>();
 
-        if (animator == null) Debug.Log("animator is null");
+        // if (animator == null) Debug.Log("animator is null");
 
-        Debug.Log(data.inGameAnimator + $"{data.inGameAnimator}");
-        animator.runtimeAnimatorController = data.inGameAnimator;
+        // Debug.Log(data.inGameAnimator + $"{data.inGameAnimator}");
+        // animator.runtimeAnimatorController = data.inGameAnimator;
 
-        // Cinemachine 카메라 설정
-        var cam = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
-        if (cam != null) cam.Follow = transform;
+        // // Cinemachine 카메라 설정
+        // var cam = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
+        // if (cam != null) cam.Follow = transform;
 
-        // EffectHandler 초기화
-        effectHandler = new EffectHandler(this);
+        // // EffectHandler 초기화
+        // effectHandler = new EffectHandler(this);
 
-        yield return new WaitUntil(() => inputHandler != null);
+        // yield return new WaitUntil(() => inputHandler != null);
 
-        inputHandler.moveCommand = new MoveCommand(this);
-        inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackNonTargeting(this));
-        inputHandler.detectCommand = new DetectionCommand(this, new PlayerDetection(this));
-        inputHandler.deathCommand = new DeathCommand(this, new DeadState(this));
+        // inputHandler.moveCommand = new MoveCommand(this);
+        // inputHandler.attackCommand = new AttackCommand(this, new PlayerAttackNonTargeting(this));
+        // inputHandler.detectCommand = new DetectionCommand(this, new PlayerDetection(this));
+        // inputHandler.deathCommand = new DeathCommand(this, new DeadState(this));
 
-        SkillData sd = data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
-        if (sd == null) Debug.Log("sd == null");
+        // SkillData sd = data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
+        // if (sd == null) Debug.Log("sd == null");
 
-        ISkillAction skillAction = SkillFactory.CreateSkillAction(this, sd);
-        if (skillAction == null) Debug.Log("skillAction == null");
+        // ISkillAction skillAction = SkillFactory.CreateSkillAction(this, sd);
+        // if (skillAction == null) Debug.Log("skillAction == null");
 
-        inputHandler.skillCastCommand = new SkillCastCommand(this, skillAction);
+        // inputHandler.skillCastCommand = new SkillCastCommand(this, skillAction);
 
-        GetComponentInChildren<PlayerUIController>().SetUI();
-    }
-
-    IEnumerator SetIngameUI_Co()
-    {
-        yield return new WaitUntil(() => data != null);
-        UIManager.I.SetPlayerController(this);
-    }
-
-    public void RaiseOnChangeHp()
-    {
-        if (!isLocalPlayer) return;
-        Debug.Log("데미지 적용!");
-        OnChangedHp?.Invoke((float)currentStat.hp / data.hp);
-    }
-
-    public void Die()
-    {
-        if (!isLocalPlayer) return;
-        stateMachine.ChangeState(new DeadState(this));
-    }
-
-
-    [Server]
-    public void TakeDamage(int damage)
-    {
-        currentStat.hp -= damage;
-        currentStat.hp = Mathf.Max(0, currentStat.hp);
-
-        syncedHp = currentStat.hp; // 클라이언트 UI 동기화
-    }
-
-    private void OnSyncHpChanged(int oldValue, int newValue)
-    {
-        if (!isLocalPlayer) return;
-
-        float percent = (float)newValue / data.hp;
-        Debug.Log($"[Client] HP UI 업데이트: {percent * 100}%");
-
-        RaiseOnChangeHp(); // 기존 이벤트 구조 활용
-    }
-
-
-    [Command]
-    public void CmdSpawnModel(string cid)
-    {
-        CharacterInfo charData = PlayerSpawner.I.GetCharacterInfo(cid);
-
-        if (charData == null)
-        {
-            Debug.LogError($"[Server] 캐릭터 정보 없음: {cid}");
-            return;
-        }
-
-        GameObject model = Instantiate(charData.inGameModel, transform.position, Quaternion.identity, transform.Find("_mesh"));
-        NetworkServer.Spawn(model, connectionToClient); // 이걸 통해 해당 유저의 소유로 등록됨
-    }
-
-    [Command]
-    public void CmdCastSkill(string skillId, Vector3 point, SkillData data)
-    {
-        GameObject skillObj = Instantiate(data.prefab, point, Quaternion.identity);
-
-        SkillEffectController controller = skillObj.GetComponent<SkillEffectController>();
-        controller.SetProps(this, data);
-
-        NetworkServer.Spawn(skillObj);                      // 다른 클라이언트에게도 보이게
-
-        RpcActivateSkill(skillObj, data.duration);
-    }
-
-    [ClientRpc]
-    void RpcActivateSkill(GameObject skillObj, float duration)
-    {
-        StartCoroutine(SkillEffectRoutine(skillObj, duration));
-    }
-
-    IEnumerator SkillEffectRoutine(GameObject skillObj, float duration)
-    {
-        skillObj.SetActive(true);
-        yield return new WaitForSeconds(duration);
-        skillObj.SetActive(false);
-    }
-    
-    [Command]
-    public void CmdShoot(Vector3 targetPoint)
-    {
-        // GameObject obj = Instantiate(data.projection, attackPoint.position, Quaternion.identity);
-        
-        // var attack = obj.GetComponent<AttackObject>();
-        // attack.SetCaster(this, data.attack, targetPoint);
-
-        // NetworkServer.Spawn(obj);
+        // GetComponentInChildren<PlayerUIController>().SetUI();
     }
 }

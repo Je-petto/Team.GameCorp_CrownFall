@@ -29,11 +29,11 @@ public class IdleState : IPlayerState
 
 public class MoveState : IPlayerState
 {
-    private PlayerController player;
+    private PlayerController_Net player;
 
     private Vector3 direction;
 
-    public MoveState(PlayerController player)
+    public MoveState(PlayerController_Net player)
     {
         //PlayerController에 각종 스탯을 가지고 있다.
         this.player = player;
