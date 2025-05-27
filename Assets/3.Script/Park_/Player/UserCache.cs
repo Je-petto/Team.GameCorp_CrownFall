@@ -38,23 +38,16 @@ public class UserCache : BehaviourSingleton<UserCache>
     {
         string ip = "127.0.0.1"; // 로컬 테스트용. 실제 환경에선 서버에서 전달받거나 DNS 사용.
         string args = $"-inGame -ip={ip} -port={port} -uid={session.uid} -cid={session.selected_cid} -team={session.teamCode}"; // 예시: 매치 ID도 넘길 수 있음
-        // string ingameClientPath = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameClient/Team.GameCorp_CrownFall.exe";
-        string ingameClientPath = "D:/Project/LocalGit/Team.GameCorp_CrownFall/Builds/InGameClient/Team.GameCorp_CrownFall.exe";
-        
-        // 인게임 클라이언트
-        if (!File.Exists(ingameClientPath))
-        {
-            Debug.LogError($"InGame Client executable not found at: {ingameClientPath}");
-            return;
-        }
-
+ 
         Debug.Log($"[Client] : InGame Client Start!");
 
         var inGameprocess = new System.Diagnostics.Process();
-        inGameprocess.StartInfo.FileName = ingameClientPath;
+        string processPath = Path.Combine(Application.dataPath, "InGameClient", "Team.GameCorp_CrownFall.exe");
+        
+        inGameprocess.StartInfo.FileName = processPath;
         inGameprocess.StartInfo.Arguments = args;
         inGameprocess.StartInfo.UseShellExecute = true;
-        inGameprocess.StartInfo.CreateNoWindow = false;       // 콘솔 띄우기.
+        inGameprocess.StartInfo.CreateNoWindow = false;
         inGameprocess.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
 
         inGameprocess.EnableRaisingEvents = true;

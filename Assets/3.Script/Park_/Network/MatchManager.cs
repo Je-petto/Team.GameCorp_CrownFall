@@ -211,7 +211,6 @@ public class MatchManager : NetworkBehaviour
     private bool CheckAllReady(MatchGroup group) => group.readyCount >= maxPlayerCount;
 }
 
-
 public class GameSpawner
 {
     private static int basePort = 8000;
@@ -235,9 +234,9 @@ public class GameSpawner
         File.WriteAllText(jsonPath, json);
 
         var process = new System.Diagnostics.Process();
-        // process.StartInfo.FileName = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe";
-        process.StartInfo.FileName = "D:/Project/LocalGit/Team.GameCorp_CrownFall/Builds/InGameServer/Team.GameCorp_CrownFall.exe";
-
+        string processPath =Path.Combine(Application.dataPath, "InGameServer", "Team.GameCorp_CrownFall.exe");
+        
+        process.StartInfo.FileName = processPath;
         process.StartInfo.Arguments = $"-port={port} -matchId={matchId} -jsonPath={jsonPath}";
         process.StartInfo.UseShellExecute = true;
         process.Start();
