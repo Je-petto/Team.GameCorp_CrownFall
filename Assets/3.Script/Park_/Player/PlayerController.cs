@@ -64,26 +64,25 @@ public class PlayerController : NetworkBehaviour
     #region Misc
     public Vector3 targetPoint;
 
-
-
     [SyncVar(hook = nameof(OnMeshIndexChanged))]
     public int meshIndex = 0;
 
     public int teamCode;
     #endregion
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        // CmdRequestMyUserData(InGameSession.uid);
+    }
+
     void Start()
     {
-
         Debug.Log("Player Init Start!");
         pState = LifeState.ALIVE;
 
         syncedHp = currentStat.hp; // UI 동기화를 위해
         meshIndex = 0;
-
-        if (!isLocalPlayer) return;
-        CmdRequestMyUserData(InGameSession.uid);
-        // EditorTest();   
     }
 
     private void OnMeshIndexChanged(int oldValue, int newValue)
@@ -103,53 +102,8 @@ public class PlayerController : NetworkBehaviour
         }
 
         Transform targetChild = meshTransform.GetChild(newValue);
-        targetChild.localScale = Vector3.one;  // (1,1,1)
+        targetChild.localScale = Vector3.one;
     }
-
-    #region Editor
-    void EditorTest()
-    {
-        // if (teamCode == 1) return;
-        StartCoroutine(SpawnCharacter(T_data.cid));
-    }
-
-    #endregion
-
-    #region Client
-    [Command]
-    private void CmdRequestMyUserData(string uid)
-    {
-        var userData = ((InGameNetworkManager)NetworkManager.singleton).GetUser(connectionToClient, uid);
-        if (userData != null)
-        {
-            characterId = userData.c_id; // ✅ 여기에 추가
-            switch (userData.c_id)
-            {
-                case "P-000":
-                    {
-                        meshIndex = 0;
-                    break;
-                }
-                case "P-001":
-                    {
-                        meshIndex = 1;
-                    break;
-                }
-                case "P-002":
-                    {
-                        meshIndex = 2;
-                    break;
-                }case "P-003":
-                {
-                    meshIndex = 3;
-                    break;
-                }
-            }
-            StartCoroutine(SpawnCharacter(userData.c_id));
-        }
-    }
-    #endregion
-
 
     [TargetRpc]
     public void RecieveCharacterData(UserAuth user)
@@ -159,7 +113,6 @@ public class PlayerController : NetworkBehaviour
         teamCode = user.teamCode;
         StartCoroutine(SpawnCharacter(user.c_id));
     }
-
 
     private IEnumerator SpawnCharacter(string cid)
     {
@@ -174,14 +127,12 @@ public class PlayerController : NetworkBehaviour
         }
 
         Transform meshParent = transform.Find("_mesh");
+
         if (meshParent == null)
         {
             Debug.LogError("[Client] _mesh 오브젝트를 찾을 수 없습니다.");
             yield break;
         }
-
-        // GameObject model = Instantiate(charData.inGameModel, Vector3.zero, Quaternion.identity, meshParent);
-        // model.SetActive(true);
 
         Debug.Log($"[Client] Character '{cid}' instantiate complete");
 
@@ -242,7 +193,6 @@ public class PlayerController : NetworkBehaviour
         inputHandler.skillCastCommand = new SkillCastCommand(this, skillAction);
 
         GetComponentInChildren<PlayerUIController>().SetUI();
-        StartCoroutine(SetIngameUI_Co());
     }
 
     IEnumerator SetIngameUI_Co()
@@ -325,10 +275,15 @@ public class PlayerController : NetworkBehaviour
         yield return new WaitForSeconds(duration);
         skillObj.SetActive(false);
     }
-
+    
     [Command]
     public void CmdShoot(Vector3 targetPoint)
     {
+        // GameObject obj = Instantiate(data.projection, attackPoint.position, Quaternion.identity);
         
+        // var attack = obj.GetComponent<AttackObject>();
+        // attack.SetCaster(this, data.attack, targetPoint);
+
+        // NetworkServer.Spawn(obj);
     }
 }

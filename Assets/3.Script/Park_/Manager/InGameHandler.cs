@@ -3,6 +3,7 @@ using Mirror;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using LitJson;
 
 public static class InGameSession
 {
@@ -16,40 +17,64 @@ public class InGameHandler : MonoBehaviour
 {
     public Type type;
 
-    private NetworkManager manager;
+    private InGameNetworkManager manager;
     private kcp2k.KcpTransport kcp;
     [SerializeField] private string path;
 
     private void Awake()
     {
-        if (path.Equals(string.Empty))
-        {
-            path = Application.dataPath + "/License";
-        }
-
-        manager = GetComponent<NetworkManager>();
-        kcp = (kcp2k.KcpTransport)manager.transport;
-
-        string[] args = Environment.GetCommandLineArgs();
-
-        foreach (var arg in args)
-        {
-            if (arg.StartsWith("-port="))
+        #region Test
+            if (path.Equals(string.Empty))
             {
-                Port = arg.Substring("-port=".Length);
+                path = Application.dataPath + "/License";
             }
-            else if (arg.StartsWith("-ip="))
-            {
-                ServerIP = arg.Substring("-ip=".Length);
-            }
-            else if (arg.StartsWith("-jsonPath"))
-            {
-                MatchPath = arg.Substring("-jsonPath=".Length);
-            }
-        }
 
-        ServerIP = GetLocalIPAddress();             //Test용으로 로컬에서 수행.
-        kcp.port = ushort.Parse(Port);
+            // 폴더 검사
+            if (!File.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            //파일 검사
+            if (!File.Exists(path + "/License.json"))
+            {
+                DefaultData(path);
+            }
+
+            manager = GetComponent<InGameNetworkManager>();
+            kcp = (kcp2k.KcpTransport)manager.transport;
+        #endregion Test
+
+
+
+        // if (path.Equals(string.Empty))
+        // {
+        //     path = Application.dataPath + "/License";
+        // }
+
+        // manager = GetComponent<InGameNetworkManager>();
+        // kcp = (kcp2k.KcpTransport)manager.transport;
+
+        // string[] args = Environment.GetCommandLineArgs();
+
+        // foreach (var arg in args)
+        // {
+        //     if (arg.StartsWith("-port="))
+        //     {
+        //         Port = arg.Substring("-port=".Length);
+        //     }
+        //     else if (arg.StartsWith("-ip="))
+        //     {
+        //         ServerIP = arg.Substring("-ip=".Length);
+        //     }
+        //     else if (arg.StartsWith("-jsonPath"))
+        //     {
+        //         MatchPath = arg.Substring("-jsonPath=".Length);
+        //     }
+        // }
+
+        // ServerIP = GetLocalIPAddress();             //Test용으로 로컬에서 수행.
+        // kcp.port = ushort.Parse(Port);
     }
 
     // 파싱을 하고 데이터를 플레이어에게 전달하기
@@ -85,6 +110,8 @@ public class InGameHandler : MonoBehaviour
 
     void Start()
     {
+        type = License_type();
+
         if (type.Equals(Type.Server))
         {
             StartServer();
@@ -142,20 +169,20 @@ public class InGameHandler : MonoBehaviour
             return;
         }
 
-        List<UserAuth> userList = LoadMatchDataFromJson(matchId);
+        // List<UserAuth> userList = LoadMatchDataFromJson(matchId);
 
-        (NetworkManager.singleton as InGameNetworkManager).Init(userList);
+        // (NetworkManager.singleton as InGameNetworkManager).Init(userList);
 
-        Debug.Log($"{manager.networkAddress} start server...");
+        // Debug.Log($"{manager.networkAddress} start server...");
 
-        NetworkServer.OnConnectedEvent += (NetworkConnectionToClient) =>
-        {
-            Debug.Log($"new Client : {NetworkConnectionToClient.address}");
-        };
-        NetworkServer.OnDisconnectedEvent += (NetworkConnectionToClient) =>
-        {
-            Debug.Log($"new Client Disconnect : {NetworkConnectionToClient.address}");
-        };
+        // NetworkServer.OnConnectedEvent += (NetworkConnectionToClient) =>
+        // {
+        //     Debug.Log($"new Client : {NetworkConnectionToClient.address}");
+        // };
+        // NetworkServer.OnDisconnectedEvent += (NetworkConnectionToClient) =>
+        // {
+        //     Debug.Log($"new Client Disconnect : {NetworkConnectionToClient.address}");
+        // };
     }
 
     private List<UserAuth> LoadMatchDataFromJson(string matchId)
@@ -177,7 +204,7 @@ public class InGameHandler : MonoBehaviour
                 return new List<UserAuth>();
             }
 
-            Debug.Log($"2 -- [MatchData] 총 {data.userList.Count}명의 유저 데이터를 불러왔습니다.");
+            Debug.Log($"2 -- [MatchData] {data.userList.Count} Load Datas.");
             return data.userList;
         }
         catch (Exception ex)
@@ -194,4 +221,48 @@ public class InGameHandler : MonoBehaviour
 
         if (NetworkServer.active) manager.StopServer();
     }
+
+
+    private void DefaultData(string path)
+    {
+        // Json을 만드는 작업
+        List<Item> item = new List<Item>();
+        item.Add(new Item("0", "127.0.0.1", "7777"));
+
+        JsonData data = JsonMapper.ToJson(item);
+
+        File.WriteAllText(path + "/License.json", data.ToString());
+    }
+
+    #region Test
+    private Type License_type()
+    {
+        Type type = Type.Empty;
+        try
+        {
+            string jsonString = File.ReadAllText(path + "/License.json");
+
+            JsonData itemData = JsonMapper.ToObject(jsonString);
+
+            string type_s = itemData[0]["License"].ToString();
+            string ip_s = itemData[0]["Server_IP"].ToString();
+            string port_s = itemData[0]["Port"].ToString();
+
+            ServerIP = ip_s;
+            Port = port_s;
+            type = (Type)Enum.Parse(typeof(Type), type_s);
+
+            manager.networkAddress = ServerIP;
+            kcp.port = ushort.Parse(Port);
+            return type;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+            return Type.Empty;
+        }
+    }
+
+
+    #endregion
 }
