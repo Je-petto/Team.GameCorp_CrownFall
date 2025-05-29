@@ -33,21 +33,21 @@ public class PlayerInputHandler : NetworkBehaviour
 
         // if (!castCommand.isCasting)
         //     {
-        //         if (Input.GetMouseButtonDown(0))
-        //         {
-        //             (detectCommand as DetectionCommand).OnOff(true);
-        //         }
+                if (Input.GetMouseButtonDown(0))
+                {
+                    (detectCommand as DetectCommand).OnOff(true);
+                }
 
-        //         if (Input.GetMouseButton(0))
-        //         {
-        //             detectCommand.Execute();
-        //         }
+                if (Input.GetMouseButton(0))
+                {
+                    detectCommand.Execute();
+                }
 
-        //         if (Input.GetMouseButtonUp(0))
-        //         {
-        //             (detectCommand as DetectionCommand).OnOff(false);
-        //             attackCommand.Execute();
-        //         }
+                if (Input.GetMouseButtonUp(0))
+                {
+                    (detectCommand as DetectCommand).OnOff(false);
+                    attackCommand.Execute();
+                }
         //     }
 
         // if (skillCastCommand != null)

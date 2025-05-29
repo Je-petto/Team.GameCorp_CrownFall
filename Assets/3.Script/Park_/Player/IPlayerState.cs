@@ -10,9 +10,9 @@ public interface IPlayerState
 
 public class IdleState : IPlayerState
 {
-    PlayerController player;
+    PlayerController_Net player;
 
-    public IdleState(PlayerController player)
+    public IdleState(PlayerController_Net player)
     {
         this.player = player;
     }
@@ -35,7 +35,7 @@ public class MoveState : IPlayerState
 
     public MoveState(PlayerController_Net player)
     {
-        //PlayerController에 각종 스탯을 가지고 있다.
+        //PlayerController_Net에 각종 스탯을 가지고 있다.
         this.player = player;
     }
 
@@ -58,7 +58,7 @@ public class MoveState : IPlayerState
 
         direction = new Vector3(h, 0, v).normalized;
 
-        Vector3 vel = direction * player.data.speed;
+        Vector3 vel = direction * player.speed;
         player.rb.MovePosition(player.transform.position + vel * Time.deltaTime);
         player.animator.SetFloat("Movement", direction.magnitude);
     }
@@ -68,82 +68,82 @@ public class MoveState : IPlayerState
         if (direction == Vector3.zero) return;
     
         float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        float smoothAngle = Mathf.SmoothDampAngle(player.transform.eulerAngles.y, angle, ref player.data.rotateSpeed, 0.1f);
+        float smoothAngle = Mathf.SmoothDampAngle(player.transform.eulerAngles.y, angle, ref player.rotateSpeed, 0.1f);
         player.transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
     }
 }
 
 
-public class DeadState : IPlayerState
-{
-    private PlayerController player;
-    private float respawnTime;
+// public class DeadState : IPlayerState
+// {
+//     private PlayerController_Net player;
+//     private float respawnTime;
 
-    public DeadState(PlayerController player)
-    {
-        this.player = player;
-        this.respawnTime = player.respawnTime; // ⬅ 플레이어에서 설정된 시간 사용
-    }
+//     public DeadState(PlayerController_Net player)
+//     {
+//         this.player = player;
+//         this.respawnTime = player.respawnTime; // ⬅ 플레이어에서 설정된 시간 사용
+//     }
 
-    public void Enter()
-    {
-        player.animator.SetTrigger("Death");
-        player.pState = LifeState.DEATH;
-        player.inputHandler.enabled = false;
+//     public void Enter()
+//     {
+//         player.animator.SetTrigger("Death");
+//         player.pState = LifeState.DEATH;
+//         player.inputHandler.enabled = false;
 
-        StartDeathSequence();
-    }
+//         StartDeathSequence();
+//     }
 
-    public void Update() {}
+//     public void Update() {}
 
-    public void Exit()
-    {
-        player.inputHandler.enabled = true;
-    }
+//     public void Exit()
+//     {
+//         player.inputHandler.enabled = true;
+//     }
 
-    private void StartDeathSequence()
-    {
-        Sequence seq = DOTween.Sequence();
+//     private void StartDeathSequence()
+//     {
+//         Sequence seq = DOTween.Sequence();
 
-        int elapsed = (int)respawnTime;
+//         int elapsed = (int)respawnTime;
 
-        seq.AppendInterval(0.5f)
-            .AppendCallback(() =>
-            {
-                Debug.Log("죽음...");
-                IngameUIManager.I.ShowRespawnUI(respawnTime);
-            });
+//         seq.AppendInterval(0.5f)
+//             .AppendCallback(() =>
+//             {
+//                 Debug.Log("죽음...");
+//                 IngameUIManager.I.ShowRespawnUI(respawnTime);
+//             });
 
-        for (int i = elapsed; i > 0; i--)
-        {
-            int time = i; // 클로저 문제 방지
-            seq.AppendCallback(() =>
-            {
-                IngameUIManager.I.UpdateRespawnTime(time);
-                Debug.Log($"Respawn remain: {time}");
-            });
-            seq.AppendInterval(1f);
-        }
+//         for (int i = elapsed; i > 0; i--)
+//         {
+//             int time = i; // 클로저 문제 방지
+//             seq.AppendCallback(() =>
+//             {
+//                 IngameUIManager.I.UpdateRespawnTime(time);
+//                 Debug.Log($"Respawn remain: {time}");
+//             });
+//             seq.AppendInterval(1f);
+//         }
 
-        seq.OnComplete(() =>
-        {
-            Debug.Log("리스폰...");
-            IngameUIManager.I.HideRespawnUI();
+//         seq.OnComplete(() =>
+//         {
+//             Debug.Log("리스폰...");
+//             IngameUIManager.I.HideRespawnUI();
 
-            // 위치 초기화
-            player.transform.position = Vector3.zero;
-            player.transform.rotation = Quaternion.identity;
+//             // 위치 초기화
+//             player.transform.position = Vector3.zero;
+//             player.transform.rotation = Quaternion.identity;
 
-            // 체력 회복
-            player.currentStat.hp = player.data.hp;
+//             // 체력 회복
+//             player.currentStat.hp = player.data.hp;
 
-            // UI 숨기기
+//             // UI 숨기기
 
-            // 애니메이션 초기화
-            player.animator.SetFloat("Movement", 0f);
+//             // 애니메이션 초기화
+//             player.animator.SetFloat("Movement", 0f);
 
-            // 상태 전환
-            player.stateMachine.ChangeState(new IdleState(player));
-        });
-    }
-}
+//             // 상태 전환
+//             player.stateMachine.ChangeState(new IdleState(player));
+//         });
+//     }
+// }

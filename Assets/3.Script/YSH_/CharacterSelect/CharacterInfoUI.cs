@@ -66,7 +66,6 @@ public class CharacterInfoUI : MonoBehaviour
         defenseText.text = info.defense.ToString();
         speedText.text = info.speed.ToString();
         rangeText.text = info.attackableRange.ToString("0.0");
-        intervalText.text = info.attackInterval.ToString("0.00");
 
         //스킬 정보만 표시
         if (info.skillSet != null && info.skillSet.Count > 0)

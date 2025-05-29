@@ -10,13 +10,13 @@ public interface ISkillAction
 //장판 소환
 public class Skill_Fire : ISkillAction
 {
-    PlayerController caster;
+    PlayerController_Net caster;
     private SkillData data;
     private GameObject skillEffectObject;
 
     private bool isCoolDown;
 
-    public Skill_Fire(PlayerController caster, SkillData data)
+    public Skill_Fire(PlayerController_Net caster, SkillData data)
     {
         this.caster = caster;
         this.data = data;
@@ -56,13 +56,13 @@ public class Skill_Fire : ISkillAction
 //장판 소환
 public class Skill_Frost : ISkillAction
 {
-    PlayerController caster;
+    PlayerController_Net caster;
     private SkillData data;
     public GameObject skillEffectObject;
 
     private bool isCoolDown;
 
-    public Skill_Frost(PlayerController caster, SkillData data)
+    public Skill_Frost(PlayerController_Net caster, SkillData data)
     {
         this.caster = caster;
         this.data = data;
@@ -102,13 +102,13 @@ public class Skill_Frost : ISkillAction
 // Heal
 public class Skill_Heal : ISkillAction
 {
-    PlayerController caster;
+    PlayerController_Net caster;
     private SkillData data;
     public GameObject skillEffectObject;
 
     private bool isCoolDown;
 
-    public Skill_Heal(PlayerController caster, SkillData data)
+    public Skill_Heal(PlayerController_Net caster, SkillData data)
     {
 
         this.caster = caster;
@@ -149,12 +149,12 @@ public class Skill_Heal : ISkillAction
 
 public class Skill_YellowRod : ISkillAction
 {
-    PlayerController caster;
+    PlayerController_Net caster;
     private SkillData data;
     public GameObject skillEffectObject;
     private bool isCoolDown;
 
-    public Skill_YellowRod(PlayerController caster, SkillData data)
+    public Skill_YellowRod(PlayerController_Net caster, SkillData data)
     {
         this.caster = caster;
         this.data = data;

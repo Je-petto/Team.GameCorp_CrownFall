@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class AnimationHandler : NetworkBehaviour
 {
-    PlayerController player;
+    PlayerController_Net player;
     void Start()
     {
         if (!isLocalPlayer) return;
-        this.player = GetComponentInParent<PlayerController>();
+        this.player = GetComponentInParent<PlayerController_Net>();
     }
 
     public void EnterSkillCastEvent()

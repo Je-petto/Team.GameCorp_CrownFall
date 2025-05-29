@@ -6,24 +6,24 @@ public interface ICommand
     public void Execute();
 }
 
-public class DeathCommand : ICommand
-{
-    PlayerController player;
-    DeadState state;
-    public DeathCommand(PlayerController player, DeadState state)
-    {
-        this.player = player;
-        this.state = state;
-    }
+// public class DeathCommand : ICommand
+// {
+//     PlayerController_Net player;
+//     DeadState state;
+//     public DeathCommand(PlayerController_Net player, DeadState state)
+//     {
+//         this.player = player;
+//         this.state = state;
+//     }
 
-    public void Execute()
-    {
+//     public void Execute()
+//     {
 
-        //team test
-        if (player.teamCode != 0) return;
-        player.stateMachine.ChangeState(state);
-    }
-}
+//         //team test
+//         if (player.teamCode != 0) return;
+//         player.stateMachine.ChangeState(state);
+//     }
+// }
 
 public class MoveCommand : ICommand
 {
@@ -41,8 +41,8 @@ public class MoveCommand : ICommand
 
 public class IdleCommand : ICommand
 {
-    PlayerController player;
-    public IdleCommand(PlayerController player)
+    PlayerController_Net player;
+    public IdleCommand(PlayerController_Net player)
     {
         this.player = player;
     }
@@ -54,14 +54,14 @@ public class IdleCommand : ICommand
     }
 }
 
-public class DetectionCommand : ICommand
+public class DetectCommand : ICommand
 {
-    PlayerController player;
+    PlayerController_Net player;
     PlayerDetection detection;
 
     bool detectionState;
 
-    public DetectionCommand(PlayerController player, PlayerDetection detection)
+    public DetectCommand(PlayerController_Net player, PlayerDetection detection)
     {
         this.player = player;
         this.detection = detection;
@@ -85,11 +85,11 @@ public class DetectionCommand : ICommand
 
 public class AttackCommand : ICommand
 {
-    PlayerController player;
+    PlayerController_Net player;
 
     PlayerAttackNonTargeting attack;
 
-    public AttackCommand(PlayerController player, PlayerAttackNonTargeting attack)
+    public AttackCommand(PlayerController_Net player, PlayerAttackNonTargeting attack)
     {
         this.player = player;
         this.attack = attack;
@@ -104,7 +104,7 @@ public class AttackCommand : ICommand
 
 public class SkillCastCommand : ICommand
 {
-    PlayerController caster;
+    PlayerController_Net caster;
     public GameObject mark { get; private set; }
     ISkillAction skillAction;
     SkillData data;
@@ -112,12 +112,12 @@ public class SkillCastCommand : ICommand
 
     private bool isCoolDown = false;
 
-    public SkillCastCommand(PlayerController caster, ISkillAction skillAction)
+    public SkillCastCommand(PlayerController_Net caster, ISkillAction skillAction)
     {
         this.caster = caster;
         isCasting = false;
 
-        data = caster.data.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
+        // data = caster.info.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
         mark = GameObject.Instantiate(data.castingMark, caster.transform);
         mark.SetActive(false);
 

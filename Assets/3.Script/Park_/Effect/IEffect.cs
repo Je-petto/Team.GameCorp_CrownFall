@@ -1,6 +1,6 @@
 public interface IEffect
 {
-    public abstract void Apply(PlayerController player);
+    public abstract void Apply(PlayerController_Net player);
 }
 
 public class DamageEffect : IEffect
@@ -9,7 +9,7 @@ public class DamageEffect : IEffect
     public DamageEffect(int amount){
         this.amount = amount;
     }
-    public void Apply(PlayerController player)
+    public void Apply(PlayerController_Net player)
     {
         player.effectHandler.ApplyDamage(amount);
     }
@@ -26,7 +26,7 @@ public class SlowEffect : IEffect
         this.duration = duration;
     }
 
-    public void Apply(PlayerController player)
+    public void Apply(PlayerController_Net player)
     {
         player.effectHandler.ApplySlow(duration, amount);
     }
@@ -43,7 +43,7 @@ public class DotEffect : IEffect
         this.duration = duration;
     }
 
-    public void Apply(PlayerController player)
+    public void Apply(PlayerController_Net player)
     {
         player.effectHandler.ApplyDot(duration, amount);
     }

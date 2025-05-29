@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class SkillEffectController : MonoBehaviour
 {
-    public PlayerController caster;
+    public PlayerController_Net caster;
     private ParticleSystem ps;
     List<IEffect> effects;
 
     public SkillData data;
 
-    public void SetProps(PlayerController caster, SkillData data)
+    public void SetProps(PlayerController_Net caster, SkillData data)
     {
         this.caster = caster;
         this.data = data;
@@ -40,7 +40,7 @@ public class SkillEffectController : MonoBehaviour
 
     private void ApplyHeal(Collider other)
     {
-        var target = other.GetComponent<PlayerController>();
+        var target = other.GetComponent<PlayerController_Net>();
         if (target == null) return;
 
         // 다른팀이면 무시.
@@ -50,7 +50,7 @@ public class SkillEffectController : MonoBehaviour
 
         Debug.Log("힐 적중!!");
 
-        PlayerController enemy = other.GetComponent<PlayerController>();
+        PlayerController_Net enemy = other.GetComponent<PlayerController_Net>();
 
         foreach (var e in effects)
         {
@@ -60,7 +60,7 @@ public class SkillEffectController : MonoBehaviour
 
     private void ApplyDamage(Collider other)
     {
-        var target = other.GetComponent<PlayerController>();
+        var target = other.GetComponent<PlayerController_Net>();
         if (target == null) return;
 
         // 같은 팀이면 무시.
@@ -70,7 +70,7 @@ public class SkillEffectController : MonoBehaviour
 
         Debug.Log("데미지 적중!!");
 
-        PlayerController enemy = other.GetComponent<PlayerController>();
+        PlayerController_Net enemy = other.GetComponent<PlayerController_Net>();
 
         foreach (var e in effects)
         {

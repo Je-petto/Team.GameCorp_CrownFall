@@ -41,7 +41,7 @@ public class InGameCharacterSpawner : MonoBehaviour
     IEnumerator SpawnPlayer_Co(CharacterInfo info, string teamData)
     {
         yield return new WaitForEndOfFrame();
-        PlayerController player = Instantiate(playerBase).GetComponent<PlayerController>();
+        PlayerController_Net player = Instantiate(playerBase).GetComponent<PlayerController_Net>();
   
         // player.SetCharacter(info, teamData);
     }

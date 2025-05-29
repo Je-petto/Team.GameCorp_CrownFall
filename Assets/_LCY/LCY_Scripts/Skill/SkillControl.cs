@@ -148,8 +148,8 @@ public class SkillControl : MonoBehaviour
         {
             if (obj.layer != layer)
                 continue;
-            PlayerController pc = obj.GetComponent<PlayerController>();
-            pc.currentStat.hp += healAmount;
+            PlayerController_Net pc = obj.GetComponent<PlayerController_Net>();
+            pc.hp += healAmount;
         }
     }
 
