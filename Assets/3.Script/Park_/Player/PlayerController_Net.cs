@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Mirror;
 using UnityEngine;
@@ -7,6 +8,37 @@ public class PlayerController_Net : NetworkBehaviour
     [Header("Inspector Window")]
     public CharacterInfo T_characterInfo;
     public CharacterInfo data;
+
+    #region Sync Value
+    [Header("Field")]
+    [SyncVar]
+    public string cid;              // 캐릭터 고유 번호.
+    [SyncVar]
+    public string characterNickName;    // 캐릭터 이름
+    [SyncVar]
+    public string characterName;    // 캐릭터 이름
+    [SyncVar]
+    public string description;      // 캐릭터 설명
+    [SyncVar]
+    public int hp;                  // 체력
+    [SyncVar]
+    public int attack;              // 공격력
+    [SyncVar]
+    public int defense;
+    [SyncVar]
+    public float speed;               // 이동 속도
+    [SyncVar]
+    public float attackableRange;   // 공격 가능 범위
+    [SyncVar]
+    public float attackInterval;    // 공격 주기.
+    [SyncVar]
+    public int teamCode;
+
+    [SyncVar]
+    public GameObject projection;
+    public float rotateSpeed;                       // 회전 속도
+    #endregion
+
 
     #region Components
     [Header("Components")]
@@ -20,15 +52,13 @@ public class PlayerController_Net : NetworkBehaviour
     public AnimationHandler animationHandler;
     #endregion
 
-    [SyncVar]
-    public string cid;              //자신의 캐릭터 번호.
-
     public Vector3 targetPoint;
 
     public override void OnStartClient()
     {
         base.OnStartClient();
         Debug.Log("[Client] : New Client On This Server");
+        hp = 0;
 
         if (!isLocalPlayer)
         {
@@ -73,6 +103,8 @@ public class PlayerController_Net : NetworkBehaviour
     void RPCUpdateApperence(string cid)
     {
         ApplyCharactermodel(cid);
+        
+        CMDSetCharacterInfo(T_characterInfo.hp, T_characterInfo.speed, T_characterInfo.cid, T_characterInfo.projection);
     }
 
     public void ApplyCharactermodel(string cid)
@@ -94,14 +126,24 @@ public class PlayerController_Net : NetworkBehaviour
         }
 
         GameObject model = info.inGameModel;
-
         GameObject characterModel = Instantiate(model, mesh);
 
         this.data = info;
 
+        // CMDSetCharacterInfo(T_characterInfo.hp, T_characterInfo.speed, T_characterInfo.cid, T_characterInfo.projection);
         animator = GetComponentInChildren<Animator>();
-
         InitComponents();
+    }
+
+    [Command]
+    void CMDSetCharacterInfo(int currentHp, float moveSpeed, string cid, GameObject projection)
+    {
+        Debug.Log("CMD Set Character information");
+        Debug.Log($"hp : {currentHp}, speed : {moveSpeed}, cid : {cid}");
+
+        this.hp = currentHp;
+        this.speed = moveSpeed;
+        this.projection = projection;
     }
 
     void InitComponents()
@@ -111,9 +153,24 @@ public class PlayerController_Net : NetworkBehaviour
         TryGetComponent(out rb);
         TryGetComponent(out stateMachine);
         TryGetComponent(out inputHandler);
+        TryGetComponent(out lineRenderer);
 
         if (lineRenderer != null) lineRenderer.enabled = false;
 
         inputHandler.moveCommand = new MoveCommand(this);
+        inputHandler.detectCommand = new DetectCommand(this, new(this));
+        inputHandler.attackCommand = new AttackCommand(this, new(this));
     }
+
+    #region Network Part
+    [Command]
+    public void AttackBasic()
+    {
+        Debug.Log("Attack Basic!!");
+
+        GameObject attackOrb = Instantiate(projection, attackPoint.position, Quaternion.identity);
+        Debug.Log("network spawn ready...");
+        NetworkServer.Spawn(attackOrb);
+    }
+    #endregion
 }

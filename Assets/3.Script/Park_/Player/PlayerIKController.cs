@@ -3,12 +3,12 @@ using UnityEngine;
 public class PlayerIKController : MonoBehaviour
 {
     private Animator animator;
-    private PlayerController player;
+    private PlayerController_Net player;
 
     void Start()
     {
         TryGetComponent(out animator);
-        player = GetComponentInParent<PlayerController>();
+        player = GetComponentInParent<PlayerController_Net>();
     }
 
     void OnAnimatorIK(int layerIndex)

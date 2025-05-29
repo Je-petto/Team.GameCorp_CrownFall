@@ -44,7 +44,7 @@ public static class EffectFactory
 
 public static class SkillFactory
 {
-    public static ISkillAction CreateSkillAction(PlayerController caster, SkillData data)
+    public static ISkillAction CreateSkillAction(PlayerController_Net caster, SkillData data)
     {
         switch (data.type)
         {

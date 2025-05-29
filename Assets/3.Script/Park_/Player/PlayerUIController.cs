@@ -7,11 +7,11 @@ public class PlayerUIController : NetworkBehaviour
 {
     public int teamCode = 0;
     [SerializeField] private Image teamColorHpbar;
-    [SerializeField] private PlayerController player;
+    [SerializeField] private PlayerController_Net player;
 
     void Start()
     {
-        player.OnChangedHp += OnChangeCurrentHpBar;
+        // player.OnChangedHp += OnChangeCurrentHpBar;
     }
 
     public void SetUI()
@@ -19,7 +19,7 @@ public class PlayerUIController : NetworkBehaviour
         this.teamCode = player.teamCode;
         teamColorHpbar.color = teamCode == 0 ? Color.red : Color.blue;
 
-        player.OnChangedHp += OnChangeCurrentHpBar;
+        // player.OnChangedHp += OnChangeCurrentHpBar;
     }
 
 

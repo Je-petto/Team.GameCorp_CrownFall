@@ -9,9 +9,9 @@ using UnityEngine;
 
 public abstract class PlayerAbility
 {
-    protected PlayerController player;
+    protected PlayerController_Net player;
 
-    public PlayerAbility(PlayerController player)
+    public PlayerAbility(PlayerController_Net player)
     {
         this.player = player;
     }
@@ -22,7 +22,7 @@ public abstract class PlayerAbility
 //논 타겟팅 인식.
 public class PlayerDetection : PlayerAbility
 {
-    public PlayerDetection(PlayerController player) : base(player) { }
+    public PlayerDetection(PlayerController_Net player) : base(player) { }
 
     public override void Perform()
     {
@@ -35,8 +35,8 @@ public class PlayerDetection : PlayerAbility
 
             Vector3 lineDir = (targetPoint - player.attackPoint.position).normalized;
 
-            player.lineRenderer.SetPosition(1, player.attackPoint.position + (lineDir * player.data.attackableRange));
-            player.targetPoint = player.attackPoint.position + (lineDir * player.data.attackableRange);
+            player.lineRenderer.SetPosition(1, player.attackPoint.position + (lineDir * player.attackableRange));
+            player.targetPoint = player.attackPoint.position + (lineDir * player.attackableRange);
         }
     }
 }
@@ -45,7 +45,7 @@ public class PlayerDetection : PlayerAbility
 // non-target [IK]
 public class PlayerAttackNonTargeting : PlayerAbility
 {
-    public PlayerAttackNonTargeting(PlayerController player) : base(player){ canAttack = true; }
+    public PlayerAttackNonTargeting(PlayerController_Net player) : base(player){ canAttack = true; }
     private bool canAttack;
     public override void Perform()
     {
@@ -57,6 +57,9 @@ public class PlayerAttackNonTargeting : PlayerAbility
         if (!canAttack) return;
 
         canAttack = false;
+
+        // player.networkHandler.AttackBasic();
+        player.AttackBasic();
 
         DOVirtual.DelayedCall(1f, () =>
         {

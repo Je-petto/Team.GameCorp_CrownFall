@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class EffectHandler
 {
-    PlayerController player;
-    public EffectHandler(PlayerController player)
+    PlayerController_Net player;
+    public EffectHandler(PlayerController_Net player)
     {
         this.player = player;
     }
@@ -12,16 +12,16 @@ public class EffectHandler
     public void ApplyDamage(int amount)
     {
         Debug.Log($"{amount} -? Damage Apply");
-        player.currentStat.hp -= amount * (100 - player.data.defense) / 100;
-        player.currentStat.hp = Mathf.Clamp(player.currentStat.hp, 0, player.data.hp);
+        player.hp -= amount * (100 - player.defense) / 100;
+        player.hp = Mathf.Clamp(player.hp, 0, player.data.hp);
        
     }
 
     public void ApplyHeal(float amount)
     {
         Debug.Log("Heal Apply");
-        player.currentStat.hp += (int)amount;
-        player.currentStat.hp = Mathf.Clamp(0, player.data.hp, player.currentStat.hp);
+        player.hp += (int)amount;
+        player.hp = Mathf.Clamp(0, player.data.hp, player.hp);
     }
 
     public void ApplySlow(float duration, float amount)
@@ -29,9 +29,9 @@ public class EffectHandler
         Debug.Log("Slow Apply");
         Sequence seq = DOTween.Sequence();
 
-        seq.AppendCallback(() => player.currentStat.moveSpeed *= (amount / 100f))
+        seq.AppendCallback(() => player.speed *= (amount / 100f))
             .AppendInterval(duration)
-            .OnComplete(() => player.currentStat.moveSpeed = player.data.speed);
+            .OnComplete(() => player.speed = player.data.speed);
     }
 
     public void ApplyDot(float duration, float amount)

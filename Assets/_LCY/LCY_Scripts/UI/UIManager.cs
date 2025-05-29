@@ -20,11 +20,11 @@ public class UIManager : BehaviourSingleton<UIManager>
     [SerializeField] private Image face;
     [SerializeField] private Image skillIcon;
 
-    private PlayerController playerController;
+    private PlayerController_Net playerController;
 
     private void Start()
     {
-        playerController = FindObjectsOfType<PlayerController>().ToList().Find(p => p.isLocalPlayer);
+        playerController = FindObjectsOfType<PlayerController_Net>().ToList().Find(p => p.isLocalPlayer);
 
         if (playerController != null)
         {
@@ -32,7 +32,7 @@ public class UIManager : BehaviourSingleton<UIManager>
         }
         else
         {
-            Debug.LogWarning("PlayerController not found!");
+            Debug.LogWarning("PlayerController_Net not found!");
         }
 
         gameEndPanel.SetActive(false);
@@ -51,18 +51,18 @@ public class UIManager : BehaviourSingleton<UIManager>
         gameEndPanel.SetActive(true);
     }
 
-    // 필요하면 플레이어를 동적으로 바꾸는 함수 추가 가능
-    public void SetPlayerController(PlayerController player)
-    {
-        playerController = player;
-        if (playerController != null)
-        {
-            atkText.text = playerController.data.name;
-        }
+    // // 필요하면 플레이어를 동적으로 바꾸는 함수 추가 가능
+    // public void SetPlayerController(PlayerController_Net player)
+    // {
+    //     playerController = player;
+    //     if (playerController != null)
+    //     {
+    //         atkText.text = playerController.info.name;
+    //     }
 
-        face.sprite = player.data.face;
-        skillIcon.sprite = player.data.SkillIcon;
-    }
+    //     face.sprite = player.data.face;
+    //     skillIcon.sprite = player.data.SkillIcon;
+    // }
 
     [SerializeField] TextMeshProUGUI timeText;
 
@@ -79,10 +79,5 @@ public class UIManager : BehaviourSingleton<UIManager>
         }, 0f, duration)
         .SetEase(Ease.Linear)
         .OnComplete(() => timeText.text = ""); // 끝나면 텍스트 비우기
-    }
-
-    public void UpdateHpBar(float percent)
-    {
-        hpBar.fillAmount = (float)playerController.data.hp / playerController.syncedHp;
     }
 }
