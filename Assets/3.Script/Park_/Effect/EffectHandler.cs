@@ -1,22 +1,25 @@
 using DG.Tweening;
+using Mirror;
 using UnityEngine;
 
-public class EffectHandler
+public class EffectHandler : NetworkBehaviour
 {
     PlayerController_Net player;
-    public EffectHandler(PlayerController_Net player)
+
+    public void Init(PlayerController_Net player)
     {
         this.player = player;
     }
 
+    [ClientRpc]
     public void ApplyDamage(int amount)
     {
         Debug.Log($"{amount} -? Damage Apply");
         player.hp -= amount * (100 - player.defense) / 100;
         player.hp = Mathf.Clamp(player.hp, 0, player.data.hp);
-       
     }
 
+    [ClientRpc]
     public void ApplyHeal(float amount)
     {
         Debug.Log("Heal Apply");
@@ -24,6 +27,7 @@ public class EffectHandler
         player.hp = Mathf.Clamp(0, player.data.hp, player.hp);
     }
 
+    [ClientRpc]
     public void ApplySlow(float duration, float amount)
     {
         Debug.Log("Slow Apply");
@@ -34,6 +38,7 @@ public class EffectHandler
             .OnComplete(() => player.speed = player.data.speed);
     }
 
+    [ClientRpc]
     public void ApplyDot(float duration, float amount)
     {
         Debug.Log("Dot Apply");
@@ -47,4 +52,9 @@ public class EffectHandler
         }
     }
 
+    // [ClientRPC]
+    // public void SetAnimation()
+    // {
+        
+    // }
 }

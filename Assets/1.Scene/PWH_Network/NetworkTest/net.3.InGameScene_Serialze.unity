@@ -941,7 +941,6 @@ MonoBehaviour:
   - {fileID: 2018257537646595620, guid: 293a0b0d8c49d884887dfe8871aa29ee, type: 3}
   - {fileID: 889773988343893371, guid: 493b30a7ac9139e4db0f7b75df2a4583, type: 3}
   - {fileID: 8436226803424169134, guid: 0e4710c28b0709d4e90e0604a8f171e5, type: 3}
-  - {fileID: 8436226803424169134, guid: 78e21a793a729584f9d0c9c22dec6b09, type: 3}
   - {fileID: 5995134306785910827, guid: d32cef3ef9da0aa44980615fc13be6d4, type: 3}
   - {fileID: 8436226803424169134, guid: 1aaef253cbf21b74f9d46b9cf17331ad, type: 3}
   - {fileID: 5106043215229604328, guid: 74621a6fcb0ce22448b9867d20d765d8, type: 3}
@@ -965,6 +964,11 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 0
   timeInterpolationGui: 0
+  characterInfos:
+  - {fileID: 11400000, guid: 906b121eaad8d0c4ba0bb653e8ba0c09, type: 2}
+  - {fileID: 11400000, guid: 2a9a95227f1e6a748ab4709e3f5f5c31, type: 2}
+  - {fileID: 11400000, guid: 58d3d73f6a60817499a27346e702d75d, type: 2}
+  - {fileID: 11400000, guid: 2095cb67f385ede4fb6d05ce6d2681c4, type: 2}
 --- !u!114 &957248230
 MonoBehaviour:
   m_ObjectHideFlags: 0

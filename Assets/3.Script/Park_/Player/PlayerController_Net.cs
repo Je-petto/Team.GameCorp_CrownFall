@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using Mirror;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController_Net : NetworkBehaviour
 {
@@ -19,8 +21,10 @@ public class PlayerController_Net : NetworkBehaviour
     public string characterName;    // 캐릭터 이름
     [SyncVar]
     public string description;      // 캐릭터 설명
-    [SyncVar]
+
+    [SyncVar(hook = "ChangeHp")]
     public int hp;                  // 체력
+
     [SyncVar]
     public int attack;              // 공격력
     [SyncVar]
@@ -33,9 +37,6 @@ public class PlayerController_Net : NetworkBehaviour
     public float attackInterval;    // 공격 주기.
     [SyncVar]
     public int teamCode;
-
-    [SyncVar]
-    public GameObject projection;
     public float rotateSpeed;                       // 회전 속도
     #endregion
 
@@ -54,30 +55,26 @@ public class PlayerController_Net : NetworkBehaviour
 
     public Vector3 targetPoint;
 
-    public override void OnStartClient()
+    public override void OnStartLocalPlayer()
     {
-        base.OnStartClient();
-        Debug.Log("[Client] : New Client On This Server");
-        hp = 0;
-
+        base.OnStartLocalPlayer();
+        Debug.Log("▶ LocalPlayer Init");
         if (!isLocalPlayer)
         {
-            StartCoroutine(SetMapModel_Co());
+            SetMapModel_Co();
         }
         else
         {
             CMDSetCID(T_characterInfo.cid);
         }
-
         //카메라 세팅
         SetCamera();
     }
 
-    IEnumerator SetMapModel_Co()
+    void SetMapModel_Co()
     {
-        yield return new WaitUntil(() => !cid.Equals(""));
         Debug.Log($"[Client] None Local Player Set Model!");
-        ApplyCharactermodel(cid);
+        // ApplyCharactermodel(cid);
     }
 
     void Start()
@@ -93,57 +90,41 @@ public class PlayerController_Net : NetworkBehaviour
         RPCUpdateApperence(cid);
     }
 
-    public void SetCamera()
-    {
-        var cam = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
-        if (cam != null) cam.Follow = transform;
-    }
-
     [ClientRpc]
     void RPCUpdateApperence(string cid)
     {
-        ApplyCharactermodel(cid);
-        
-        CMDSetCharacterInfo(T_characterInfo.hp, T_characterInfo.speed, T_characterInfo.cid, T_characterInfo.projection);
-    }
-
-    public void ApplyCharactermodel(string cid)
-    {
+        //서버에서 가져오기
+        GameObject model = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == cid).inGameModel;
         Transform mesh = transform.Find("_mesh");
+
+        if (model == null)
+        {
+            Debug.Log($"model is null..");
+            return;
+        }
+
         if (mesh.childCount > 0)
         {
             Debug.Log($"[Client ({netId})] : 이미 메쉬 데이터가 있습니다...");
             return;
         }
 
-        Debug.Log("Cid Change : new Character model set.");
-        CharacterInfo info = PlayerSpawner.I.GetCharacterInfo(cid);
-
-        if (info == null)
-        {
-            Debug.Log("Character Info is null...");
-            return;
-        }
-
-        GameObject model = info.inGameModel;
-        GameObject characterModel = Instantiate(model, mesh);
-
-        this.data = info;
-
-        // CMDSetCharacterInfo(T_characterInfo.hp, T_characterInfo.speed, T_characterInfo.cid, T_characterInfo.projection);
-        animator = GetComponentInChildren<Animator>();
+        Instantiate(model, mesh);
         InitComponents();
     }
 
-    [Command]
-    void CMDSetCharacterInfo(int currentHp, float moveSpeed, string cid, GameObject projection)
+    public void SetCamera()
     {
-        Debug.Log("CMD Set Character information");
-        Debug.Log($"hp : {currentHp}, speed : {moveSpeed}, cid : {cid}");
+        var cam = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
+        if (cam != null) cam.Follow = transform;
+    }
 
-        this.hp = currentHp;
-        this.speed = moveSpeed;
-        this.projection = projection;
+
+    [Command]
+    public void CMDSetCharacterInfo(int hp, float speed)
+    {
+        this.hp = hp;
+        this.speed = speed;
     }
 
     void InitComponents()
@@ -154,6 +135,9 @@ public class PlayerController_Net : NetworkBehaviour
         TryGetComponent(out stateMachine);
         TryGetComponent(out inputHandler);
         TryGetComponent(out lineRenderer);
+        TryGetComponent(out effectHandler);
+
+        animator = GetComponentInChildren<Animator>();
 
         if (lineRenderer != null) lineRenderer.enabled = false;
 
@@ -167,10 +151,28 @@ public class PlayerController_Net : NetworkBehaviour
     public void AttackBasic()
     {
         Debug.Log("Attack Basic!!");
+        CharacterInfo info = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == cid);
+        GameObject projection = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == cid).projection;
 
-        GameObject attackOrb = Instantiate(projection, attackPoint.position, Quaternion.identity);
+        if (projection == null)
+        {
+            Debug.Log("projection is null...");
+        }
+
+        GameObject attackOrb = Instantiate(projection);
         Debug.Log("network spawn ready...");
         NetworkServer.Spawn(attackOrb);
+
+        attackOrb.GetComponent<AttackObject>().SetAttack(this, info.attack, targetPoint);
+    }
+
+    public UnityAction<float> OnChangeHp;
+
+    void ChangeHp(int hp)
+    {
+        this.hp = hp;
+
+        OnChangeHp(hp / data.hp);
     }
     #endregion
 }

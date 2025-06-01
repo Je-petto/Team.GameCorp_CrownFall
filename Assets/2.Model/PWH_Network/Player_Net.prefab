@@ -408,11 +408,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cef528560e8f3f42b09f40e0096bf84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 1
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0
   T_characterInfo: {fileID: 11400000, guid: 2a9a95227f1e6a748ab4709e3f5f5c31, type: 2}
   data: {fileID: 0}
+  cid: 
+  characterNickName: 
+  characterName: 
+  description: 
+  hp: 0
+  attack: 0
+  defense: 0
+  speed: 0
+  attackableRange: 0
+  attackInterval: 0
+  teamCode: 0
+  projection: {fileID: 0}
+  rotateSpeed: 0
   rb: {fileID: 0}
   animator: {fileID: 0}
   attackPoint: {fileID: 0}
@@ -420,21 +433,7 @@ MonoBehaviour:
   stateMachine: {fileID: 3555910034834300038}
   inputHandler: {fileID: 6155079728073382559}
   animationHandler: {fileID: 0}
-  info:
-    cid: 
-    characterNickName: 
-    characterName: 
-    description: 
-    hp: 0
-    attack: 0
-    defense: 0
-    speed: 0
-    attackableRange: 0
-    attackInterval: 0
-    teamCode: 0
-    rotateSpeed: 0
   targetPoint: {x: 0, y: 0, z: 0}
-  projection: {fileID: 0}
 --- !u!114 &6155079728073382559
 MonoBehaviour:
   m_ObjectHideFlags: 0

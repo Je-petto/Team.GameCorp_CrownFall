@@ -58,7 +58,6 @@ public class PlayerAttackNonTargeting : PlayerAbility
 
         canAttack = false;
 
-        // player.networkHandler.AttackBasic();
         player.AttackBasic();
 
         DOVirtual.DelayedCall(1f, () =>

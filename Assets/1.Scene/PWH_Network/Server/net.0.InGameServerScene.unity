@@ -122,7 +122,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &36632658
+--- !u!1 &1303947409
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,10 +130,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 36632662}
-  - component: {fileID: 36632661}
-  - component: {fileID: 36632660}
-  - component: {fileID: 36632659}
+  - component: {fileID: 1303947413}
+  - component: {fileID: 1303947412}
+  - component: {fileID: 1303947411}
+  - component: {fileID: 1303947410}
   m_Layer: 0
   m_Name: InGameNetworkManager
   m_TagString: Untagged
@@ -141,13 +141,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &36632659
+--- !u!114 &1303947410
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 36632658}
+  m_GameObject: {fileID: 1303947409}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
@@ -170,13 +170,13 @@ MonoBehaviour:
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
---- !u!114 &36632660
+--- !u!114 &1303947411
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 36632658}
+  m_GameObject: {fileID: 1303947409}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 348ccca3cffbdb84a932f457372070d5, type: 3}
@@ -190,7 +190,7 @@ MonoBehaviour:
   offlineScene: 
   onlineScene: 
   offlineSceneLoadDelay: 0
-  transport: {fileID: 36632659}
+  transport: {fileID: 1303947410}
   networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0
@@ -235,13 +235,18 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 0
   timeInterpolationGui: 0
---- !u!114 &36632661
+  characterInfos:
+  - {fileID: 11400000, guid: 906b121eaad8d0c4ba0bb653e8ba0c09, type: 2}
+  - {fileID: 11400000, guid: 2a9a95227f1e6a748ab4709e3f5f5c31, type: 2}
+  - {fileID: 11400000, guid: 58d3d73f6a60817499a27346e702d75d, type: 2}
+  - {fileID: 11400000, guid: 2095cb67f385ede4fb6d05ce6d2681c4, type: 2}
+--- !u!114 &1303947412
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 36632658}
+  m_GameObject: {fileID: 1303947409}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9fee171bdeedc38459ad8ab047b23e76, type: 3}
@@ -249,13 +254,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   path: 
---- !u!4 &36632662
+--- !u!4 &1303947413
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 36632658}
+  m_GameObject: {fileID: 1303947409}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -268,4 +273,4 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 36632662}
+  - {fileID: 1303947413}
