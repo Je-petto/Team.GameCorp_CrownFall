@@ -11,15 +11,15 @@ public class EffectHandler : NetworkBehaviour
         this.player = player;
     }
 
-    [ClientRpc]
+    [Server]
     public void ApplyDamage(int amount)
     {
-        Debug.Log($"{amount} -? Damage Apply");
-        player.hp -= amount * (100 - player.defense) / 100;
+        Debug.Log($"{amount} -> Damage Apply");
+        player.hp -= amount;
         player.hp = Mathf.Clamp(player.hp, 0, player.data.hp);
     }
 
-    [ClientRpc]
+    [Server]
     public void ApplyHeal(float amount)
     {
         Debug.Log("Heal Apply");
@@ -27,7 +27,7 @@ public class EffectHandler : NetworkBehaviour
         player.hp = Mathf.Clamp(0, player.data.hp, player.hp);
     }
 
-    [ClientRpc]
+    [Server]
     public void ApplySlow(float duration, float amount)
     {
         Debug.Log("Slow Apply");
@@ -38,7 +38,7 @@ public class EffectHandler : NetworkBehaviour
             .OnComplete(() => player.speed = player.data.speed);
     }
 
-    [ClientRpc]
+    [Server]
     public void ApplyDot(float duration, float amount)
     {
         Debug.Log("Dot Apply");

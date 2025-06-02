@@ -11,7 +11,7 @@ public class PlayerController_Net : NetworkBehaviour
 
     #region Sync Value
     [Header("Field")]
-    [SyncVar]
+    [SyncVar(hook = nameof(SetModel))]
     public string cid;              // 캐릭터 고유 번호.
     [SyncVar]
     public string characterNickName;    // 캐릭터 이름
@@ -39,7 +39,7 @@ public class PlayerController_Net : NetworkBehaviour
     public float attackInterval;    // 공격 주기.
 
     [SyncVar(hook = nameof(OnInitTeam))]
-    public int teamCode = 0;
+    public int teamCode = -1;
     public float rotateSpeed;                       // 회전 속도
     #endregion
 
@@ -56,13 +56,10 @@ public class PlayerController_Net : NetworkBehaviour
     #endregion
     public Vector3 targetPoint;
 
-    LocalPlayerSetter setter;
-
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
-        setter = FindAnyObjectByType<LocalPlayerSetter>();
-        data = FindAnyObjectByType<LocalPlayerSetter>().info;
+        Debug.Log($"[Client] None Local Player Set Model! {cid}");
 
         if (!isLocalPlayer)
         {
@@ -73,19 +70,25 @@ public class PlayerController_Net : NetworkBehaviour
             string id = data.cid;
             CMDSetCID(id);
         }
+
         //카메라 세팅
         SetCamera();
     }
 
     void SetMapModel_Co()
     {
-        Debug.Log($"[Client] None Local Player Set Model! {cid}");
         RPCUpdateApperence(cid);
     }
 
     void Start()
     {
         Debug.Log("[Client] : Player Start!");
+
+        if (!isLocalPlayer)
+        {
+            SetMapModel_Co();
+        }
+
     }
 
     [Command]
@@ -93,11 +96,11 @@ public class PlayerController_Net : NetworkBehaviour
     {
         this.cid = cid;
 
-        RPCUpdateApperence(cid);
+        //RPCUpdateApperence(cid);
     }
 
     [ClientRpc]
-    void RPCUpdateApperence(string cid)
+    void RPCUpdateApperence(string oldVal, string newVal)
     {
         //서버에서 가져오기
         CharacterInfo info = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == cid);
@@ -122,7 +125,7 @@ public class PlayerController_Net : NetworkBehaviour
         Instantiate(model, mesh);
         InitComponents();
 
-        CMDSetCharacterInfo(info.hp, info.speed, info.attackableRange, code);
+        CMDSetCharacterInfo(info.hp, info.attack,info.speed, info.attackableRange, code);
     }
 
     public void SetCamera()
@@ -132,9 +135,12 @@ public class PlayerController_Net : NetworkBehaviour
     }
 
     [Command]
-    public void CMDSetCharacterInfo(int hp, float speed, float attackableRange, int teamCode)
+    public void CMDSetCharacterInfo(int hp, int attack, float speed, float attackableRange, int teamCode)
     {
         this.hp = hp;
+        this.attack = attack;
+
+
         this.speed = speed;
         this.attackableRange = attackableRange;
         this.teamCode = teamCode;

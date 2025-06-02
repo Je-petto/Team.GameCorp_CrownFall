@@ -423,7 +423,7 @@ MonoBehaviour:
   speed: 0
   attackableRange: 0
   attackInterval: 0
-  teamCode: 0
+  teamCode: -1
   rotateSpeed: 0
   rb: {fileID: 0}
   animator: {fileID: 0}
