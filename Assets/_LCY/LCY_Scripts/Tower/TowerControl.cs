@@ -3,7 +3,9 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using Mirror;
+using System;
 
+[Serializable]
 public struct TowerState
 {
     public int health;
@@ -21,14 +23,13 @@ public class TowerControl : NetworkBehaviour
     public TowerProfile profile { get => towerProfile; set => towerProfile = value; }
     [SerializeField] private TowerProfile towerProfile;
     public TowerState state;
-    public int teamCode;                    //인스펙터에서 설정하기
 
-    [CustomInspector.ReadOnly] public float maxHealth;
+    public int teamCode_Inspector;
+
+    [SyncVar(hook = nameof(OnInitTeam))]
+    public int teamCode = -1;                    //인스펙터에서 설정하기
+
     [CustomInspector.ReadOnly] public Collider col;
-
-    [HorizontalLine("DEBUG"), HideField] public bool b0;
-    [SerializeField] private int debugHealth;
-    [SerializeField] private int debugShieldHealth;
 
     [HorizontalLine("TOWER STATE"), HideField] public bool b1;
     [CustomInspector.ReadOnly] public bool protect = false;
@@ -39,11 +40,7 @@ public class TowerControl : NetworkBehaviour
     [HorizontalLine("SHIELD"), HideField] public bool b2;
     [CustomInspector.ReadOnly] public GameObject shield;
     [CustomInspector.ReadOnly] public ParticleSystem shieldParticle;
-
-    [HorizontalLine("???"), HideField] public bool b3;
-    [SerializeField, Tooltip("회복량")] private int heelAmount;
-    [SerializeField, Tooltip("회복 간격")] private int heelDelay;
-    [SerializeField, Tooltip("회복 시작까지 대기 시간")] private int recoveryDelay;
+    [SyncVar] public int shieldHp;
 
     [Header("Game Over UI")]
     [SerializeField] private GameObject gameOverPanel;
@@ -51,18 +48,17 @@ public class TowerControl : NetworkBehaviour
     [Header("HealthHPBar")]
     [SerializeField] private Image teamColorHpbar;
 
-    [SyncVar(hook = nameof(OnSyncHealthChanged))]
-    private int syncedHealth;
-    
-    private float rDelay;
-    private float hDelay;
+    [CustomInspector.ReadOnly] public float maxHp;
+
+    [SyncVar(hook = nameof(OnHpChanged))]
+    private int hp;
+
     private bool isGameOver = false;
 
     private void Awake()
     {
         shield = Instantiate(towerProfile.shieldModel);
         shield.SetActive(false);
-
         col = GetComponent<Collider>();
     }
 
@@ -71,74 +67,34 @@ public class TowerControl : NetworkBehaviour
         teamColorHpbar.color = teamCode == 0 ? Color.red : Color.blue;
 
         state.Set(towerProfile);
-        syncedHealth = state.health;
-        maxHealth = state.health;
+        hp = state.health;
+        maxHp = state.health;
 
         Debug.Log("타워 생성!");
     }
 
     private void Update()
     {
-        debugHealth = state.health;
-        debugShieldHealth = state.shieldHealth;
-
         SetShieldPosition();
-        OnProtect();
-        OnRecovery();
-
-        if(state.health <= 0) DestroyTower();
+        
+        if (state.health <= 0) DestroyTower();
     }
+
+    void OnInitTeam(int oldVal, int newVal)
+    {
+        Debug.Log("TeamCode Change!!");
+        if (teamColorHpbar == null)
+        {
+            Debug.Log("teamColorHpbar is null...");
+            return;
+        }
+        teamColorHpbar.color = newVal == 0 ? Color.red : Color.blue;
+    }
+
 
     private void SetShieldPosition()
     {
         shield.transform.position = transform.position;
-    }
-
-    private void OnProtect()
-    {
-        if (state.health <= (maxHealth * 0.6f))
-            protect = true;
-
-        if (protect)
-        {
-            shield.SetActive(true);
-            //shieldParticle.Play();
-        }
-
-        if (state.shieldHealth <= 0)
-        {
-            protect = false;
-            shield.SetActive(false);
-        }
-    }
-
-    private void OnRecovery()
-    {
-        if (state.health <= (maxHealth * 0.25f) && !isHit)
-            recovery = true;
-
-        if (recovery)
-        {
-            if (isHit)
-            {
-                recovery = false;
-                return;
-            }
-            rDelay += Time.deltaTime;
-            hDelay += Time.deltaTime;
-            if (rDelay >= recoveryDelay && hDelay >= heelDelay)
-            {
-                hDelay = 0;
-                state.health += heelAmount;
-                OnChangeHpbar();
-                if (state.health == (maxHealth / 2))
-                {
-                    rDelay = 0;
-                    recovery = false;
-                    return;
-                }
-            }
-        }
     }
 
     private void DestroyTower()
@@ -164,21 +120,35 @@ public class TowerControl : NetworkBehaviour
         UIManager.I?.ShowGameEndPanel(winnerTeam);
     }
 
+    [Server]
     public void ApplyDamage(int damage)
     {
         if (!isServer) return;
 
-        syncedHealth -= damage;
-        syncedHealth = Mathf.Clamp(syncedHealth, 0, (int)maxHealth);
+        hp -= damage;
+        hp = Mathf.Clamp(hp, 0, (int)maxHp);
+
+
+        if (!protect && hp <= (maxHp * 0.6f))
+        {
+            //실드 실시.
+            StartProtect();
+        }
     }
-    private void OnSyncHealthChanged(int oldValue, int newValue)
+
+    void StartProtect()
     {
-        state.health = newValue;
-        OnChangeHpbar();
+        shield.SetActive(true);
+        shieldParticle.Play();
     }
-    
-    private void OnChangeHpbar()
+
+    void OnHpChanged(int oldVal, int newVal)
     {
-        teamColorHpbar.fillAmount = syncedHealth / maxHealth;
+        UpdateHpBar();
     }
+
+    void UpdateHpBar()
+    {
+        teamColorHpbar.fillAmount = (float)hp / maxHp;
+    }    
 }
