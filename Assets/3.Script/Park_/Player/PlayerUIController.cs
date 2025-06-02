@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PlayerUIController : NetworkBehaviour
 {
-    public int teamCode = 0;
     [SerializeField] private Image teamColorHpbar;
     [SerializeField] private PlayerController_Net player;
 
@@ -14,20 +13,22 @@ public class PlayerUIController : NetworkBehaviour
         // player.OnChangedHp += OnChangeCurrentHpBar;
     }
 
+
     public void SetUI()
     {
-        this.teamCode = player.teamCode;
-        teamColorHpbar.color = teamCode == 0 ? Color.red : Color.blue;
+        player.OnChangeHp += OnChangeCurrentHpBar;
 
-        // player.OnChangedHp += OnChangeCurrentHpBar;
+
+        RPCSetTeamColor();
     }
 
-
-    public void SetTeamColor(int index)
+    [ClientRpc]
+    public void RPCSetTeamColor()
     {
-        teamCode = index;
+        teamColorHpbar.color = player.teamCode == 0 ? Color.red : Color.blue;
     }
 
+    [ClientRpc]
     public void OnChangeCurrentHpBar(float percent)
     {
         teamColorHpbar.fillAmount = percent;

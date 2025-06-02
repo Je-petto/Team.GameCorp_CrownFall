@@ -1,22 +1,36 @@
-using System.Collections;
+using DG.Tweening;
 using Mirror;
 using UnityEngine;
 
 public class AttackObject : NetworkBehaviour
 {
-    PlayerController_Net caster;
-    private int damage;
+    [SyncVar]
+    public PlayerController_Net caster;
+
+    [SyncVar]
+    public int damage;
+
+    public Vector3 point;
 
     private float moveDuration = 0.8f;
-    Vector3 targetPoint;
 
-    public void SetCaster(PlayerController_Net caster, int damage, Vector3 point)
+    [Server]
+    public void SetAttack(PlayerController_Net caster, int damage, Vector3 target)
     {
         this.caster = caster;
         this.damage = damage;
-        this.moveDuration = 0.8f;
+        this.point = target;
+           
+        Shoot(target);
+    }
 
-        targetPoint = point;
+    void Shoot(Vector3 point)
+    {
+        Debug.Log("Attack OBject Shoot!!!");
+        transform.DOMove(point, moveDuration).OnComplete(() =>
+        {
+            NetworkServer.Destroy(gameObject);
+        });
     }
 
     // void OnTriggerEnter(Collider other)
@@ -39,13 +53,6 @@ public class AttackObject : NetworkBehaviour
     //         Destroy(this.gameObject);
     //     }
     // }
-
-    #region Network
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-        // StartCoroutine(MoveAndDestroy());
-    }
 
     // [Server]
     // private IEnumerator MoveAndDestroy()
@@ -82,6 +89,4 @@ public class AttackObject : NetworkBehaviour
             NetworkServer.Destroy(gameObject);
         }
     }
-    
-    #endregion
 }

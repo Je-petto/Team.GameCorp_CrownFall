@@ -32,7 +32,6 @@ public class CharacterInfo : ScriptableObject
     [Header("Model")]
     public GameObject model;
     public GameObject inGameModel;
-    public RuntimeAnimatorController selectorAnimator;
     public GameObject projection;
     public Sprite face;
     public Sprite SkillIcon;
