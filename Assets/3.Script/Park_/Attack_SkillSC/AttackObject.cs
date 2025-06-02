@@ -28,10 +28,12 @@ public class AttackObject : NetworkBehaviour
     void Shoot(Vector3 point)
     {
         Debug.Log("Attack OBject Shoot!!!");
-        transform.DOMove(point, moveDuration).OnComplete(() =>
-        {
-            NetworkServer.Destroy(gameObject);
-        });
+        transform.DOMove(point, moveDuration)
+            .OnComplete(() =>
+            {
+                if (this != null && gameObject != null)
+                    NetworkServer.Destroy(gameObject);
+            });
     }
 
     [ServerCallback]
@@ -44,12 +46,12 @@ public class AttackObject : NetworkBehaviour
             return;
         }
 
-        
+
         // 서버에서만 충돌 처리
         if (other.TryGetComponent(out PlayerController_Net player) && player.teamCode != caster.teamCode)
         {
             Debug.Log($"Enemy Trigger!!!");
-            player.effectHandler.ApplyDamage(damage);
+            player.ApplyDamage(damage);
             NetworkServer.Destroy(this.gameObject);
         }
 

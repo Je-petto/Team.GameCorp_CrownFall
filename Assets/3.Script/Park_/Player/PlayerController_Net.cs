@@ -1,7 +1,6 @@
-using System.Collections;
+using DG.Tweening;
 using Mirror;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PlayerController_Net : NetworkBehaviour
@@ -11,14 +10,20 @@ public class PlayerController_Net : NetworkBehaviour
 
     #region Sync Value
     [Header("Field")]
-    [SyncVar(hook = nameof(SetModel))]
-    public string cid;              // 캐릭터 고유 번호.
+
+    [SyncVar(hook = nameof(OnCidChanged))]
+    public string cid;
+
     [SyncVar]
     public string characterNickName;    // 캐릭터 이름
     [SyncVar]
     public string characterName;    // 캐릭터 이름
     [SyncVar]
     public string description;      // 캐릭터 설명
+
+    [SyncVar]
+    public int fullHp;
+
 
     [SyncVar(hook = nameof(ChangeHp))]
     public int hp;                  // 체력
@@ -51,81 +56,45 @@ public class PlayerController_Net : NetworkBehaviour
     public LineRenderer lineRenderer;
     public PlayerStateMachine stateMachine;
     public PlayerInputHandler inputHandler;
-    public EffectHandler effectHandler;
     public AnimationHandler animationHandler;
     #endregion
     public Vector3 targetPoint;
 
-    public override void OnStartLocalPlayer()
+    public override void OnStartClient()
     {
-        base.OnStartLocalPlayer();
-        Debug.Log($"[Client] None Local Player Set Model! {cid}");
-
-        if (!isLocalPlayer)
+        Debug.Log("[Client] client Start!");
+        base.OnStartClient();
+        if (isLocalPlayer)
         {
-            SetMapModel_Co();
+            data = FindAnyObjectByType<LocalPlayerSetter>().info;
+            CMDSetCID(data.cid);
+            SetCamera();
         }
-        else
-        {
-            string id = data.cid;
-            CMDSetCID(id);
-        }
-
-        //카메라 세팅
-        SetCamera();
-    }
-
-    void SetMapModel_Co()
-    {
-        RPCUpdateApperence(cid);
-    }
-
-    void Start()
-    {
-        Debug.Log("[Client] : Player Start!");
-
-        if (!isLocalPlayer)
-        {
-            SetMapModel_Co();
-        }
-
     }
 
     [Command]
     public void CMDSetCID(string cid)
     {
         this.cid = cid;
-
-        //RPCUpdateApperence(cid);
     }
 
-    [ClientRpc]
-    void RPCUpdateApperence(string oldVal, string newVal)
+    void OnCidChanged(string oldCid, string newCid)
     {
-        //서버에서 가져오기
-        CharacterInfo info = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == cid);
-        this.data = info;
+        Debug.Log($"[Client] cid changed → {newCid}");
 
-        GameObject model = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == cid).inGameModel;
+        CharacterInfo info = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == newCid);
+        if (info == null || info.inGameModel == null) return;
+
+        data = info;
+
         Transform mesh = transform.Find("_mesh");
+        if (mesh.childCount > 0) return;
 
-        if (model == null)
-        {
-            Debug.Log($"model is null..");
-            return;
-        }
-
-        if (mesh.childCount > 0)
-        {
-            Debug.Log($"[Client ({netId})] : exist model data.");
-            return;
-        }
+        Instantiate(info.inGameModel, mesh);
+        InitComponents(); // 모델 생성을 기반으로 컴포넌트도 설정
 
         int code = FindAnyObjectByType<LocalPlayerSetter>().teamCode;
-        Instantiate(model, mesh);
-        InitComponents();
-
-        CMDSetCharacterInfo(info.hp, info.attack,info.speed, info.attackableRange, code);
+        CMDSetCharacterInfo(info.hp, info.attack, info.speed, info.attackableRange, code);
     }
 
     public void SetCamera()
@@ -137,9 +106,9 @@ public class PlayerController_Net : NetworkBehaviour
     [Command]
     public void CMDSetCharacterInfo(int hp, int attack, float speed, float attackableRange, int teamCode)
     {
+        this.fullHp = hp;
         this.hp = hp;
         this.attack = attack;
-
 
         this.speed = speed;
         this.attackableRange = attackableRange;
@@ -154,7 +123,6 @@ public class PlayerController_Net : NetworkBehaviour
         TryGetComponent(out stateMachine);
         TryGetComponent(out inputHandler);
         TryGetComponent(out lineRenderer);
-        TryGetComponent(out effectHandler);
 
         animator = GetComponentInChildren<Animator>();
 
@@ -188,7 +156,7 @@ public class PlayerController_Net : NetworkBehaviour
 
     void ChangeHp(int preVal, int newVal)
     {
-        OnChangeCurrentHpBar((float)newVal / data.hp);
+        OnChangeCurrentHpBar((float)newVal / fullHp);
     }
     #endregion
 
@@ -225,6 +193,50 @@ public class PlayerController_Net : NetworkBehaviour
     void OnChangeCurrentHpBar(float percent)
     {
         teamColorHpbar.fillAmount = percent;
+    }
+    #endregion
+
+
+    #region     
+    [Server]
+    public void ApplyDamage(int amount)
+    {
+        Debug.Log($"{amount} -> Damage Apply");
+        hp -= amount;
+        hp = Mathf.Clamp(hp, 0, fullHp);
+    }
+
+    [Server]
+    public void ApplyHeal(float amount)
+    {
+        Debug.Log("Heal Apply");
+        hp += (int)amount;
+        hp = Mathf.Clamp(0, fullHp, hp);
+    }
+
+    [Server]
+    public void ApplySlow(float duration, float amount)
+    {
+        Debug.Log("Slow Apply");
+        Sequence seq = DOTween.Sequence();
+
+        seq.AppendCallback(() => speed *= (amount / 100f))
+            .AppendInterval(duration)
+            .OnComplete(() => speed = data.speed);
+    }
+
+    [Server]
+    public void ApplyDot(float duration, float amount)
+    {
+        Debug.Log("Dot Apply");
+        int tickCount = Mathf.FloorToInt(duration);
+        Sequence seq = DOTween.Sequence();
+
+        for (int i = 0; i < tickCount; i++)
+        {
+            seq.AppendInterval(1f) // 1초 대기
+            .AppendCallback(() => ApplyDamage((int)amount)); // 데미지 적용
+        }
     }
     #endregion
 }

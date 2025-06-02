@@ -11,7 +11,7 @@ public class DamageEffect : IEffect
     }
     public void Apply(PlayerController_Net player)
     {
-        player.effectHandler.ApplyDamage(amount);
+        player.ApplyDamage(amount);
     }
 }
 
@@ -28,7 +28,7 @@ public class SlowEffect : IEffect
 
     public void Apply(PlayerController_Net player)
     {
-        player.effectHandler.ApplySlow(duration, amount);
+        player.ApplySlow(duration, amount);
     }
 }
 
@@ -45,6 +45,6 @@ public class DotEffect : IEffect
 
     public void Apply(PlayerController_Net player)
     {
-        player.effectHandler.ApplyDot(duration, amount);
+        player.ApplyDot(duration, amount);
     }
 }
