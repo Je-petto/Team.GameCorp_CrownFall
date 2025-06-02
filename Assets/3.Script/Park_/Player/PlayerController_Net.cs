@@ -1,14 +1,12 @@
-using System;
 using System.Collections;
 using Mirror;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PlayerController_Net : NetworkBehaviour
 {
     [Header("Inspector Window")]
-    public CharacterInfo T_characterInfo;
     public CharacterInfo data;
 
     #region Sync Value
@@ -22,24 +20,28 @@ public class PlayerController_Net : NetworkBehaviour
     [SyncVar]
     public string description;      // 캐릭터 설명
 
-    [SyncVar(hook = "ChangeHp")]
+    [SyncVar(hook = nameof(ChangeHp))]
     public int hp;                  // 체력
 
     [SyncVar]
     public int attack;              // 공격력
+
     [SyncVar]
     public int defense;
+
     [SyncVar]
     public float speed;               // 이동 속도
+
     [SyncVar]
     public float attackableRange;   // 공격 가능 범위
+
     [SyncVar]
     public float attackInterval;    // 공격 주기.
-    [SyncVar]
-    public int teamCode;
+
+    [SyncVar(hook = nameof(OnInitTeam))]
+    public int teamCode = 0;
     public float rotateSpeed;                       // 회전 속도
     #endregion
-
 
     #region Components
     [Header("Components")]
@@ -52,20 +54,24 @@ public class PlayerController_Net : NetworkBehaviour
     public EffectHandler effectHandler;
     public AnimationHandler animationHandler;
     #endregion
-
     public Vector3 targetPoint;
+
+    LocalPlayerSetter setter;
 
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
-        Debug.Log("▶ LocalPlayer Init");
+        setter = FindAnyObjectByType<LocalPlayerSetter>();
+        data = FindAnyObjectByType<LocalPlayerSetter>().info;
+
         if (!isLocalPlayer)
         {
             SetMapModel_Co();
         }
         else
         {
-            CMDSetCID(T_characterInfo.cid);
+            string id = data.cid;
+            CMDSetCID(id);
         }
         //카메라 세팅
         SetCamera();
@@ -73,8 +79,8 @@ public class PlayerController_Net : NetworkBehaviour
 
     void SetMapModel_Co()
     {
-        Debug.Log($"[Client] None Local Player Set Model!");
-        // ApplyCharactermodel(cid);
+        Debug.Log($"[Client] None Local Player Set Model! {cid}");
+        RPCUpdateApperence(cid);
     }
 
     void Start()
@@ -94,6 +100,9 @@ public class PlayerController_Net : NetworkBehaviour
     void RPCUpdateApperence(string cid)
     {
         //서버에서 가져오기
+        CharacterInfo info = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == cid);
+        this.data = info;
+
         GameObject model = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == cid).inGameModel;
         Transform mesh = transform.Find("_mesh");
 
@@ -105,12 +114,15 @@ public class PlayerController_Net : NetworkBehaviour
 
         if (mesh.childCount > 0)
         {
-            Debug.Log($"[Client ({netId})] : 이미 메쉬 데이터가 있습니다...");
+            Debug.Log($"[Client ({netId})] : exist model data.");
             return;
         }
 
+        int code = FindAnyObjectByType<LocalPlayerSetter>().teamCode;
         Instantiate(model, mesh);
         InitComponents();
+
+        CMDSetCharacterInfo(info.hp, info.speed, info.attackableRange, code);
     }
 
     public void SetCamera()
@@ -119,12 +131,13 @@ public class PlayerController_Net : NetworkBehaviour
         if (cam != null) cam.Follow = transform;
     }
 
-
     [Command]
-    public void CMDSetCharacterInfo(int hp, float speed)
+    public void CMDSetCharacterInfo(int hp, float speed, float attackableRange, int teamCode)
     {
         this.hp = hp;
         this.speed = speed;
+        this.attackableRange = attackableRange;
+        this.teamCode = teamCode;
     }
 
     void InitComponents()
@@ -148,7 +161,7 @@ public class PlayerController_Net : NetworkBehaviour
 
     #region Network Part
     [Command]
-    public void AttackBasic()
+    public void CMDAttackBasic(Vector3 targetPoint)
     {
         Debug.Log("Attack Basic!!");
         CharacterInfo info = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == cid);
@@ -159,20 +172,53 @@ public class PlayerController_Net : NetworkBehaviour
             Debug.Log("projection is null...");
         }
 
-        GameObject attackOrb = Instantiate(projection);
+        GameObject attackOrb = Instantiate(projection, transform.position, Quaternion.identity);
         Debug.Log("network spawn ready...");
         NetworkServer.Spawn(attackOrb);
 
+        Debug.Log($" Set Target : {targetPoint}");
         attackOrb.GetComponent<AttackObject>().SetAttack(this, info.attack, targetPoint);
     }
 
-    public UnityAction<float> OnChangeHp;
-
-    void ChangeHp(int hp)
+    void ChangeHp(int preVal, int newVal)
     {
-        this.hp = hp;
+        OnChangeCurrentHpBar((float)newVal / data.hp);
+    }
+    #endregion
 
-        OnChangeHp(hp / data.hp);
+
+    void Update()
+    {
+        if (inputHandler == null) return;
+        if (!isLocalPlayer) return;
+        inputHandler.InputUpdate();
+    }
+
+    void FixedUpdate()
+    {
+        if (inputHandler == null) return;
+        if (!isLocalPlayer) return;
+        inputHandler.InputFixedUpdate();
+    }
+
+
+    #region UI
+    [SerializeField] Image teamColorHpbar;
+
+    void OnInitTeam(int oldVal, int newVal)
+    {
+        Debug.Log("TeamCode Change!!");
+        if (teamColorHpbar == null)
+        {
+            Debug.Log("teamColorHpbar is null...");
+            return;
+        }
+        teamColorHpbar.color = newVal == 0 ? Color.red : Color.blue;
+    }
+
+    void OnChangeCurrentHpBar(float percent)
+    {
+        teamColorHpbar.fillAmount = percent;
     }
     #endregion
 }

@@ -77,8 +77,6 @@ public class DetectCommand : ICommand
     public void Execute()
     {
         if (!detectionState) return;
-
-        if (player.teamCode != 0) return;
         detection.Perform();
     }
 }
@@ -97,7 +95,6 @@ public class AttackCommand : ICommand
 
     public void Execute()
     {
-        if (player.teamCode != 0) return;
         attack.Perform();
     }
 }

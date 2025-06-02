@@ -7,7 +7,7 @@ public class InGameNetworkManager : NetworkManager
     public List<NetworkConnectionToClient> clients = new();         //서버에 접속 중인 클라이언트들.
 
     public List<CharacterInfo> characterInfos = new();
-
+    
     [Server]
     public GameObject GetProjection(string cid)
     {

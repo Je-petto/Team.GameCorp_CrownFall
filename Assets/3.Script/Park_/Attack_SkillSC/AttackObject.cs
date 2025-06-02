@@ -15,15 +15,16 @@ public class AttackObject : NetworkBehaviour
     private float moveDuration = 0.8f;
 
     [Server]
-    public void SetAttack(PlayerController_Net caster, int damage, Vector3 target)
+    public void SetAttack(PlayerController_Net caster, int damage, Vector3 targetPoint)
     {
+        Debug.Log($"target Point {targetPoint}");
         this.caster = caster;
         this.damage = damage;
-        this.point = target;
            
-        Shoot(target);
+        Shoot(targetPoint);
     }
 
+    [Server]
     void Shoot(Vector3 point)
     {
         Debug.Log("Attack OBject Shoot!!!");
@@ -79,14 +80,16 @@ public class AttackObject : NetworkBehaviour
         // 서버에서만 충돌 처리
         if (other.TryGetComponent(out PlayerController_Net player) && player.teamCode != caster.teamCode)
         {
+            Debug.Log($"Enemy Trigger!!!");
             player.effectHandler.ApplyDamage(damage);
-            NetworkServer.Destroy(gameObject);
+            NetworkServer.Destroy(this.gameObject);
         }
 
         if (other.TryGetComponent(out TowerControl tower) && tower.teamCode != caster.teamCode)
         {
+            Debug.Log($"Tower Trigger!!!");
             tower.ApplyDamage(damage);
-            NetworkServer.Destroy(gameObject);
+            NetworkServer.Destroy(this.gameObject);
         }
     }
 }

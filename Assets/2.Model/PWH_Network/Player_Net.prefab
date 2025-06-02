@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -242,7 +242,7 @@ Transform:
   m_GameObject: {fileID: 7809163485753581036}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: 0.5}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -267,6 +267,7 @@ GameObject:
   - component: {fileID: 3020919182816401201}
   - component: {fileID: 7698363884362357105}
   - component: {fileID: 1386851346940990190}
+  - component: {fileID: 8855405484975281771}
   m_Layer: 0
   m_Name: Player_Net
   m_TagString: Untagged
@@ -411,7 +412,6 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  T_characterInfo: {fileID: 11400000, guid: 2a9a95227f1e6a748ab4709e3f5f5c31, type: 2}
   data: {fileID: 0}
   cid: 
   characterNickName: 
@@ -424,7 +424,6 @@ MonoBehaviour:
   attackableRange: 0
   attackInterval: 0
   teamCode: 0
-  projection: {fileID: 0}
   rotateSpeed: 0
   rb: {fileID: 0}
   animator: {fileID: 0}
@@ -432,8 +431,10 @@ MonoBehaviour:
   lineRenderer: {fileID: 0}
   stateMachine: {fileID: 3555910034834300038}
   inputHandler: {fileID: 6155079728073382559}
+  effectHandler: {fileID: 8855405484975281771}
   animationHandler: {fileID: 0}
   targetPoint: {x: 0, y: 0, z: 0}
+  teamColorHpbar: {fileID: 8517486375432850494}
 --- !u!114 &6155079728073382559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,3 +606,18 @@ MonoBehaviour:
   syncInterval: 0
   clientAuthority: 1
   animator: {fileID: 7698363884362357105}
+--- !u!114 &8855405484975281771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8436226803424169134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ad9e6ac175672b4e9de4837001f1c49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
