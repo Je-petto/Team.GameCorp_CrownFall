@@ -458,15 +458,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 439815208}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98e94cbeab95e3142aa4011c5c3c88de, type: 3}
+  m_Script: {fileID: 11500000, guid: fee88925188b0eb49923254ef9099c53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterList:
-  - {fileID: 11400000, guid: 906b121eaad8d0c4ba0bb653e8ba0c09, type: 2}
-  - {fileID: 11400000, guid: 2a9a95227f1e6a748ab4709e3f5f5c31, type: 2}
-  - {fileID: 11400000, guid: 58d3d73f6a60817499a27346e702d75d, type: 2}
-  - {fileID: 11400000, guid: 2095cb67f385ede4fb6d05ce6d2681c4, type: 2}
-  selectCId: 0
+  teamCode: 1
+  info: {fileID: 11400000, guid: 2095cb67f385ede4fb6d05ce6d2681c4, type: 2}
 --- !u!1 &532949486
 GameObject:
   m_ObjectHideFlags: 0
@@ -990,6 +986,74 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 957248227}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &969128752
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 969128755}
+  - component: {fileID: 969128754}
+  - component: {fileID: 969128753}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &969128753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969128752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &969128754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969128752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &969128755
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 969128752}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -4881,7 +4945,7 @@ GameObject:
   - component: {fileID: 3848657805712096350}
   - component: {fileID: 8031316385942491933}
   m_Layer: 0
-  m_Name: towerB (1)
+  m_Name: 'TowerB '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9246,7 +9310,7 @@ Transform:
   - {fileID: 4761584182528217795}
   - {fileID: 3516095792880418572}
   - {fileID: 3779989514262945825}
-  m_Father: {fileID: 6236231603913556982}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4172647119278072308
 GameObject:
@@ -12312,7 +12376,7 @@ Transform:
   - {fileID: 977609901876629240}
   - {fileID: 1661686804095883670}
   - {fileID: 5696918527336723627}
-  m_Father: {fileID: 6236231603913556982}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &6187381560651921255
 Transform:
@@ -12397,8 +12461,6 @@ Transform:
   - {fileID: 3429834317797649778}
   - {fileID: 3289028506052392033}
   - {fileID: 1881778226698306421}
-  - {fileID: 4161311873532440639}
-  - {fileID: 6183878829956515504}
   - {fileID: 2381145577563578219}
   - {fileID: 6333576586009721157}
   - {fileID: 1563831220948466083}
@@ -15027,7 +15089,7 @@ GameObject:
   - component: {fileID: 8128550748078310367}
   - component: {fileID: 7326043768121918521}
   m_Layer: 0
-  m_Name: towerR (1)
+  m_Name: TowerR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17727,3 +17789,6 @@ SceneRoots:
   - {fileID: 7807556476749469957}
   - {fileID: 439815209}
   - {fileID: 66701422}
+  - {fileID: 969128755}
+  - {fileID: 6183878829956515504}
+  - {fileID: 4161311873532440639}

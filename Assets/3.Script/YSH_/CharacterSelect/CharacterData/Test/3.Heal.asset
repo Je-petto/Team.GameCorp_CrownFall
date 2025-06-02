@@ -29,9 +29,7 @@ MonoBehaviour:
   characterType: 3
   model: {fileID: 5784237667751818885, guid: 6bbdbb0e3167b9749b7e0eca3a64c0ce, type: 3}
   inGameModel: {fileID: 5784237667751818885, guid: 139de21ac6a333f4ca47eb0181a935ff, type: 3}
-  selectorAnimator: {fileID: 9100000, guid: 34c4576610c1c5c44acc58e73cf6d15e, type: 2}
-  inGameAnimator: {fileID: 9100000, guid: 2a23db505c3314d46be36b2d3b893d68, type: 2}
-  projection: {fileID: 5018897681840428074, guid: 396f3c001d7e82e4482e4ad43d279cd3, type: 3}
+  projection: {fileID: 4451188901321450200, guid: a811b82eb0a8af6489baa65531462ee3, type: 3}
   face: {fileID: 21300000, guid: d60b65bdea0ec9548883b873e2f2717f, type: 3}
   SkillIcon: {fileID: 21300000, guid: b43df006d97017e4d84d45edeb009a53, type: 3}
   ElementIcon: {fileID: 21300000, guid: af286b6aea0c9324da37ef6eb4cdd5ad, type: 3}
