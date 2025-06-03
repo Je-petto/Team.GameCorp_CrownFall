@@ -28,11 +28,7 @@ public class Skill_Fire : ISkillAction
 
     void StartSkillSequence(Vector3 point)
     {
-        List<IEffect> effects = EffectFactory.CreateSkillEffects(data);
-        GameObject s = GameObject.Instantiate(data.prefab);
-        s.GetComponent<SkillEffectController>().SetProps(this.caster, effects);
-
-        caster.CMDCastSkill(point, data.castingTime, data.duration, s);
+        caster.CMDCastSkill(point);
     }
     
     void StopCaster()
@@ -67,10 +63,7 @@ public class Skill_Frost : ISkillAction
 
     void StartSkillSequence(Vector3 point)
     {
-        List<IEffect> effects = EffectFactory.CreateSkillEffects(data);
-        GameObject s = GameObject.Instantiate(data.prefab);
-        s.GetComponent<SkillEffectController>().SetProps(this.caster, effects);
-        caster.CMDCastSkill(point, data.castingTime, data.duration, s);
+        caster.CMDCastSkill(point);
     }
 
     void StopCaster()
@@ -103,21 +96,7 @@ public class Skill_Heal : ISkillAction
 
     void StartSkillSequence(Vector3 point)
     {
-        if (data == null)
-        {
-            Debug.Log("Skill data is null..");
-        }
-
-        if (data.prefab == null)
-        {
-            Debug.Log("Skill prefab is null..");
-        }
-
-        List<IEffect> effects = EffectFactory.CreateSkillEffects(data);
-        GameObject s = GameObject.Instantiate(data.prefab);
-        s.GetComponent<SkillEffectController>().SetProps(this.caster, effects);
-
-        caster.CMDCastSkill(point, data.castingTime, data.duration, s);
+        caster.CMDCastSkill(point);
     }
     void StopCaster()
     {
@@ -150,12 +129,7 @@ public class Skill_YellowRod : ISkillAction
 
     void StartSkillSequence(Vector3 point)
     {
-        Debug.Log("Yellow Skill cast");
-        List<IEffect> effects = EffectFactory.CreateSkillEffects(data);
-        GameObject s = GameObject.Instantiate(data.prefab);
-        s.GetComponent<SkillEffectController>().SetProps(this.caster, effects);
-
-        caster.CMDCastSkill(point, data.castingTime, data.duration, s);
+        caster.CMDCastSkill(point);
     }
     void StopCaster()
     {

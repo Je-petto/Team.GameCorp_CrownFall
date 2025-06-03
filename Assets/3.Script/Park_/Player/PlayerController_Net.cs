@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using Mirror;
 using UnityEngine;
@@ -61,6 +62,19 @@ public class PlayerController_Net : NetworkBehaviour
 
     public Vector3 targetPoint;
 
+    [Header("Player Spawn")]
+    public Vector3 spawnPoint;
+
+    [Header("GUI")]
+    [SerializeField] GameObject playerUI;               //parent
+    [SerializeField] GameObject gameOverPanl;
+    [SerializeField] Image faceImage;
+    [SerializeField] Image skillImage;
+
+    [Header("Damage Particle")]
+    public GameObject[] effectParticles;
+
+
     public override void OnStartClient()
     {
         Debug.Log("[Client] client Start!");
@@ -73,6 +87,10 @@ public class PlayerController_Net : NetworkBehaviour
             CMDSetCID(data.cid);
             SetCamera();
         }
+        else
+        {
+            playerUI.SetActive(false);
+        }
     }
 
     [Command]
@@ -80,6 +98,8 @@ public class PlayerController_Net : NetworkBehaviour
     {
         this.cid = cid;
     }
+
+    [SerializeField] Image elementIcon;
 
     void OnCidChanged(string oldCid, string newCid)
     {
@@ -97,6 +117,8 @@ public class PlayerController_Net : NetworkBehaviour
 
         int code = FindAnyObjectByType<LocalPlayerSetter>().teamCode;
         CMDSetCharacterInfo(info.hp, info.attack, info.speed, info.attackableRange, code);
+
+        SetLocalUI(info.face, info.SkillIcon, info.ElementIcon);
     }
 
     public void SetCamera()
@@ -117,9 +139,18 @@ public class PlayerController_Net : NetworkBehaviour
         this.teamCode = teamCode;
     }
 
+    void SetLocalUI(Sprite face, Sprite skillIcon, Sprite elementIcon)
+    {
+        if (!isLocalPlayer) return;
+
+        this.faceImage.sprite = face;
+        this.skillImage.sprite = skillIcon;
+        this.elementIcon.sprite = elementIcon;
+    }
+    
     IEnumerator InitComponents()
     {
-        
+
         attackPoint = transform.Find("_attackPoint");
 
         TryGetComponent(out rb);
@@ -142,7 +173,7 @@ public class PlayerController_Net : NetworkBehaviour
         if (skill != null)
         {
             Debug.Log("skill Set Complete!..");
-            inputHandler.skillCastCommand = new SkillCastCommand(this, this.data.skillSet ,skill);
+            inputHandler.skillCastCommand = new SkillCastCommand(this, this.data.skillSet, skill);
         }
     }
 
@@ -168,28 +199,39 @@ public class PlayerController_Net : NetworkBehaviour
     }
 
     [Command]
-    public void CMDCastSkill(Vector3 targetPoint, float castingTime, float duration, GameObject skillObject)
+    public void CMDCastSkill(Vector3 targetPoint)
     {
-        if (skillObject == null)
+        CharacterInfo info = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == cid);
+        SkillData skill = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == cid).skillSet;
+
+
+        if (skill == null)
         {
-            Debug.Log($"skill prefab is null..");
-            return;
+            Debug.Log("Skill data is null...");
         }
 
-        NetworkServer.Spawn(skillObject);   
-        Sequence skillSeq = DOTween.Sequence();
-        skillSeq.AppendInterval(castingTime)
-                .AppendCallback(() =>
-                {
-                    skillObject.transform.position = targetPoint;
-                    skillObject.transform.rotation = Quaternion.identity;
-                })
-                .AppendInterval(duration)
-                .AppendCallback(() =>
-                {
-                    NetworkServer.Destroy(skillObject);
-                    Destroy(skillObject);
-                });
+        GameObject skillObject = Instantiate(skill.prefab, targetPoint, Quaternion.identity);
+
+        NetworkServer.Spawn(skillObject);
+
+        List<IEffect> effects = EffectFactory.CreateSkillEffects(skill);
+
+        skillObject.GetComponent<SkillEffectController>().SetProps(this, effects);
+
+        // NetworkServer.Spawn(skillObject);   
+        // Sequence skillSeq = DOTween.Sequence();
+        // skillSeq.AppendInterval(castingTime)
+        //         .AppendCallback(() =>
+        //         {
+        //             skillObject.transform.position = targetPoint;
+        //             skillObject.transform.rotation = Quaternion.identity;
+        //         })
+        //         .AppendInterval(duration)
+        //         .AppendCallback(() =>
+        //         {
+        //             NetworkServer.Destroy(skillObject);
+        //             Destroy(skillObject);
+        //         });
     }
 
     void ChangeHp(int preVal, int newVal)
@@ -242,6 +284,20 @@ public class PlayerController_Net : NetworkBehaviour
         Debug.Log($"{amount} -> Damage Apply");
         hp -= amount;
         hp = Mathf.Clamp(hp, 0, fullHp);
+
+        if (hp <= 0 && !inputHandler.isDeath)
+        {
+            RPCDie();
+        }
+    }
+
+    [ClientRpc]
+    public void RPCDie()
+    {
+        Debug.Log("Die RPC Received");
+        inputHandler.isDeath = true;
+        inputHandler.deathCommand = new DeathCommand(this, new DeadState(this));
+        inputHandler.deathCommand.Execute();
     }
 
     [Server]
@@ -277,4 +333,13 @@ public class PlayerController_Net : NetworkBehaviour
         }
     }
     #endregion
+    
+
+    [Command]
+    public void CMDRespawn()
+    {
+        hp = fullHp;
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
+    }
 }

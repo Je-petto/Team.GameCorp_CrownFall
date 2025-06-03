@@ -16,7 +16,6 @@ public class SkillEffectController : NetworkBehaviour
 
     void OnEnable()
     {
-        // 캐릭터 움직임 잠금
         ps.Play();
     }
 

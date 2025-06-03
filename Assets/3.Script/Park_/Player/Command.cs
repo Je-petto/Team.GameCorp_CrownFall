@@ -6,24 +6,21 @@ public interface ICommand
     public void Execute();
 }
 
-// public class DeathCommand : ICommand
-// {
-//     PlayerController_Net player;
-//     DeadState state;
-//     public DeathCommand(PlayerController_Net player, DeadState state)
-//     {
-//         this.player = player;
-//         this.state = state;
-//     }
+public class DeathCommand : ICommand
+{
+    PlayerController_Net player;
+    DeadState state;
+    public DeathCommand(PlayerController_Net player, DeadState state)
+    {
+        this.player = player;
+        this.state = state;
+    }
 
-//     public void Execute()
-//     {
-
-//         //team test
-//         if (player.teamCode != 0) return;
-//         player.stateMachine.ChangeState(state);
-//     }
-// }
+    public void Execute()
+    {
+        player.stateMachine.ChangeState(state);
+    }
+}
 
 public class MoveCommand : ICommand
 {

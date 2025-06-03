@@ -828,6 +828,7 @@ GameObject:
   - component: {fileID: -2759517245539838558}
   - component: {fileID: 5038925545170454514}
   - component: {fileID: 8673428907746648730}
+  - component: {fileID: 3217275064499032834}
   m_Layer: 0
   m_Name: Magician_RIOBlue_InGame
   m_TagString: Untagged
@@ -945,7 +946,7 @@ Animator:
   m_GameObject: {fileID: 2571230342630475205}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 35c44a97c30e4e946a0f4d3310613b95, type: 3}
-  m_Controller: {fileID: 9100000, guid: 483e4c5dba607ca48be5a61a0d9c3474, type: 2}
+  m_Controller: {fileID: 22100000, guid: 262873ebf65e6bb4989f195b8ee5b4b4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -956,6 +957,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3217275064499032834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2571230342630475205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
+  clientAuthority: 0
+  animator: {fileID: 0}
 --- !u!1 &2726594958836398632
 GameObject:
   m_ObjectHideFlags: 0

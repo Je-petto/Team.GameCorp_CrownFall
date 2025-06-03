@@ -74,76 +74,70 @@ public class MoveState : IPlayerState
 }
 
 
-// public class DeadState : IPlayerState
-// {
-//     private PlayerController_Net player;
-//     private float respawnTime;
+public class DeadState : IPlayerState
+{
+    private PlayerController_Net player;
+    private float respawnTime;
 
-//     public DeadState(PlayerController_Net player)
-//     {
-//         this.player = player;
-//         this.respawnTime = player.respawnTime; // ⬅ 플레이어에서 설정된 시간 사용
-//     }
+    public DeadState(PlayerController_Net player)
+    {
+        this.player = player;
+        this.respawnTime = 5;
+    }
 
-//     public void Enter()
-//     {
-//         player.animator.SetTrigger("Death");
-//         player.pState = LifeState.DEATH;
-//         player.inputHandler.enabled = false;
+    public void Enter()
+    {
+        player.animator.SetTrigger("Death");
 
-//         StartDeathSequence();
-//     }
+        player.inputHandler.isDeath = true;
+        player.inputHandler.enabled = false;
 
-//     public void Update() {}
+        StartDeathSequence();
+    }
 
-//     public void Exit()
-//     {
-//         player.inputHandler.enabled = true;
-//     }
+    public void Update() {}
 
-//     private void StartDeathSequence()
-//     {
-//         Sequence seq = DOTween.Sequence();
+    public void Exit()
+    {
+        player.inputHandler.enabled = true;
+    }
 
-//         int elapsed = (int)respawnTime;
+    private void StartDeathSequence()
+    {
+        Sequence seq = DOTween.Sequence();
 
-//         seq.AppendInterval(0.5f)
-//             .AppendCallback(() =>
-//             {
-//                 Debug.Log("죽음...");
-//                 IngameUIManager.I.ShowRespawnUI(respawnTime);
-//             });
+        int elapsed = (int)respawnTime;
 
-//         for (int i = elapsed; i > 0; i--)
-//         {
-//             int time = i; // 클로저 문제 방지
-//             seq.AppendCallback(() =>
-//             {
-//                 IngameUIManager.I.UpdateRespawnTime(time);
-//                 Debug.Log($"Respawn remain: {time}");
-//             });
-//             seq.AppendInterval(1f);
-//         }
+        seq.AppendInterval(0.5f)
+            .AppendCallback(() =>
+            {
+                Debug.Log("죽음...");
+                IngameUIManager.I.ShowRespawnUI(respawnTime);
+            });
 
-//         seq.OnComplete(() =>
-//         {
-//             Debug.Log("리스폰...");
-//             IngameUIManager.I.HideRespawnUI();
+        for (int i = elapsed; i > 0; i--)
+        {
+            int time = i; // 클로저 문제 방지
+            seq.AppendCallback(() =>
+            {
+                IngameUIManager.I.UpdateRespawnTime(time);
+                Debug.Log($"Respawn remain: {time}");
+            });
+            seq.AppendInterval(1f);
+        }
 
-//             // 위치 초기화
-//             player.transform.position = Vector3.zero;
-//             player.transform.rotation = Quaternion.identity;
+        seq.OnComplete(() =>
+        {
+            Debug.Log("리스폰...");
+            IngameUIManager.I.HideRespawnUI();
 
-//             // 체력 회복
-//             player.currentStat.hp = player.data.hp;
+            player.CMDRespawn(); 
+            
+            // 애니메이션 초기화
+            player.animator.SetFloat("Movement", 0f);
 
-//             // UI 숨기기
-
-//             // 애니메이션 초기화
-//             player.animator.SetFloat("Movement", 0f);
-
-//             // 상태 전환
-//             player.stateMachine.ChangeState(new IdleState(player));
-//         });
-//     }
-// }
+            // 상태 전환
+            player.stateMachine.ChangeState(new IdleState(player));
+        });
+    }
+}
