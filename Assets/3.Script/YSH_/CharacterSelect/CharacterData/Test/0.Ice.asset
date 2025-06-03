@@ -23,9 +23,7 @@ MonoBehaviour:
   defense: 10
   speed: 7
   attackableRange: 7
-  attackInterval: 0.5
-  skillSet:
-  - {fileID: 11400000, guid: a85a8d5111730e64cab388ed8898d8ed, type: 2}
+  skillSet: {fileID: 11400000, guid: a85a8d5111730e64cab388ed8898d8ed, type: 2}
   characterType: 0
   model: {fileID: 2571230342630475205, guid: 9b11069076be55444a96e16b31102737, type: 3}
   inGameModel: {fileID: 2571230342630475205, guid: b93999a9b04953343ae71fda28b7eedb, type: 3}

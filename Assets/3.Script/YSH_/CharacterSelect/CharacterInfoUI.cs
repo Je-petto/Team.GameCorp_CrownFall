@@ -68,9 +68,9 @@ public class CharacterInfoUI : MonoBehaviour
         rangeText.text = info.attackableRange.ToString("0.0");
 
         //스킬 정보만 표시
-        if (info.skillSet != null && info.skillSet.Count > 0)
+        if (info.skillSet != null)
         {
-            SkillData skill = info.skillSet[0];
+            SkillData skill = info.skillSet;
 
             skillNameText.text = skill.skillName;
             skillDescriptionText.text = skill.skillDescribe;

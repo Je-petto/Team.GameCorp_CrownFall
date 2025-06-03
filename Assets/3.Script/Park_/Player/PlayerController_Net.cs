@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using Mirror;
 using UnityEngine;
@@ -56,8 +57,8 @@ public class PlayerController_Net : NetworkBehaviour
     public LineRenderer lineRenderer;
     public PlayerStateMachine stateMachine;
     public PlayerInputHandler inputHandler;
-    public AnimationHandler animationHandler;
     #endregion
+
     public Vector3 targetPoint;
 
     public override void OnStartClient()
@@ -67,6 +68,8 @@ public class PlayerController_Net : NetworkBehaviour
         if (isLocalPlayer)
         {
             data = FindAnyObjectByType<LocalPlayerSetter>().info;
+            StartCoroutine(InitComponents());
+
             CMDSetCID(data.cid);
             SetCamera();
         }
@@ -91,7 +94,6 @@ public class PlayerController_Net : NetworkBehaviour
         if (mesh.childCount > 0) return;
 
         Instantiate(info.inGameModel, mesh);
-        InitComponents(); // 모델 생성을 기반으로 컴포넌트도 설정
 
         int code = FindAnyObjectByType<LocalPlayerSetter>().teamCode;
         CMDSetCharacterInfo(info.hp, info.attack, info.speed, info.attackableRange, code);
@@ -115,8 +117,9 @@ public class PlayerController_Net : NetworkBehaviour
         this.teamCode = teamCode;
     }
 
-    void InitComponents()
+    IEnumerator InitComponents()
     {
+        
         attackPoint = transform.Find("_attackPoint");
 
         TryGetComponent(out rb);
@@ -128,9 +131,19 @@ public class PlayerController_Net : NetworkBehaviour
 
         if (lineRenderer != null) lineRenderer.enabled = false;
 
+        yield return new WaitUntil(() => data != null && inputHandler != null);
+
         inputHandler.moveCommand = new MoveCommand(this);
         inputHandler.detectCommand = new DetectCommand(this, new(this));
         inputHandler.attackCommand = new AttackCommand(this, new(this));
+
+        ISkillAction skill = SkillFactory.CreateSkillAction(this, data.skillSet);
+
+        if (skill != null)
+        {
+            Debug.Log("skill Set Complete!..");
+            inputHandler.skillCastCommand = new SkillCastCommand(this, this.data.skillSet ,skill);
+        }
     }
 
     #region Network Part
@@ -152,6 +165,31 @@ public class PlayerController_Net : NetworkBehaviour
 
         Debug.Log($" Set Target : {targetPoint}");
         attackOrb.GetComponent<AttackObject>().SetAttack(this, info.attack, targetPoint);
+    }
+
+    [Command]
+    public void CMDCastSkill(Vector3 targetPoint, float castingTime, float duration, GameObject skillObject)
+    {
+        if (skillObject == null)
+        {
+            Debug.Log($"skill prefab is null..");
+            return;
+        }
+
+        NetworkServer.Spawn(skillObject);   
+        Sequence skillSeq = DOTween.Sequence();
+        skillSeq.AppendInterval(castingTime)
+                .AppendCallback(() =>
+                {
+                    skillObject.transform.position = targetPoint;
+                    skillObject.transform.rotation = Quaternion.identity;
+                })
+                .AppendInterval(duration)
+                .AppendCallback(() =>
+                {
+                    NetworkServer.Destroy(skillObject);
+                    Destroy(skillObject);
+                });
     }
 
     void ChangeHp(int preVal, int newVal)

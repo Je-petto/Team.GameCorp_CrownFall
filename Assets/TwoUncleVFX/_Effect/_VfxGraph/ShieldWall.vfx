@@ -135,7 +135,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"d995ce4422d4a0f49b86047d71e55252","type":3}}'
+      m_SerializableObject: 
     min: -Infinity
     max: Infinity
     enumValues: []
@@ -1270,8 +1270,7 @@ MonoBehaviour:
   castShadows: 0
   useExposureWeight: 0
   needsOwnSort: 0
-  shaderGraph: {fileID: 4333940904281232215, guid: 00bcfa26c5b56d243a139f9367ad93c2,
-    type: 3}
+  shaderGraph: {fileID: 4333940904281232215, guid: 00bcfa26c5b56d243a139f9367ad93c2, type: 3}
   materialSettings:
     m_PropertyNames:
     - _CastShadows
@@ -1823,7 +1822,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"d995ce4422d4a0f49b86047d71e55252","type":3}}'
+      m_SerializableObject: 
     m_Space: 2147483647
   m_Property:
     name: _Emission_Map

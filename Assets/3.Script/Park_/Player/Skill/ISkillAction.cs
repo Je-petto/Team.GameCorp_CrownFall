@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -12,17 +13,11 @@ public class Skill_Fire : ISkillAction
 {
     PlayerController_Net caster;
     private SkillData data;
-    private GameObject skillEffectObject;
-
-    private bool isCoolDown;
 
     public Skill_Fire(PlayerController_Net caster, SkillData data)
     {
         this.caster = caster;
         this.data = data;
-
-        skillEffectObject = GameObject.Instantiate(data.prefab);
-        skillEffectObject.SetActive(false);
     }
 
     public void Perform(Vector3 point)
@@ -33,16 +28,13 @@ public class Skill_Fire : ISkillAction
 
     void StartSkillSequence(Vector3 point)
     {
-        if (skillEffectObject == null) return;
+        List<IEffect> effects = EffectFactory.CreateSkillEffects(data);
+        GameObject s = GameObject.Instantiate(data.prefab);
+        s.GetComponent<SkillEffectController>().SetProps(this.caster, effects);
 
-        skillEffectObject.transform.position = point;
-
-        Sequence skillSeq = DOTween.Sequence();
-        skillSeq.AppendInterval(data.castingTime)
-                .AppendCallback(() => skillEffectObject.SetActive(true))
-                .AppendInterval(data.duration)
-                .AppendCallback(() => skillEffectObject.SetActive(false));
+        caster.CMDCastSkill(point, data.castingTime, data.duration, s);
     }
+    
     void StopCaster()
     {
         Sequence stopSeq = DOTween.Sequence();
@@ -58,7 +50,6 @@ public class Skill_Frost : ISkillAction
 {
     PlayerController_Net caster;
     private SkillData data;
-    public GameObject skillEffectObject;
 
     private bool isCoolDown;
 
@@ -66,10 +57,6 @@ public class Skill_Frost : ISkillAction
     {
         this.caster = caster;
         this.data = data;
-
-        skillEffectObject = GameObject.Instantiate(data.prefab);
-        skillEffectObject.GetComponent<SkillEffectController>().SetProps(caster, data);
-        skillEffectObject.SetActive(false);
     }
 
     public void Perform(Vector3 point)
@@ -80,13 +67,10 @@ public class Skill_Frost : ISkillAction
 
     void StartSkillSequence(Vector3 point)
     {
-        Debug.Log("Blue Skill_Case...");
-        Sequence skillSeq = DOTween.Sequence();
-        skillSeq.AppendInterval(data.castingTime)
-                .AppendCallback(() => skillEffectObject.SetActive(true))
-                .AppendCallback(() => skillEffectObject.transform.position = point)
-                .AppendInterval(data.duration)
-                .AppendCallback(() => skillEffectObject.SetActive(false));
+        List<IEffect> effects = EffectFactory.CreateSkillEffects(data);
+        GameObject s = GameObject.Instantiate(data.prefab);
+        s.GetComponent<SkillEffectController>().SetProps(this.caster, effects);
+        caster.CMDCastSkill(point, data.castingTime, data.duration, s);
     }
 
     void StopCaster()
@@ -104,19 +88,11 @@ public class Skill_Heal : ISkillAction
 {
     PlayerController_Net caster;
     private SkillData data;
-    public GameObject skillEffectObject;
-
-    private bool isCoolDown;
 
     public Skill_Heal(PlayerController_Net caster, SkillData data)
     {
-
         this.caster = caster;
         this.data = data;
-
-        skillEffectObject = GameObject.Instantiate(data.prefab);
-        skillEffectObject.GetComponent<SkillEffectController>().SetProps(caster, data);
-        skillEffectObject.SetActive(false);
     }
 
     public void Perform(Vector3 point)
@@ -127,15 +103,21 @@ public class Skill_Heal : ISkillAction
 
     void StartSkillSequence(Vector3 point)
     {
-        Debug.Log("Green Skill cast");
+        if (data == null)
+        {
+            Debug.Log("Skill data is null..");
+        }
 
-        Sequence skillSeq = DOTween.Sequence();
+        if (data.prefab == null)
+        {
+            Debug.Log("Skill prefab is null..");
+        }
 
-        skillSeq.AppendInterval(data.castingTime)
-                .AppendCallback(() => skillEffectObject.SetActive(true))
-                .AppendCallback(() => skillEffectObject.transform.position = point)
-                .AppendInterval(data.duration)
-                .AppendCallback(() => skillEffectObject.SetActive(false));
+        List<IEffect> effects = EffectFactory.CreateSkillEffects(data);
+        GameObject s = GameObject.Instantiate(data.prefab);
+        s.GetComponent<SkillEffectController>().SetProps(this.caster, effects);
+
+        caster.CMDCastSkill(point, data.castingTime, data.duration, s);
     }
     void StopCaster()
     {
@@ -158,16 +140,6 @@ public class Skill_YellowRod : ISkillAction
     {
         this.caster = caster;
         this.data = data;
-
-        if (data.prefab == null)
-        {
-            Debug.LogError("[Skill_YellowRod] SkillData의 prefab이 설정되어 있지 않습니다!");
-            return;
-        }
-    
-        skillEffectObject = GameObject.Instantiate(data.prefab);
-        skillEffectObject.GetComponent<SkillEffectController>().SetProps(caster, data);
-        skillEffectObject.SetActive(false);
     }
 
     public void Perform(Vector3 point)
@@ -179,12 +151,11 @@ public class Skill_YellowRod : ISkillAction
     void StartSkillSequence(Vector3 point)
     {
         Debug.Log("Yellow Skill cast");
-        Sequence skillSeq = DOTween.Sequence();
-        skillSeq.AppendInterval(data.castingTime)
-                .AppendCallback(() => skillEffectObject.SetActive(true))
-                .AppendCallback(() => skillEffectObject.transform.position = point)
-                .AppendInterval(data.duration)
-                .AppendCallback(() => skillEffectObject.SetActive(false));
+        List<IEffect> effects = EffectFactory.CreateSkillEffects(data);
+        GameObject s = GameObject.Instantiate(data.prefab);
+        s.GetComponent<SkillEffectController>().SetProps(this.caster, effects);
+
+        caster.CMDCastSkill(point, data.castingTime, data.duration, s);
     }
     void StopCaster()
     {

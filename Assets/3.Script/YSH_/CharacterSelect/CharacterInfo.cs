@@ -22,7 +22,7 @@ public class CharacterInfo : ScriptableObject
     public int defense;
     public int speed;               // 이동 속도
     public float attackableRange;   // 공격 가능 범위
-    public List<SkillData> skillSet;
+    public SkillData skillSet;
 
     [SerializeField] private CharacterType characterType;
     public CharacterType Type => characterType;

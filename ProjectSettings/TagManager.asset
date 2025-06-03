@@ -9,6 +9,7 @@ TagManager:
   - BlueSkill
   - Blue
   - Red
+  - Shield
   layers:
   - Default
   - TransparentFX

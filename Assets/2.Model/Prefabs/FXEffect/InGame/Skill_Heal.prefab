@@ -4964,7 +4964,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a553cb17010b2403e8523b558bffbc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncDirection: 1
+  syncDirection: 0
   syncMode: 0
   syncInterval: 0
   target: {fileID: 8704504550941105335}
@@ -4998,8 +4998,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afdfba3e4a812b34f9009dea42ee277f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   caster: {fileID: 0}
-  data: {fileID: 0}
 --- !u!1001 &393127380903805930
 PrefabInstance:
   m_ObjectHideFlags: 0

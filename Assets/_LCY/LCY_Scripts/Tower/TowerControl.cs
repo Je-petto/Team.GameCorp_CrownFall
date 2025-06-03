@@ -1,28 +1,12 @@
-using CustomInspector;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using Mirror;
-using System;
-
-[Serializable]
-public struct TowerState
-{
-    public int health;
-    public int shieldHealth;
-
-    public void Set(TowerProfile profile)
-    {
-        health = profile.health;
-        shieldHealth = profile.shieldHealth;
-    }
-}
 
 public class TowerControl : NetworkBehaviour
 {
     public TowerProfile profile { get => towerProfile; set => towerProfile = value; }
     [SerializeField] private TowerProfile towerProfile;
-    public TowerState state;
 
     public int teamCode_Inspector;
 
@@ -31,80 +15,54 @@ public class TowerControl : NetworkBehaviour
 
     [CustomInspector.ReadOnly] public Collider col;
 
-    [HorizontalLine("TOWER STATE"), HideField] public bool b1;
-    [CustomInspector.ReadOnly] public bool protect = false;
-    [CustomInspector.ReadOnly] public bool recovery = false;
-    [CustomInspector.ReadOnly] public bool isHit = false;
-    [CustomInspector.ReadOnly] public bool isDestroy = false;
-
-    [HorizontalLine("SHIELD"), HideField] public bool b2;
-    [CustomInspector.ReadOnly] public GameObject shield;
-    [CustomInspector.ReadOnly] public ParticleSystem shieldParticle;
-    [SyncVar] public int shieldHp;
-
-    [Header("Game Over UI")]
-    [SerializeField] private GameObject gameOverPanel;
-
     [Header("HealthHPBar")]
     [SerializeField] private Image teamColorHpbar;
 
     [CustomInspector.ReadOnly] public float maxHp;
 
     [SyncVar(hook = nameof(OnHpChanged))]
-    private int hp;
-
-    private bool isGameOver = false;
+    public int hp;
 
     private void Awake()
     {
-        shield = Instantiate(towerProfile.shieldModel);
-        shield.SetActive(false);
-        col = GetComponent<Collider>();
+        TryGetComponent(out col);
     }
 
     private void Start()
     {
-        teamColorHpbar.color = teamCode == 0 ? Color.red : Color.blue;
-
-        state.Set(towerProfile);
-        hp = state.health;
-        maxHp = state.health;
-
         Debug.Log("타워 생성!");
+        hp = towerProfile.health;
+        maxHp = towerProfile.health;
+        sHp = towerProfile.shieldHealth;
+        sMaxHp = towerProfile.shieldHealth;
+
+        this.teamCode = teamCode_Inspector;
+        shieldbar.enabled = false;
+        shield.SetActive(false);
+        isProtecting = false;
     }
 
     private void Update()
     {
-        SetShieldPosition();
-        
-        if (state.health <= 0) DestroyTower();
+        if (hp <= 0) DestroyTower();
     }
 
     void OnInitTeam(int oldVal, int newVal)
     {
         Debug.Log("TeamCode Change!!");
+        teamColorHpbar.color = newVal == 0 ? Color.red : Color.blue;
         if (teamColorHpbar == null)
         {
             Debug.Log("teamColorHpbar is null...");
             return;
         }
-        teamColorHpbar.color = newVal == 0 ? Color.red : Color.blue;
-    }
-
-
-    private void SetShieldPosition()
-    {
-        shield.transform.position = transform.position;
     }
 
     private void DestroyTower()
     {
-        isDestroy = true;
-        isHit = false;
+        Debug.Log("Destroy Tower...");
         gameObject.SetActive(false);
         col.isTrigger = false;
-
-        Time.timeScale = 0f;
 
         GameManager.I?.OnGameWin();
 
@@ -123,32 +81,100 @@ public class TowerControl : NetworkBehaviour
     [Server]
     public void ApplyDamage(int damage)
     {
-        if (!isServer) return;
+        if (!isServer)
+        {
+            Debug.Log("No Server...");
+            return;
+        }
+
+        if (isProtecting)
+        {
+            sHp -= damage;
+            if (sHp <= 0)
+            {
+                BreakShield();
+            }
+            return;            
+        }
 
         hp -= damage;
         hp = Mathf.Clamp(hp, 0, (int)maxHp);
 
+        if (this.shield == null) return;
 
-        if (!protect && hp <= (maxHp * 0.6f))
+        if (!isProtecting && hp <= (maxHp * 0.6f))
         {
-            //실드 실시.
+            //실드 생성.
+            this.isProtecting = true;
             StartProtect();
         }
     }
 
+    void OnActiveShield(bool oldVal, bool newVal)
+    {
+        if (oldVal == true && newVal == false)
+        {
+            Debug.Log($"Shield Remove");
+            Destroy(this.shield);
+            return;
+        }
+        
+        shield.SetActive(newVal);
+        shieldbar.enabled = newVal;
+    }
+    
     void StartProtect()
     {
-        shield.SetActive(true);
-        shieldParticle.Play();
+        SpawnShield();
     }
 
+    [Command]
+    void SpawnShield()
+    {
+        this.isProtecting = true;
+    }
+
+    //hook
     void OnHpChanged(int oldVal, int newVal)
     {
-        UpdateHpBar();
+        UpdateHpBar(newVal);
     }
 
-    void UpdateHpBar()
+    void UpdateHpBar(int currentHp)
     {
-        teamColorHpbar.fillAmount = (float)hp / maxHp;
-    }    
+        teamColorHpbar.fillAmount = (float)currentHp / maxHp;
+    }
+
+    #region Shield
+    [SyncVar(hook = nameof(OnActiveShield))]
+    public bool isProtecting = false;
+    
+    [Header("ShieldPrefab")]
+    [SerializeField] GameObject shield;
+    [SerializeField] private Image shieldbar;
+
+    [SyncVar(hook = nameof(OnShieldHpChanged))]
+    public int sHp;
+
+    [SyncVar]
+    public int sMaxHp;
+
+    void OnShieldHpChanged(int oldVal, int newVal)
+    {
+        UpdateShieldBar(newVal);
+    }
+
+    void UpdateShieldBar(int currentHp)
+    {
+        shieldbar.fillAmount = (float)currentHp / maxHp;
+    }
+
+    void BreakShield()
+    {
+        Debug.Log("Break Shield!!!");
+        this.isProtecting = false;
+        shieldbar.enabled = false;
+        Destroy(this.shield.gameObject);
+    }
+    #endregion
 }

@@ -5,10 +5,10 @@ public class PlayerInputHandler : NetworkBehaviour
 {
     public ICommand moveCommand;
     public ICommand attackCommand;
-    public ICommand detectCommand;                  // Debugging T
-    // public ICommand skillCastCommand;
-    // public ICommand deathCommand;
-    // private SkillCastCommand castCommand => skillCastCommand as SkillCastCommand;
+    public ICommand detectCommand;
+    public ICommand skillCastCommand;
+    public ICommand deathCommand;
+    private SkillCastCommand castCommand => skillCastCommand as SkillCastCommand;
 
     public bool isDeath;
     public bool isStop;
@@ -21,17 +21,16 @@ public class PlayerInputHandler : NetworkBehaviour
 
     public void InputUpdate()
     {
-
         if (isStop || isDeath) return;
 
-        // if (castCommand == null)
-        // {
-        //     Debug.Log($"[Client] : castCommand is null....");
-        //     return;
-        // }
+        if (skillCastCommand == null)
+        {
+            Debug.Log($"[Client] : castCommand is null....");
+            return;
+        }
 
-        // if (!castCommand.isCasting)
-        // {
+        if (!castCommand.isCasting)
+        {
             if (Input.GetMouseButtonDown(0))
             {
                 (detectCommand as DetectCommand).OnOff(true);
@@ -47,12 +46,12 @@ public class PlayerInputHandler : NetworkBehaviour
                 (detectCommand as DetectCommand).OnOff(false);
                 attackCommand.Execute();
             }
-        // }
+        }
 
-        // if (skillCastCommand != null)
-        // {
-        //     skillCastCommand.Execute();           
-        // }
+        if (skillCastCommand != null)
+        {
+            skillCastCommand.Execute();           
+        }
     }
 
     public void InputFixedUpdate()

@@ -109,12 +109,14 @@ public class SkillCastCommand : ICommand
 
     private bool isCoolDown = false;
 
-    public SkillCastCommand(PlayerController_Net caster, ISkillAction skillAction)
+    public SkillCastCommand(PlayerController_Net caster, SkillData data, ISkillAction skillAction)
     {
+        Debug.Log("[Client] SkillCast Set Complete");
+
+        this.data = data;
         this.caster = caster;
         isCasting = false;
 
-        // data = caster.info.skillSet.Find(s => !s.type.Equals(SkillType.NONE));
         mark = GameObject.Instantiate(data.castingMark, caster.transform);
         mark.SetActive(false);
 
@@ -143,13 +145,11 @@ public class SkillCastCommand : ICommand
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        Vector3 skillPoint = Vector3.zero;
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
         {
             mark.transform.position = hit.point;
             caster.targetPoint = hit.point;
-            skillPoint = hit.point;
         }
 
         //스킬 실행!
@@ -161,7 +161,7 @@ public class SkillCastCommand : ICommand
 
             Vector3 lookPoint = new Vector3(caster.targetPoint.x, 0f, caster.targetPoint.z);
             caster.transform.LookAt(lookPoint);
-            skillAction.Perform(skillPoint);
+            skillAction.Perform(caster.targetPoint);
             mark.SetActive(false);
 
             SkillCoolDown(data.coolDown);
@@ -180,7 +180,6 @@ public class SkillCastCommand : ICommand
     private void SetCasting()
     {
         Sequence seq = DOTween.Sequence();
-
         seq.AppendInterval(0.1f).OnComplete(() => isCasting = false);
     }
 }

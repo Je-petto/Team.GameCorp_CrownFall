@@ -1,23 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
-using DG.Tweening;
+using Mirror;
 using UnityEngine;
 
-public class SkillEffectController : MonoBehaviour
+public class SkillEffectController : NetworkBehaviour
 {
     public PlayerController_Net caster;
     private ParticleSystem ps;
-    List<IEffect> effects;
+    List<IEffect> effects = new();
 
-    public SkillData data;
-
-    public void SetProps(PlayerController_Net caster, SkillData data)
+    public void SetProps(PlayerController_Net caster, List<IEffect> effects)
     {
         this.caster = caster;
-        this.data = data;
-
-        effects = EffectFactory.CreateSkillEffects(data);
+        this.effects = effects;
     }
 
     void OnEnable()
@@ -26,55 +20,45 @@ public class SkillEffectController : MonoBehaviour
         ps.Play();
     }
 
+    [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {
-        if (data.type.Equals(SkillType.HEAL))
+        if (other.TryGetComponent(out TowerControl tower)) return;
+
+        foreach (var e in effects)
         {
-            ApplyHeal(other);
-        }
-        else
-        {
-            ApplyDamage(other);
+            if (e is HealEffect)
+            {
+                ApplyHeal(other);
+            }
+            else
+            {
+                ApplyDamage(other);
+            }
         }
     }
 
     private void ApplyHeal(Collider other)
     {
-        var target = other.GetComponent<PlayerController_Net>();
-        if (target == null) return;
+        if (!other.TryGetComponent(out PlayerController_Net target) || target.teamCode != caster.teamCode) return;
 
-        // 다른팀이면 무시.
-        if (target.teamCode != caster.teamCode) return;
-
-        if (other.GetComponent<TowerControl>()) return;         //타워는 스킬 피해를 받지 않음.
-
-        Debug.Log("힐 적중!!");
-
-        PlayerController_Net enemy = other.GetComponent<PlayerController_Net>();
+        Debug.Log("Applyheal!");
 
         foreach (var e in effects)
         {
-            e.Apply(enemy);
+            e.Apply(target);
         }
     }
 
     private void ApplyDamage(Collider other)
     {
-        var target = other.GetComponent<PlayerController_Net>();
-        if (target == null) return;
+        if (!other.TryGetComponent(out PlayerController_Net target) || target.teamCode == caster.teamCode) return;
 
-        // 같은 팀이면 무시.
-        if (target.teamCode == caster.teamCode) return;
-
-        if (other.GetComponent<TowerControl>()) return;         //타워는 스킬 피해를 받지 않음.
-
-        Debug.Log("데미지 적중!!");
-
-        PlayerController_Net enemy = other.GetComponent<PlayerController_Net>();
+        Debug.Log("A");
 
         foreach (var e in effects)
         {
-            e.Apply(enemy);
+            e.Apply(target);
         }
     }
 }

@@ -48,3 +48,18 @@ public class DotEffect : IEffect
         player.ApplyDot(duration, amount);
     }
 }
+
+public class HealEffect : IEffect
+{
+    float amount;
+
+    public HealEffect(float amount)
+    {
+        this.amount = amount;
+    }
+
+    public void Apply(PlayerController_Net player)
+    {
+        player.ApplyHeal(amount);
+    }
+}
