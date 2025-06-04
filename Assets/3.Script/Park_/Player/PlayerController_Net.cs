@@ -64,7 +64,7 @@ public class PlayerController_Net : NetworkBehaviour
     public Vector3 targetPoint;
 
     [Header("Player Spawn")]
-    public Vector3 spawnPoint;
+    public Vector3 spawnPoint = Vector3.zero;
 
     [Header("GUI")]
     [SerializeField] GameObject playerUI;               //parent
@@ -84,18 +84,12 @@ public class PlayerController_Net : NetworkBehaviour
         Debug.Log("[Client] client Start!");
         base.OnStartClient();
 
-
         StartCoroutine(InitComponents());
 
         if (isLocalPlayer)
         {
-            data = FindAnyObjectByType<LocalPlayerSetter>().info;
-            data = InGameSession.uid
-            StartCoroutine(InitComponents());
-
-            CMDSetCID(data.cid);
-            SetCamera();
-            StartCoroutine(SetLocalUI());
+            // data = FindAnyObjectByType<LocalPlayerSetter>().info;
+            StartCoroutine(InitPlayerDatas());
         }
         else
         {
@@ -103,14 +97,64 @@ public class PlayerController_Net : NetworkBehaviour
         }
     }
 
-    private IEnumerator InitPlayerDatas() {
-        yield return new WaitUntil(() => InGameSession.isInit == true);
+    private IEnumerator InitPlayerDatas()
+    {
+        yield return new WaitUntil(() => InGameSession.isInit);
+
+        Debug.Log("PlayerDatas INIT....");
+        string myUid = InGameSession.uid;
+
+        // 서버에 요청
+        CMDRequestCharacterId(myUid);
     }
 
     [Command]
-    public void CMDSetCID(string cid)
+    public void CMDRequestCharacterId(string uid)
+    {
+        string cid = ((InGameNetworkManager)NetworkManager.singleton).userList
+                        .Find(u => u.uid == uid)?.c_id;
+
+        int tc = ((InGameNetworkManager)NetworkManager.singleton).userList
+                        .Find(u => u.uid == uid).teamCode;
+
+        if (string.IsNullOrEmpty(cid))
+        {
+            Debug.LogError("[Server] 해당 uid에 대한 cid를 찾을 수 없음");
+            return;
+        }
+        Debug.Log($"[Server] Request : cid = {cid}");
+        TargetReceiveCharacterData(connectionToClient, cid, tc);
+    }
+
+    [TargetRpc]
+    public void TargetReceiveCharacterData(NetworkConnection target, string cid, int tc)
+    {
+        Debug.Log($"[Client] 서버로부터 받은 CID: {cid}");
+        Debug.Log($"[Client] 서버로부터 받은 팀코드 : {tc}");
+
+        InGameSession.characterId = cid;
+
+        this.data = ((InGameNetworkManager)NetworkManager.singleton)
+                        .characterInfos.Find(c => c.cid == cid);
+
+        if (data == null)
+        {
+            Debug.LogError("캐릭터 데이터 초기화 실패");
+            return;
+        }
+
+        StartCoroutine(InitComponents());
+        CMDSetCID(cid, tc);
+        SetCamera();
+        StartCoroutine(SetLocalUI());
+    }
+
+
+    [Command]
+    public void CMDSetCID(string cid, int teamCode)
     {
         this.cid = cid;
+        this.teamCode = teamCode;
     }
 
     void OnCidChanged(string oldCid, string newCid)
@@ -118,17 +162,21 @@ public class PlayerController_Net : NetworkBehaviour
         Debug.Log($"[Client] cid changed → {newCid}");
 
         CharacterInfo info = ((InGameNetworkManager)NetworkManager.singleton).characterInfos.Find(c => c.cid == newCid);
-        if (info == null || info.inGameModel == null) return;
-
+        if (info == null || info.inGameModel == null)
+        {
+            Debug.Log($"info is null...");
+            return;
+        } else {
+            Debug.Log($"info is {info}...");
+            Debug.Log($"info is {info.inGameModel.name}...");
+        }
         data = info;
 
         Transform mesh = transform.Find("_mesh");
         if (mesh.childCount > 0) return;
 
         GameObject model = Instantiate(info.inGameModel, mesh);
-
-        int code = FindAnyObjectByType<LocalPlayerSetter>().teamCode;
-        CMDSetCharacterInfo(info.hp, info.attack, info.speed, info.attackableRange, code);
+        CMDSetCharacterInfo(info.hp, info.attack, info.speed, info.attackableRange);
     }
 
     public void SetCamera()
@@ -138,15 +186,15 @@ public class PlayerController_Net : NetworkBehaviour
     }
 
     [Command]
-    public void CMDSetCharacterInfo(int hp, int attack, float speed, float attackableRange, int teamCode)
+    public void CMDSetCharacterInfo(int hp, int attack, float speed, float attackableRange)
     {
+        Debug.Log("CMD CharacterInfo!");
         this.fullHp = hp;
         this.hp = hp;
         this.attack = attack;
 
         this.speed = speed;
         this.attackableRange = attackableRange;
-        this.teamCode = teamCode;
     }
 
     IEnumerator SetLocalUI()
@@ -164,7 +212,11 @@ public class PlayerController_Net : NetworkBehaviour
 
     IEnumerator InitComponents()
     {
+        Debug.Log($"[Cllent] InitComponents...");
+
         yield return new WaitUntil(() => cid != null && cid != "" && data != null);
+
+        Debug.Log($"[Client] Start Components");
         attackPoint = transform.Find("_attackPoint");
 
         TryGetComponent(out rb);
@@ -276,6 +328,7 @@ public class PlayerController_Net : NetworkBehaviour
     #region UI
     [SerializeField] Image teamColorHpbar;
 
+
     void OnInitTeam(int oldVal, int newVal)
     {
         Debug.Log("TeamCode Change!!");
@@ -285,6 +338,17 @@ public class PlayerController_Net : NetworkBehaviour
             return;
         }
         teamColorHpbar.color = newVal == 0 ? Color.red : Color.blue;
+
+        if (newVal == 0)                  // Red
+        {
+            spawnPoint = new Vector3(15f, 0, 35f);
+            transform.position = new Vector3(15f, 0, 35f);
+        }
+        else if (newVal == 1)             // Blue
+        {
+            spawnPoint = new Vector3(15f, 0, 8f);
+            transform.position = new Vector3(15f, 0, 8f);
+        }
     }
 
     void OnChangeCurrentHpBar(float percent)

@@ -13,7 +13,7 @@ public class InGameNetworkManager : NetworkManager
 
     public void Init(List<UserAuth> userList)
     {
-        
+        this.userList = userList;
     }
     
     [Server]
@@ -51,7 +51,7 @@ public class InGameNetworkManager : NetworkManager
 
     IEnumerator ShowGameOverPan(GameObject tower, string team)
     {
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(0.2f);
 
         foreach (var c in clients)
         {

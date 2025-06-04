@@ -111,8 +111,6 @@ public class NetworkPlayer : NetworkRoomPlayer
         {
             Debug.Log($"▶️ UID: {user.uid}, Nickname: {user.nickname}");
         }
-
-        // StartCoroutine(GetMatchedMemberList_Co(matchedUserList));
     }
 
     [TargetRpc]
@@ -126,12 +124,6 @@ public class NetworkPlayer : NetworkRoomPlayer
             UserCache.I.session.teamCode = teamCode;
             Debug.Log($"[Client] UserCache에 팀 정보 반영 완료: {teamCode}");
         }
-    }
-
-    IEnumerator GetMatchedMemberList_Co(List<UserAuth> matchedUserList)
-    {
-        yield return new WaitUntil(() => WaitingSceneManager.I != null);
-        WaitingSceneManager.I.SetMatchedPlayers(matchedUserList);
     }
 
     //InGame 서버로 이동한다.           ==============================>>> 로비 서버와 인게임 서버가 따로 있다.

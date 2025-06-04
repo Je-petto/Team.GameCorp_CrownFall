@@ -216,11 +216,12 @@ public class GameSpawner
     private static int basePort = 8000;
     public static (System.Diagnostics.Process, int) StartInGameServer(Guid matchId, List<UserAuth> users)
     {
+        int port = GetAvailablePort();
         Debug.Log("\n\n");
         Debug.Log($"user Count : {users.Count}");
+        Debug.Log($"Port : {port}");
         Debug.Log("\n+++++++++++++++ New Ingame Server! ++++++++++++++++++\n");
 
-        int port = GetAvailablePort();
 
         string jsonDirectory = Path.Combine(Application.dataPath, "MatchData");
         if (!Directory.Exists(jsonDirectory))

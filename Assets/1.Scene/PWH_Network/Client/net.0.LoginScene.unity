@@ -1610,7 +1610,7 @@ MonoBehaviour:
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 0}
+  playerPrefab: {fileID: 8436226803424169134, guid: 78e21a793a729584f9d0c9c22dec6b09, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs: []
@@ -4757,7 +4757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   user:
     uid: UID_1111
-    nickname: Player_test3333
+    nickname: Player_test0808
     c_id: 
     teamCode: 0
 --- !u!1 &1106225916

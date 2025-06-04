@@ -66,7 +66,7 @@ public class UserCache : BehaviourSingleton<UserCache>
         EditorApplication.isPlaying = false;
 #else
             // 빌드된 게임에서는 애플리케이션 종료
-            // Application.Quit();
+        Application.Quit();
 #endif
     }
 

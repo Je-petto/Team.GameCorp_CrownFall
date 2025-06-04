@@ -77,7 +77,7 @@ public class TowerControl : NetworkBehaviour
     [Server]
     void GameOverOnServer()
     {
-        string winnerTeam = (teamCode == 0) ? "RED" : "BLUE";
+        string winnerTeam = (teamCode == 0) ? "BLUE" : "RED";
         (NetworkManager.singleton as InGameNetworkManager).GameOver(gameObject, winnerTeam);
     }
 

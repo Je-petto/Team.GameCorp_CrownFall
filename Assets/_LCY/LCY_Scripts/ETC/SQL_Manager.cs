@@ -3,11 +3,8 @@ using System;
 using System.IO;
 using UnityEngine;
 // �ܺ� Dll
-using MySql.Data;
 using MySql.Data.MySqlClient;
 using LitJson;
-using Mirror;
-using CustomInspector.Extensions;
 # endregion
 
 public class User_info
@@ -84,17 +81,6 @@ public class SQL_Manager : BehaviourSingleton<SQL_Manager>
     }
     public bool Login(string id, string password)
     {
-        // ���������� DB���� ������ ������ ���� �޼ҵ�
-        // ��ȸ�Ǵ� ������ ���ٸ� false
-        // ��ȸ�� �Ǵ� �����Ͱ� �ִٸ� true �����µ�
-        // ������ casing �� info�� ��Ƽ� casing
-
-        /*
-        1. connection�� Ȯ�� -> �޼ҵ�ȭ
-        2. reader ���°� �а� �ִ� ��Ȳ���� Ȯ�� - �� �������� �Ѱ���
-        3. �����͸� �� �о����� reader�� ���¸� Ȯ�� �� close �� �ؾ��Ѵ�
-         */
-
         try
         {
             if (!connection_check(con))
@@ -121,8 +107,7 @@ public class SQL_Manager : BehaviourSingleton<SQL_Manager>
                         User_info user = SQL_Manager.I.info;
 
                         if (UserCache.I != null)
-                        {
-                            
+                        {                            
                             UserCache.I.session.uid = ID;
                             UserCache.I.session.nickname = name;
                             UserCache.I.session.selected_cid = "";

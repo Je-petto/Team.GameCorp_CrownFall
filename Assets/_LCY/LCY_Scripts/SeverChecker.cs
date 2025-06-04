@@ -5,26 +5,6 @@ using UnityEngine;
 using Mirror;
 using LitJson;
 
-public enum Type
-{
-    Empty = 0,
-    Client,
-    Server
-}
-
-public class Item
-{
-    public string License;
-    public string Server_IP;
-    public string Port;
-
-    public Item(string L_index, string IPValue, string port)
-    {
-        License = L_index;
-        Server_IP = IPValue;
-        Port = port;
-    }
-}
 public class SeverChecker : MonoBehaviour
 {
     public Type type;

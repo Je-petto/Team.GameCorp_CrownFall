@@ -5,38 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using LitJson;
 
-
-
-public enum Type
-{
-    Empty = 0,
-    Client,
-    Server
-}
-
-public class Item
-{
-    public string License;
-    public string Server_IP;
-    public string Port;
-
-    public Item(string L_index, string IPValue, string port)
-    {
-        License = L_index;
-        Server_IP = IPValue;
-        Port = port;
-    }
-}
-
-public static class InGameSession
-{
-    public static bool isInit = false;
-    public static string uid;
-    public static string characterId;
-    public static int teamCode;
-}
-
-public class InGameHandler : MonoBehaviour
+public class InGameHandler_Server : MonoBehaviour
 {
     public Type type;
 
@@ -68,31 +37,15 @@ public class InGameHandler : MonoBehaviour
         //     kcp = (kcp2k.KcpTransport)manager.transport;
         // #endregion Test
 
-
-
         if (path.Equals(string.Empty))
         {
             path = Application.dataPath + "/License";
         }
 
         manager = GetComponent<InGameNetworkManager>();
-        if (manager == null)
-        {
-            Debug.Log("manager is null...");
-        }
-
         kcp = (kcp2k.KcpTransport)manager.transport;
-        if (manager == null)
-        {
-            Debug.Log("kcp is null...");
-        }
 
         string[] args = Environment.GetCommandLineArgs();
-
-        foreach (var arg in args)
-        {
-            Debug.Log($"[ARG] {arg}");
-        }
 
         foreach (var arg in args)
         {
@@ -102,7 +55,7 @@ public class InGameHandler : MonoBehaviour
             }
             else if (arg.StartsWith("-ip="))
             {
-                ServerIP = arg.Substring("-ip=".Length);
+                Server_IP = arg.Substring("-ip=".Length);
             }
             else if (arg.StartsWith("-jsonPath"))
             {
@@ -110,12 +63,9 @@ public class InGameHandler : MonoBehaviour
             }
         }
 
-        ServerIP = GetLocalIPAddress();             //Test용으로 로컬에서 수행.
+        Server_IP = GetLocalIPAddress();             //Test용으로 로컬에서 수행.
         kcp.port = ushort.Parse(Port);
     }
-
-    // 파싱을 하고 데이터를 플레이어에게 전달하기
-
 
     private string GetLocalIPAddress()
     {
@@ -141,13 +91,13 @@ public class InGameHandler : MonoBehaviour
         return localIP;
     }
 
-    public string ServerIP { get; private set; }
+    public string Server_IP { get; private set; }
     public string Port { get; private set; }
     public string MatchPath { get; private set; }
 
     void Start()
     {
-        StartClient();
+        StartServer();
     }
 
     public void StartClient()
@@ -166,10 +116,82 @@ public class InGameHandler : MonoBehaviour
             }
         }
 
-        Debug.Log($"------- fore Init = {InGameSession.isInit}");
         InGameSession.isInit = true;
-        Debug.Log($"------- post Init = {InGameSession.isInit}");
     }
+
+    public void StartServer()
+    {
+        // 서버의 경로 WebGL로 빌드 불가
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            Debug.LogWarning("WebGL cannot be Server");
+            return;
+        }
+
+        manager.StartServer();
+
+        string[] args = Environment.GetCommandLineArgs();
+        string matchId = "";
+
+        foreach (var arg in args)
+        {
+            if (arg.StartsWith("-matchId="))
+            {
+                matchId = arg.Substring("-matchId=".Length);
+            }
+        }
+
+        if (string.IsNullOrEmpty(matchId))
+        {
+            Debug.LogError("[Server] matchId 인자를 찾을 수 없습니다.");
+            return;
+        }
+
+        List<UserAuth> userList = LoadMatchDataFromJson(matchId);
+
+        (NetworkManager.singleton as InGameNetworkManager).Init(userList);
+
+        Debug.Log($"{manager.networkAddress} start server...");
+
+        NetworkServer.OnConnectedEvent += (NetworkConnectionToClient) =>
+        {
+            Debug.Log($"new Client : {NetworkConnectionToClient.address}");
+        };
+        NetworkServer.OnDisconnectedEvent += (NetworkConnectionToClient) =>
+        {
+            Debug.Log($"new Client Disconnect : {NetworkConnectionToClient.address}");
+        };
+    }
+
+    private List<UserAuth> LoadMatchDataFromJson(string matchId)
+    {
+        if (!File.Exists(MatchPath))
+        {
+            Debug.LogError($"[MatchData] Match data file is null... : {MatchPath}");
+            return new List<UserAuth>();
+        }
+
+        try
+        {
+            string json = File.ReadAllText(MatchPath);
+            MatchUserListPacket data = JsonUtility.FromJson<MatchUserListPacket>(json);
+
+            if (data == null || data.userList == null)
+            {
+                Debug.LogError("1 -- [MatchData] JSON Parsing Fail...");
+                return new List<UserAuth>();
+            }
+
+            Debug.Log($"2 -- [MatchData] {data.userList.Count} Load Datas.");
+            return data.userList;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"3 --[MatchData] JSON 파일 파싱 중 예외 발생: {ex.Message}");
+            return new List<UserAuth>();
+        }
+    }
+
 
     private void OnApplicationQuit()
     {
@@ -204,11 +226,11 @@ public class InGameHandler : MonoBehaviour
             string ip_s = itemData[0]["Server_IP"].ToString();
             string port_s = itemData[0]["Port"].ToString();
 
-            ServerIP = ip_s;
+            Server_IP = ip_s;
             Port = port_s;
             type = (Type)Enum.Parse(typeof(Type), type_s);
 
-            manager.networkAddress = ServerIP;
+            manager.networkAddress = Server_IP;
             kcp.port = ushort.Parse(Port);
             return type;
         }

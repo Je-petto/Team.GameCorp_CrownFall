@@ -4419,6 +4419,7 @@ MonoBehaviour:
   teamColorHpbar: {fileID: 912996706}
   maxHp: 0
   hp: 0
+  destoryParticle: {fileID: 0}
   isProtecting: 0
   shield: {fileID: 1003547040}
   shieldbar: {fileID: 1362502872}
@@ -7719,6 +7720,7 @@ MonoBehaviour:
   teamColorHpbar: {fileID: 1800059034}
   maxHp: 0
   hp: 0
+  destoryParticle: {fileID: 0}
   isProtecting: 0
   shield: {fileID: 1546956726}
   shieldbar: {fileID: 574533969}
@@ -9275,8 +9277,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1303947413}
-  - component: {fileID: 1303947412}
   - component: {fileID: 1303947411}
+  - component: {fileID: 1303947414}
   - component: {fileID: 1303947410}
   m_Layer: 0
   m_Name: InGameNetworkManager
@@ -9384,20 +9386,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2a9a95227f1e6a748ab4709e3f5f5c31, type: 2}
   - {fileID: 11400000, guid: 58d3d73f6a60817499a27346e702d75d, type: 2}
   - {fileID: 11400000, guid: 2095cb67f385ede4fb6d05ce6d2681c4, type: 2}
---- !u!114 &1303947412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1303947409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fee171bdeedc38459ad8ab047b23e76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 2
-  path: 
+  userList: []
 --- !u!4 &1303947413
 Transform:
   m_ObjectHideFlags: 0
@@ -9413,6 +9402,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1303947414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303947409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d22a6aea67ad7b49947dec716760036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
+  path: 
 --- !u!1 &1309617810
 GameObject:
   m_ObjectHideFlags: 0
