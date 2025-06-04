@@ -171,7 +171,7 @@ public class InGameHandler : MonoBehaviour
 
         List<UserAuth> userList = LoadMatchDataFromJson(matchId);
 
-        // (NetworkManager.singleton as InGameNetworkManager).Init(userList);
+        (NetworkManager.singleton as InGameNetworkManager).Init(userList);
 
         // Debug.Log($"{manager.networkAddress} start server...");
 

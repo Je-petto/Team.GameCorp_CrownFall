@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using Mirror;
+using DG.Tweening;
 
 public class TowerControl : NetworkBehaviour
 {
@@ -44,7 +45,12 @@ public class TowerControl : NetworkBehaviour
 
     private void Update()
     {
-        if (hp <= 0) DestroyTower();
+        if (!isServer) return; // ✅ 서버에서만 실행되도록 보호
+
+        if (hp <= 0 && !this.isDestory)
+        {
+            DestroyTower(); // ✅ 서버가 직접 호출 가능
+        }
     }
 
     void OnInitTeam(int oldVal, int newVal)
@@ -58,39 +64,53 @@ public class TowerControl : NetworkBehaviour
         }
     }
 
-    private void DestroyTower()
+    #region Destroy Logic
+    void DestroyTower()
     {
-        Debug.Log("Destroy Tower...");
-        col.isTrigger = false;
+        if (isDestory) return;
 
-        string winnerTeam = (this.teamCode == 0) ? "RED" : "BLUE";
-        (NetworkManager.singleton as InGameNetworkManager).GameOver(this.gameObject, winnerTeam);
+        isDestory = true;
+        RpcDestroyTower();
+        GameOverOnServer(); 
+    }
 
-        StartCoroutine(ShowGameOverPanel_Co());
+    [Server]
+    void GameOverOnServer()
+    {
+        string winnerTeam = (teamCode == 0) ? "RED" : "BLUE";
+        (NetworkManager.singleton as InGameNetworkManager).GameOver(gameObject, winnerTeam);
+    }
+
+    [ClientRpc]
+    void RpcDestroyTower()
+    {
+        Debug.Log("Destroy Tower RPC Called");
+        StartCoroutine(DestroyTowerEffect_Co());
     }
 
     [SerializeField] ParticleSystem destoryParticle;
 
-    [ClientRpc]
-    private void RpcStartParticle()
+    [SyncVar]
+    bool isDestory = false;
+
+    IEnumerator DestroyTowerEffect_Co()
     {
+        col.isTrigger = false;
+
+        yield return new WaitForSeconds(1.5f);
+
         if (destoryParticle != null)
         {
+            destoryParticle.gameObject.SetActive(true);
             destoryParticle.Play();
         }
-        else
-        {
-            Debug.LogWarning("Destroy particle is not assigned!");
-        }
-    }
 
-    private IEnumerator ShowGameOverPanel_Co()
-    {
-        yield return new WaitForSecondsRealtime(0.5f);
+        yield return new WaitForSeconds(.5f);
 
-        RpcStartParticle();
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
+    #endregion
+
 
     [Server]
     public void ApplyDamage(int damage)

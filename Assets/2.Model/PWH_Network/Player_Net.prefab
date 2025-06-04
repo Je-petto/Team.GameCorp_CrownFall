@@ -167,7 +167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6339673733801512839
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1915,7 +1915,7 @@ MonoBehaviour:
   spawnPoint: {x: 0, y: 0, z: 0}
   playerUI: {fileID: 6682026435217719076}
   gameOverPanl: {fileID: 3253802491924084342}
-  winnerTeam: {fileID: 0}
+  winnerTeam: {fileID: 6183589822020394150}
   faceImage: {fileID: 4184349811366563102}
   skillImage: {fileID: 4935052061960145206}
   elementIcon: {fileID: 2024301283781407484}

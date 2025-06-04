@@ -9647,7 +9647,7 @@ GameObject:
   - component: {fileID: 199309039756952314}
   - component: {fileID: 536088251142867205}
   m_Layer: 0
-  m_Name: ToonRadialFireRed 1
+  m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -9,11 +9,31 @@ public class InGameNetworkManager : NetworkManager
 
     public List<CharacterInfo> characterInfos = new();
 
+    public List<UserAuth> userList = new();
+
+    public void Init(List<UserAuth> userList)
+    {
+        
+    }
+    
     [Server]
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
         Debug.Log("[InGameServer] : New Client In Server...\n");
         base.OnServerAddPlayer(conn);
+        clients.Add(conn);
+    }
+
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+        clients.Remove(conn);
+        base.OnServerDisconnect(conn);
+
+        if (clients.Count <= 0)
+        {
+            Debug.Log("[InGameServer] : All clients disconnected. Shutting down server...");
+            Application.Quit();
+        }
     }
 
     public override void OnStartServer()
@@ -31,7 +51,7 @@ public class InGameNetworkManager : NetworkManager
 
     IEnumerator ShowGameOverPan(GameObject tower, string team)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.2f);
 
         foreach (var c in clients)
         {

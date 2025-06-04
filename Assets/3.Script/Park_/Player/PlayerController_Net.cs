@@ -90,6 +90,7 @@ public class PlayerController_Net : NetworkBehaviour
         if (isLocalPlayer)
         {
             data = FindAnyObjectByType<LocalPlayerSetter>().info;
+            data = InGameSession.uid
             StartCoroutine(InitComponents());
 
             CMDSetCID(data.cid);
@@ -100,6 +101,10 @@ public class PlayerController_Net : NetworkBehaviour
         {
             playerUI.SetActive(false);
         }
+    }
+
+    private IEnumerator InitPlayerDatas() {
+        yield return new WaitUntil(() => InGameSession.isInit == true);
     }
 
     [Command]
@@ -389,14 +394,22 @@ public class PlayerController_Net : NetworkBehaviour
         animator.SetFloat("Movement", f);
     }
 
-
+    [TargetRpc]
     public void GameOverSet(GameObject target, string team)
     {
+        Debug.Log("GameOver...");
         inputHandler.isStop = true;
-
-        var cam = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
-        if (cam != null) cam.Follow = target.transform;
-
-        winnerTeam.text = $"{team} Team Wins";
+        Sequence s = DOTween.Sequence();
+        s.AppendCallback(() =>
+        {
+            var cam = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
+            if (cam != null) cam.Follow = target.transform;
+        })
+        .AppendInterval(2f)
+        .AppendCallback(() =>
+        {
+            gameOverPanl.SetActive(true);
+            winnerTeam.text = $"{team} Team Wins";
+        });
     }
 }
