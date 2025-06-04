@@ -61,21 +61,35 @@ public class TowerControl : NetworkBehaviour
     private void DestroyTower()
     {
         Debug.Log("Destroy Tower...");
-        gameObject.SetActive(false);
         col.isTrigger = false;
 
-        GameManager.I?.OnGameWin();
+        string winnerTeam = (this.teamCode == 0) ? "RED" : "BLUE";
+        (NetworkManager.singleton as InGameNetworkManager).GameOver(this.gameObject, winnerTeam);
 
-        int winnerTeam = (this.teamCode == 0) ? 1 : 0;
-        StartCoroutine(ShowGameOverPanel_Co(winnerTeam));
+        StartCoroutine(ShowGameOverPanel_Co());
     }
 
-    private IEnumerator ShowGameOverPanel_Co(int teamcode)
-    {
-        yield return new WaitForSecondsRealtime(2f);
+    [SerializeField] ParticleSystem destoryParticle;
 
-        string winnerTeam = teamcode == 0 ? "RED" : "BLUE";
-        UIManager.I?.ShowGameEndPanel(winnerTeam);
+    [ClientRpc]
+    private void RpcStartParticle()
+    {
+        if (destoryParticle != null)
+        {
+            destoryParticle.Play();
+        }
+        else
+        {
+            Debug.LogWarning("Destroy particle is not assigned!");
+        }
+    }
+
+    private IEnumerator ShowGameOverPanel_Co()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        RpcStartParticle();
+        this.gameObject.SetActive(false);
     }
 
     [Server]

@@ -14,11 +14,6 @@ public class SkillEffectController : NetworkBehaviour
         this.effects = effects;
     }
 
-    void OnEnable()
-    {
-        ps.Play();
-    }
-
     [ServerCallback]
     private void OnTriggerEnter(Collider other)
     {

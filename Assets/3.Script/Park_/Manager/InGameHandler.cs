@@ -169,7 +169,7 @@ public class InGameHandler : MonoBehaviour
             return;
         }
 
-        // List<UserAuth> userList = LoadMatchDataFromJson(matchId);
+        List<UserAuth> userList = LoadMatchDataFromJson(matchId);
 
         // (NetworkManager.singleton as InGameNetworkManager).Init(userList);
 

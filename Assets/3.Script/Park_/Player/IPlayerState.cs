@@ -18,7 +18,7 @@ public class IdleState : IPlayerState
     }
     public void Enter()
     {
-        player.animator.SetFloat("Movement", 0f);
+        player.RpcPlayerMoveAnimation(0f);
     }
     public void Update(){ 
         
@@ -60,7 +60,7 @@ public class MoveState : IPlayerState
 
         Vector3 vel = direction * player.speed;
         player.rb.MovePosition(player.transform.position + vel * Time.deltaTime);
-        player.animator.SetFloat("Movement", direction.magnitude);
+        player.CMDPlayAnimationFloat(direction.magnitude);
     }
 
     private void Rotate()
@@ -87,7 +87,7 @@ public class DeadState : IPlayerState
 
     public void Enter()
     {
-        player.animator.SetTrigger("Death");
+        player.CMDPlayAnimationTrigger("Death");
 
         player.inputHandler.isDeath = true;
         player.inputHandler.enabled = false;
@@ -134,7 +134,7 @@ public class DeadState : IPlayerState
             player.CMDRespawn(); 
             
             // 애니메이션 초기화
-            player.animator.SetFloat("Movement", 0f);
+            player.CMDPlayAnimationFloat(0f);
 
             // 상태 전환
             player.stateMachine.ChangeState(new IdleState(player));

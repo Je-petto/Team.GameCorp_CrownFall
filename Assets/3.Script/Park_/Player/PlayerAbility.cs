@@ -57,9 +57,17 @@ public class PlayerAttackNonTargeting : PlayerAbility
         if (!canAttack) return;
 
         canAttack = false;
-
+        player.CMDPlayAnimationTrigger("Attack");
+        player.transform.LookAt(player.targetPoint);
         player.CMDAttackBasic(player.targetPoint);
 
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.AppendCallback(() => player.inputHandler.isStop = true)
+            .AppendInterval(0.6f)
+            .AppendCallback(() => player.inputHandler.isStop = false);
+        
         DOVirtual.DelayedCall(1f, () =>
         {
             canAttack = true;

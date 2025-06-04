@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System.Collections;
 
 public class InGameNetworkManager : NetworkManager
 {
@@ -21,5 +22,20 @@ public class InGameNetworkManager : NetworkManager
 
         // 씬에 있는 NetworkIdentity 오브젝트들 자동 등록
         NetworkServer.SpawnObjects();
+    }
+
+    public void GameOver(GameObject tower, string team)
+    {
+        StartCoroutine(ShowGameOverPan(tower, team));
+    }
+
+    IEnumerator ShowGameOverPan(GameObject tower, string team)
+    {
+        yield return new WaitForSeconds(1f);
+
+        foreach (var c in clients)
+        {
+            c.identity.GetComponent<PlayerController_Net>().GameOverSet(tower, team);
+        }
     }
 }

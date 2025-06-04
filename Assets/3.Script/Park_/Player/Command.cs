@@ -170,7 +170,9 @@ public class SkillCastCommand : ICommand
     {
         Sequence coolSeq = DOTween.Sequence();
 
-        coolSeq.AppendCallback(() => isCoolDown = true).AppendInterval(cooldown)
+        caster.skillCoolDownImage.fillAmount = 1f;
+        
+        coolSeq.AppendCallback(() => isCoolDown = true).Append(caster.skillCoolDownImage.DOFillAmount(0f, cooldown).SetEase(Ease.Linear))
                     .OnComplete(() => isCoolDown = false);
     }
 
