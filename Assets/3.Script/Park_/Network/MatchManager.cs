@@ -160,8 +160,9 @@ public class MatchManager : NetworkBehaviour
         var userList = group.players.Select(conn => conn.identity.GetComponent<NetworkPlayer>().userAuth).ToList();
         var (inGameServerProcess, port) = GameSpawner.StartInGameServer(group.matchId, userList);
 
-        Debug.Log(">> All Ready Complete => Game Start after 5 seconds");
-        yield return new WaitForSeconds(5f);
+        Debug.Log(">> All Ready Complete => Game Start after 10 seconds");
+
+        yield return new WaitForSeconds(10f);
 
         foreach (var conn in group.players)
         {
@@ -222,7 +223,6 @@ public class GameSpawner
         Debug.Log($"Port : {port}");
         Debug.Log("\n+++++++++++++++ New Ingame Server! ++++++++++++++++++\n");
 
-
         string jsonDirectory = Path.Combine(Application.dataPath, "MatchData");
         if (!Directory.Exists(jsonDirectory))
         {
@@ -238,7 +238,7 @@ public class GameSpawner
         string processPath =Path.Combine(Application.dataPath, "InGameServer", "Team.GameCorp_CrownFall.exe");
         
         process.StartInfo.FileName = processPath;
-        process.StartInfo.Arguments = $"-port={port} -matchId={matchId} -jsonPath={jsonPath}";
+        process.StartInfo.Arguments = $"-ip={"13.124.213.85"} -port={port} -matchId={matchId} -jsonPath={jsonPath}";
         process.StartInfo.UseShellExecute = true;
         process.Start();
 

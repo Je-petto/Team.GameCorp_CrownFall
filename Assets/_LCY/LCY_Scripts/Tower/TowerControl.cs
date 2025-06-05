@@ -200,7 +200,7 @@ public class TowerControl : NetworkBehaviour
 
     void UpdateShieldBar(int currentHp)
     {
-        shieldbar.fillAmount = (float)currentHp / maxHp;
+        shieldbar.fillAmount = (float)currentHp / sMaxHp;
     }
 
     void BreakShield()

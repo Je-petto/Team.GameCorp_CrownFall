@@ -46,35 +46,6 @@ public class InGameHandler : MonoBehaviour
 
     private void Awake()
     {
-        // #region Test
-        //     if (path.Equals(string.Empty))
-        //     {
-        //         path = Application.dataPath + "/License";
-        //     }
-
-        //     // 폴더 검사
-        //     if (!File.Exists(path))
-        //     {
-        //         Directory.CreateDirectory(path);
-        //     }
-
-        //     //파일 검사
-        //     if (!File.Exists(path + "/License.json"))
-        //     {
-        //         DefaultData(path);
-        //     }
-
-        //     manager = GetComponent<InGameNetworkManager>();
-        //     kcp = (kcp2k.KcpTransport)manager.transport;
-        // #endregion Test
-
-
-
-        if (path.Equals(string.Empty))
-        {
-            path = Application.dataPath + "/License";
-        }
-
         manager = GetComponent<InGameNetworkManager>();
         if (manager == null)
         {
@@ -82,7 +53,7 @@ public class InGameHandler : MonoBehaviour
         }
 
         kcp = (kcp2k.KcpTransport)manager.transport;
-        if (manager == null)
+        if (kcp == null)
         {
             Debug.Log("kcp is null...");
         }
@@ -109,36 +80,6 @@ public class InGameHandler : MonoBehaviour
                 MatchPath = arg.Substring("-jsonPath=".Length);
             }
         }
-
-        ServerIP = GetLocalIPAddress();             //Test용으로 로컬에서 수행.
-        kcp.port = ushort.Parse(Port);
-    }
-
-    // 파싱을 하고 데이터를 플레이어에게 전달하기
-
-
-    private string GetLocalIPAddress()
-    {
-        string localIP = "127.0.0.1"; // 기본값 (loopback)
-
-        // try
-        // {
-        //     var host = Dns.GetHostEntry(Dns.GetHostName());
-        //     foreach (var ip in host.AddressList)
-        //     {
-        //         if (ip.AddressFamily == AddressFamily.InterNetwork)
-        //         {
-        //             localIP = ip.ToString();
-        //             break;
-        //         }
-        //     }
-        // }
-        // catch (Exception ex)
-        // {
-        //     Debug.LogWarning($"[IP 검색 실패] {ex.Message}");
-        // }
-
-        return localIP;
     }
 
     public string ServerIP { get; private set; }
@@ -147,6 +88,10 @@ public class InGameHandler : MonoBehaviour
 
     void Start()
     {
+        manager.networkAddress = ServerIP;
+        kcp.port = ushort.Parse(Port);
+
+        Debug.Log($"ServerIp:{ServerIP}, Port : {Port}");
         StartClient();
     }
 
@@ -154,7 +99,6 @@ public class InGameHandler : MonoBehaviour
     {
         Debug.Log($"{manager.networkAddress} : Start Client");
 
-        manager.StartClient();
 
         string[] args = Environment.GetCommandLineArgs();
 
@@ -169,6 +113,8 @@ public class InGameHandler : MonoBehaviour
         Debug.Log($"------- fore Init = {InGameSession.isInit}");
         InGameSession.isInit = true;
         Debug.Log($"------- post Init = {InGameSession.isInit}");
+        
+        manager.StartClient();
     }
 
     private void OnApplicationQuit()
@@ -178,17 +124,6 @@ public class InGameHandler : MonoBehaviour
         if (NetworkServer.active) manager.StopServer();
     }
 
-
-    private void DefaultData(string path)
-    {
-        // Json을 만드는 작업
-        List<Item> item = new List<Item>();
-        item.Add(new Item("0", "127.0.0.1", "7777"));
-
-        JsonData data = JsonMapper.ToJson(item);
-
-        File.WriteAllText(path + "/License.json", data.ToString());
-    }
 
     #region Test
     private Type License_type()

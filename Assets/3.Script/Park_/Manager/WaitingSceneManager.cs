@@ -13,7 +13,6 @@ public class WaitingSceneManager : BehaviourSingleton<WaitingSceneManager>
 
     public NetworkManager networkManager; // Inspector에서 할당
     
-    string serverIP = "127.0.0.1";                // 로컬 테스트용.
     public int _testCount;
 
     private List<NetworkPlayer> networkPlayers;

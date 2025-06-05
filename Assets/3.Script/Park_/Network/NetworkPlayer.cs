@@ -131,10 +131,8 @@ public class NetworkPlayer : NetworkRoomPlayer
     public void TargetConnectToInGame(NetworkConnection target, int port)
     {
         Debug.Log($"Connecting to InGame Server on port {port}");
-        Debug.Log("게임 시작!!!");
+        Debug.Log("Game Start!!!");
 
         UserCache.I.StartInGameClient(port);
-
-        // Application.Quit(); // 또는 로비 UI 종료 처리
     }
 }

@@ -47,7 +47,7 @@ public class NetworkHandler : MonoBehaviour
         File.WriteAllText(path + "/License.json", data.ToString());
     }
 
-    public string ServerIP { get; private set; }
+    public string Server_IP { get; private set; }
     public string Port { get; private set; }
 
     private Type License_type()
@@ -63,11 +63,11 @@ public class NetworkHandler : MonoBehaviour
             string ip_s = itemData[0]["Server_IP"].ToString();
             string port_s = itemData[0]["Port"].ToString();
 
-            ServerIP = ip_s;
+            Server_IP = ip_s;
             Port = port_s;
             type = (Type)Enum.Parse(typeof(Type), type_s);
 
-            manager.networkAddress = ServerIP;
+            manager.networkAddress = Server_IP;
             kcp.port = ushort.Parse(Port);
             return type;
         }
