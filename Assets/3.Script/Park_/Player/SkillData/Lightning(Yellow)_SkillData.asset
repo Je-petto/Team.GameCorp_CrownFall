@@ -16,7 +16,7 @@ MonoBehaviour:
   skillName: Divine Judgement
   skillDescribe: Deals high damages by summoning a ball of high-powered electricity
   damage: 430
-  duration: 5
+  duration: 3
   coolDown: 11
   castingTime: 0.6
   dot: 5

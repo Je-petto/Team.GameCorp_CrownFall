@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -46,8 +45,6 @@ public class Skill_Frost : ISkillAction
 {
     PlayerController_Net caster;
     private SkillData data;
-
-    private bool isCoolDown;
 
     public Skill_Frost(PlayerController_Net caster, SkillData data)
     {

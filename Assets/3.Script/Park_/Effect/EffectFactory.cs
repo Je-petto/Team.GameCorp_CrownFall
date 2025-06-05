@@ -27,12 +27,19 @@ public static class EffectFactory
                     }
                 case EffectType.SLOW:
                     {
-                        resEffects.Add(new SlowEffect(1f, data.duration));
+                        int index = data.type.Equals(SkillType.FROST) ? 0 : 2;
+                        resEffects.Add(new SlowEffect(1f, data.duration, index));
                         break;
                     }
                 case EffectType.DOT:
                     {
-                        resEffects.Add(new DotEffect(1f, data.duration));
+                        int index = data.type.Equals(SkillType.FIRE) ? 1 : 2;
+                        resEffects.Add(new DotEffect(data.dot, data.duration, index));
+                        break;
+                    }
+                case EffectType.HEAL:
+                    {
+                        resEffects.Add(new HealEffect(data.damage));
                         break;
                     }
             }

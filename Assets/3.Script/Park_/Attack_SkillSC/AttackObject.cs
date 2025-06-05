@@ -58,7 +58,7 @@ public class AttackObject : NetworkBehaviour
         if (other.TryGetComponent(out TowerControl tower) && tower.teamCode != caster.teamCode)
         {
             Debug.Log($"Tower Trigger!!!");
-            tower.ApplyDamage(1000);
+            tower.ApplyDamage(damage);
             NetworkServer.Destroy(this.gameObject);
         }
     }

@@ -18,7 +18,7 @@ MonoBehaviour:
   description: Birth coincided with a celestial comet. Fire flows through his blood,
     and his magic burns with a wild, unpredictable rhythm, much like his personality
   hp: 3300
-  attack: 110
+  attack: 420
   defense: 15
   speed: 8
   attackableRange: 5

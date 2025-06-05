@@ -19,7 +19,7 @@ MonoBehaviour:
     in time. His spells draw from forgotten runes and bitter winds that whisper knowledge
     that has been frozen in time
   hp: 3000
-  attack: 100
+  attack: 400
   defense: 10
   speed: 7
   attackableRange: 7

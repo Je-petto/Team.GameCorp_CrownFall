@@ -19,7 +19,7 @@ MonoBehaviour:
     from a celestial being. Now he walks among the wounded, hands glowing with gentle
     radiance that seals flesh and soul alike
   hp: 2800
-  attack: 1200
+  attack: 300
   defense: 5
   speed: 6
   attackableRange: 9

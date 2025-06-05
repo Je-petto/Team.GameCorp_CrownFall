@@ -89,36 +89,4 @@ public class WaitingSceneManager : BehaviourSingleton<WaitingSceneManager>
 
         OnChangeMatchState?.Invoke(state);
     }
-
-
-    void StartNewClient(int port, string uid, string cid)
-    {
-        string args = $"-inGame -ip={serverIP} -port={port} -uid={uid} -cid={cid}"; // 예시: 매치 ID도 넘길 수 있음
-        var process = new System.Diagnostics.Process();
-        process.StartInfo.FileName = "D:/Project/Team.GameCorp_CrownFall/Builds/InGameClient/Team.GameCorp_CrownFall.exe";
-
-        // 인게임 클라이언트
-        if (!File.Exists(process.StartInfo.FileName))
-        {
-            Debug.LogError($"InGame Client executable not found at: {process.StartInfo.FileName}");
-            return;
-        }
-
-        process.StartInfo.Arguments = args;
-        process.StartInfo.UseShellExecute = true;
-        process.StartInfo.CreateNoWindow = false;       // 콘솔 띄우기.
-        process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
-
-        // 클라이언트 실행.
-        process.Start();
-
-//         //기존 클라이언트는 종료!
-// #if UNITY_EDITOR
-//         // 에디터에서는 플레이 모드 종료
-//         EditorApplication.isPlaying = false;
-// #else
-//             // 빌드된 게임에서는 애플리케이션 종료
-//             Application.Quit();
-// #endif
-    }
 }

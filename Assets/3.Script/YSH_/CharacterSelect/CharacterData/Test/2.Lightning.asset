@@ -19,9 +19,9 @@ MonoBehaviour:
     storms through twin bronze rings embedded in his forearms. When he roars, the
     sky answers
   hp: 2750
-  attack: 80
+  attack: 350
   defense: 7
-  speed: 11
+  speed: 8
   attackableRange: 9
   skillSet: {fileID: 11400000, guid: d709ad52ea36fcd43a0ac00c7354e413, type: 2}
   characterType: 2

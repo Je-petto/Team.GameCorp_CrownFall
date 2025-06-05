@@ -38,6 +38,9 @@ public class PlayerController_Net : NetworkBehaviour
     public int defense;
 
     [SyncVar]
+    public float baseSpeed;
+
+    [SyncVar]
     public float speed;               // 이동 속도
 
     [SyncVar]
@@ -74,6 +77,8 @@ public class PlayerController_Net : NetworkBehaviour
     [SerializeField] Image skillImage;
     [SerializeField] Image elementIcon;
     [SerializeField] public Image skillCoolDownImage;
+    [SerializeField] public Image gui_HpBar;
+    [SerializeField] TextMeshProUGUI userName; 
 
     [Header("Damage Particle")]
     public GameObject[] effectParticles;
@@ -166,7 +171,9 @@ public class PlayerController_Net : NetworkBehaviour
         {
             Debug.Log($"info is null...");
             return;
-        } else {
+        }
+        else
+        {
             Debug.Log($"info is {info}...");
             Debug.Log($"info is {info.inGameModel.name}...");
         }
@@ -193,6 +200,7 @@ public class PlayerController_Net : NetworkBehaviour
         this.hp = hp;
         this.attack = attack;
 
+        this.baseSpeed = speed;
         this.speed = speed;
         this.attackableRange = attackableRange;
     }
@@ -208,6 +216,7 @@ public class PlayerController_Net : NetworkBehaviour
         this.faceImage.sprite = data.face;
         this.skillImage.sprite = data.SkillIcon;
         this.elementIcon.sprite = data.ElementIcon;
+        userName.text = InGameSession.uid;
     }
 
     IEnumerator InitComponents()
@@ -309,7 +318,6 @@ public class PlayerController_Net : NetworkBehaviour
     }
     #endregion
 
-
     void Update()
     {
         if (inputHandler == null) return;
@@ -324,10 +332,8 @@ public class PlayerController_Net : NetworkBehaviour
         inputHandler.InputFixedUpdate();
     }
 
-
     #region UI
     [SerializeField] Image teamColorHpbar;
-
 
     void OnInitTeam(int oldVal, int newVal)
     {
@@ -342,13 +348,12 @@ public class PlayerController_Net : NetworkBehaviour
         if (newVal == 0)                  // Red
         {
             spawnPoint = new Vector3(15f, 0, 35f);
-            transform.position = new Vector3(15f, 0, 35f);
         }
         else if (newVal == 1)             // Blue
         {
             spawnPoint = new Vector3(15f, 0, 8f);
-            transform.position = new Vector3(15f, 0, 8f);
         }
+        transform.position = spawnPoint;
     }
 
     void OnChangeCurrentHpBar(float percent)
@@ -361,14 +366,30 @@ public class PlayerController_Net : NetworkBehaviour
     [Server]
     public void ApplyDamage(int amount)
     {
+        if (inputHandler.isDeath) return;
+
         Debug.Log($"{amount} -> Damage Apply");
         hp -= amount;
         hp = Mathf.Clamp(hp, 0, fullHp);
+        
+        TargetUpdateHp(connectionToClient, hp, fullHp);
 
         if (hp <= 0 && !inputHandler.isDeath)
         {
             RPCDie();
         }
+    }
+
+    [TargetRpc]
+    void TargetUpdateHp(NetworkConnection target, int currentHp, int maxHp)
+    {
+        float ratio = (float)currentHp / maxHp;
+        UpdateHpBar(ratio); 
+    }
+
+    public void UpdateHpBar(float hpRatio)
+    {
+        gui_HpBar.fillAmount = hpRatio;
     }
 
     [ClientRpc]
@@ -383,24 +404,40 @@ public class PlayerController_Net : NetworkBehaviour
     [Server]
     public void ApplyHeal(float amount)
     {
-        Debug.Log("Heal Apply");
+        Debug.Log("Player : Heal Apply");
         hp += (int)amount;
-        hp = Mathf.Clamp(0, fullHp, hp);
+        hp = Mathf.Clamp(hp, 0, fullHp);
+
+        RPCShowParticle(3, 1f);
     }
 
+    private bool isSlow = false;
+
     [Server]
-    public void ApplySlow(float duration, float amount)
+    public void ApplySlow(float duration, float amount, int index)
     {
+        if (isSlow) return;
+
         Debug.Log("Slow Apply");
         Sequence seq = DOTween.Sequence();
 
-        seq.AppendCallback(() => speed *= (amount / 100f))
+        seq.AppendCallback(() =>
+        {
+            speed = speed / 100 * amount;
+            isSlow = true;
+        })
             .AppendInterval(duration)
-            .OnComplete(() => speed = data.speed);
+            .OnComplete(() =>
+            {
+                speed = baseSpeed;
+                isSlow = false;
+        });
+            
+        RPCShowParticle(index, duration);
     }
 
     [Server]
-    public void ApplyDot(float duration, float amount)
+    public void ApplyDot(float duration, float amount, int index)
     {
         Debug.Log("Dot Apply");
         int tickCount = Mathf.FloorToInt(duration);
@@ -408,9 +445,11 @@ public class PlayerController_Net : NetworkBehaviour
 
         for (int i = 0; i < tickCount; i++)
         {
-            seq.AppendInterval(1f) // 1초 대기
-            .AppendCallback(() => ApplyDamage((int)amount)); // 데미지 적용
+            seq.AppendInterval(1f)                                  // 1초 대기
+            .AppendCallback(() => ApplyDamage((int)amount));        // 데미지 적용
         }
+
+        RPCShowParticle(index, duration);
     }
     #endregion
 
@@ -419,7 +458,7 @@ public class PlayerController_Net : NetworkBehaviour
     public void CMDRespawn()
     {
         hp = fullHp;
-        transform.position = Vector3.zero;
+        transform.position = spawnPoint;
         transform.rotation = Quaternion.identity;
     }
 
@@ -476,4 +515,36 @@ public class PlayerController_Net : NetworkBehaviour
             winnerTeam.text = $"{team} Team Wins";
         });
     }
+
+    #region Particle
+
+    /*
+        0. Frost
+        1. Fire
+        2. Lightening
+        3. Heal
+    */
+    
+    public GameObject[] effectPso;
+    private Sequence[] particleSequences = new Sequence[4];
+
+    [ClientRpc]
+    public void RPCShowParticle(int index, float duration)
+    {
+        Debug.Log($"RPC Particle Set : {index}");
+        particleSequences[index]?.Kill();
+
+        Sequence seq = DOTween.Sequence();
+        seq.AppendCallback(() =>
+        {
+            effectPso[index].SetActive(true);
+            ParticleSystem ps = effectPso[index].GetComponentInChildren<ParticleSystem>();
+            ps.Play();
+        })
+        .AppendInterval(duration)
+        .OnComplete(() => effectPso[index].SetActive(false));
+
+        particleSequences[index] = seq;
+    }
+    #endregion
 }

@@ -48,7 +48,7 @@ public class SkillEffectController : NetworkBehaviour
     {
         if (!other.TryGetComponent(out PlayerController_Net target) || target.teamCode == caster.teamCode) return;
 
-        Debug.Log("A");
+        Debug.Log("ApplyDamage");
 
         foreach (var e in effects)
         {

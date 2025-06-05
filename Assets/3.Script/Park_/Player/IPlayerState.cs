@@ -106,30 +106,32 @@ public class DeadState : IPlayerState
     {
         Sequence seq = DOTween.Sequence();
 
-        int elapsed = (int)respawnTime;
 
-        seq.AppendInterval(0.5f)
-            .AppendCallback(() =>
-            {
-                Debug.Log("죽음...");
-                IngameUIManager.I.ShowRespawnUI(respawnTime);
-            });
+        // int elapsed = (int)respawnTime;
 
-        for (int i = elapsed; i > 0; i--)
-        {
-            int time = i; // 클로저 문제 방지
-            seq.AppendCallback(() =>
-            {
-                IngameUIManager.I.UpdateRespawnTime(time);
-                Debug.Log($"Respawn remain: {time}");
-            });
-            seq.AppendInterval(1f);
-        }
+        // seq.AppendInterval(0.5f)
+        //     .AppendCallback(() =>
+        //     {
+        //         Debug.Log("죽음...");
+        //         IngameUIManager.I.ShowRespawnUI(respawnTime);
+        //     });
 
-        seq.OnComplete(() =>
+        // for (int i = elapsed; i > 0; i--)
+        // {
+        //     int time = i; // 클로저 문제 방지
+        //     seq.AppendCallback(() =>
+        //     {
+        //         IngameUIManager.I.UpdateRespawnTime(time);
+        //         Debug.Log($"Respawn remain: {time}");
+        //     });
+        //     seq.AppendInterval(1f);
+        // }
+
+        
+        seq.AppendInterval(5f).OnComplete(() =>
         {
             Debug.Log("리스폰...");
-            IngameUIManager.I.HideRespawnUI();
+            // IngameUIManager.I.HideRespawnUI();
 
             player.CMDRespawn(); 
             

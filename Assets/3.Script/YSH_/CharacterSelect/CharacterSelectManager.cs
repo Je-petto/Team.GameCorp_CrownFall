@@ -15,9 +15,9 @@ public class CharacterSelectManager : MonoBehaviour
     void OnEnable()
     {
         Debug.Log($"[Client] {"CharacterSelectManager"} : Enable!");
-        selected_cid = characterDatabase.characterInfos[0].cid;
-        SelectedCharacterInfo = characterDatabase.characterInfos[0];
-        SelectCharacterByCID(selected_cid);
+        // selected_cid = characterDatabase.characterInfos[0].cid;
+        // SelectedCharacterInfo = characterDatabase.characterInfos[0];
+        // SelectCharacterByCID(selected_cid);
     }
 
     public void SelectCharacterByCID(string cid)

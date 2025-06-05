@@ -16,11 +16,11 @@ MonoBehaviour:
   skillName: Light of the Seraphim
   skillDescribe: Heals all team members regardless of distance and remove all debuffs
   damage: 900
-  duration: 2.5
+  duration: 2
   coolDown: 13
   castingTime: 0.9
   dot: 0
   castingMark: {fileID: 3718856034927834208, guid: d67613357a940e547afc5976c850550e, type: 3}
   prefab: {fileID: 5906619286482871798, guid: cb530f9f156be5945909a1b68a8e9ed9, type: 3}
   distance: 3
-  effectTypes: 0200000003000000
+  effectTypes: 02000000
